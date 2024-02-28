@@ -1,5 +1,3 @@
-# thesisfinder
-
 # ThesisFinder Project
 
 This repository contains the source code for ThesisFinder, a platform connecting researchers and facilitating collaborative research efforts.
@@ -10,7 +8,7 @@ This repository contains the source code for ThesisFinder, a platform connecting
 
 - [Frontend](./frontend/README.md): The frontend of the ThesisFinder application, developed using React, HTML, and CSS. It includes components, pages, styles, and utility files.
 
-- [Database](./database/README.md): Database-related files, including migrations and seeds.
+- [Database](./backend/database/README.md): Database-related files, including migrations and seeds.
 
 - [Scripts](./scripts/README.md): Useful scripts for setting up and managing the ThesisFinder project.
 
