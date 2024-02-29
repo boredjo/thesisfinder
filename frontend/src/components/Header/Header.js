@@ -1,11 +1,15 @@
  // /frontend/src/components/Header.js
 
 import React from 'react';
+import './Header.css'
 
 const Header = () => {
   return (
     <header>
-      <h1>ThesisFinder</h1>
+      <div classname="Brand">
+        <h1>ThesisFinder</h1>
+      </div>
+      
       <nav>
         <a href="#">Log in</a>
         <a href="#">Join for free</a>

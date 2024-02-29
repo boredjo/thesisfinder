@@ -1,0 +1,13 @@
+/* /frontend/src/components/Header/main.css */
+
+h1 {
+    font-size: 2em;
+    margin: 0;
+    color: red;
+    font-family: 'IBM Plex Mono';
+}
+
+a {
+    font-family: 'IBM Plex Mono';
+    
+}
