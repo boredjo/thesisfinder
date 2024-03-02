@@ -1,10 +1,17 @@
-// /frontend/src/pages/HomePage.js
+// /frontend/src/pages/Login.js
+/* 
+  Login page
+  This was formerly HomePage but I changed the name because the 
+  home page fits better with the main menu users have access to
+*/
 
 import React from 'react';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
+import 'styles/main.css';
+import 'styles/index.css';
 
-const HomePage = () => {
+const Login = () => {
   return (
     <div className="home-container">
       <Header />
@@ -25,4 +32,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage; 
+export default Login; 
