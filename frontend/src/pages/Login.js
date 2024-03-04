@@ -20,9 +20,6 @@ const Login = () => {
           <p>Have a lingering question or a debate? Your curiosity is more suited for research. Need answers but lack a full-time researcher? Pose questions and incentivize with prize money.</p>
           <button>Join for free</button>
         </section>
-
-        {/* Add more sections/components as needed */}
-
       </main>
     </div>
   );

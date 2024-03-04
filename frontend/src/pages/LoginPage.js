@@ -2,8 +2,7 @@
 import React, { useState } from 'react';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
-import '../styles/main.css';
-import '../styles/index.css';
+
 
 const LoginPage = () => {
   // State to manage input values
