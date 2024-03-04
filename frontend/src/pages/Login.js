@@ -8,14 +8,12 @@
 import React from 'react';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
-import 'styles/main.css';
-import 'styles/index.css';
+import '../styles/main.css';
+import '../styles/index.css';
 
 const Login = () => {
   return (
     <div className="home-container">
-      <Header />
-
       <main className="main-content">
         <section className="hero-section">
           <h2>Connect with researchers, democratize science.</h2>
@@ -26,8 +24,6 @@ const Login = () => {
         {/* Add more sections/components as needed */}
 
       </main>
-
-      <Footer />
     </div>
   );
 };

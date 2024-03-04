@@ -1,14 +1,27 @@
- // /frontend/src/components/Header.js
-
+// /frontend/src/components/Header.js
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Header = () => {
+const Header = ({ isAuthenticated, username }) => {
   return (
     <header>
       <h1>ThesisFinder</h1>
       <nav>
-        <a href="#">Log in</a>
-        <a href="#">Join for free</a>
+        {isAuthenticated ? (
+          <>
+            {/* Display username if authenticated */}
+            <p>Welcome, {username}!</p>
+            {/* Add a logout button or link */}
+            <Link to="/logout">Logout</Link>
+          </>
+        ) : (
+          <>
+            {/* Add a login link */}
+            <Link to="/login">Log in</Link>
+            {/* Add a signup link */}
+            <Link to="/signup">Join for free</Link>
+          </>
+        )}
       </nav>
     </header>
   );
