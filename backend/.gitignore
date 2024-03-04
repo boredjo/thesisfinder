@@ -1,1 +1,10 @@
-venv/ 
+venv/
+lib/
+lib64/
+pyvenv.cfg
+bin/
+src/models/__pycache__/
+src/routes/__pycache__/
+src/utils/__pycache__/
+database/profile_pics/*
+lib64
