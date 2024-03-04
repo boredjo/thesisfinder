@@ -1,8 +1,20 @@
 // /frontend/src/components/Header.js
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import LoginModal from '../LoginModal/LoginModal'; // Import the LoginModal component
+import './header.css'; // Import the styles for the header
 
 const Header = ({ isAuthenticated, username }) => {
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const handleLoginClick = () => {
+    setShowLoginModal(true);
+  };
+
+  const handleLoginModalClose = () => {
+    setShowLoginModal(false);
+  };
+
   return (
     <header>
       <h1>ThesisFinder</h1>
@@ -17,12 +29,15 @@ const Header = ({ isAuthenticated, username }) => {
         ) : (
           <>
             {/* Add a login link */}
-            <Link to="/login">Log in</Link>
+            <button onClick={handleLoginClick}>Log in</button>
             {/* Add a signup link */}
             <Link to="/signup">Join for free</Link>
           </>
         )}
       </nav>
+
+      {/* Render the LoginModal component */}
+      <LoginModal show={showLoginModal} handleClose={handleLoginModalClose} />
     </header>
   );
 };
