@@ -1,0 +1,38 @@
+  .content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .header-section {
+    background-color: #ececec;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .header-section h2 {
+    font-family: 'Noto Sans';
+    
+    margin-left: 15px;
+    margin-right: 15px;
+    padding: 15px;
+  }
+
+  #image-1 {
+    width: 100%;
+    height: auto;
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  @media (min-width: 1080px) {
+    #image-1 {
+      width: 50%;
+    }
+
+    .content-container {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+  }

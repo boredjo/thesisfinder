@@ -1,28 +1,39 @@
-// /frontend/src/components/Header.js
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import LoginModal from '../LoginModal/LoginModal';
+
+import './header.css';
 
 const Header = ({ isAuthenticated, username }) => {
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const handleLoginClick = () => {
+    setShowLoginModal(true);
+  };
+
+  const handleLoginModalClose = () => {
+    setShowLoginModal(false);
+  };
+ 
+
   return (
     <header>
-      <h1>ThesisFinder</h1>
+      <Link id='header-title' to="/">ThesisFinder</Link>
       <nav>
         {isAuthenticated ? (
           <>
-            {/* Display username if authenticated */}
             <p>Welcome, {username}!</p>
-            {/* Add a logout button or link */}
             <Link to="/logout">Logout</Link>
           </>
         ) : (
           <>
-            {/* Add a login link */}
-            <Link to="/login">Log in</Link>
-            {/* Add a signup link */}
-            <Link to="/signup">Join for free</Link>
+            <button id='login-button' onClick={handleLoginClick}>Log in</button>
+            
+            <Link id='signup-link' to="/signup">Join for free</Link>
           </>
         )}
       </nav>
+      <LoginModal show={showLoginModal} handleClose={handleLoginModalClose} />
     </header>
   );
 };
