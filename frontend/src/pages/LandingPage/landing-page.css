@@ -7,7 +7,15 @@
   .header-section {
     background-color: #ececec;
     text-align: center;
-    padding: 20px; /* Adjust the padding as needed */
+    padding: 20px;
+  }
+
+  .header-section h2 {
+    font-family: 'Noto Sans';
+    
+    margin-left: 15px;
+    margin-right: 15px;
+    padding: 15px;
   }
 
   #image-1 {
