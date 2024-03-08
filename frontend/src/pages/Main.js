@@ -1,14 +1,13 @@
-// /frontend/src/pages/Login.js
 import React from 'react';
+
 import '../styles/main.css';
 import '../styles/index.css';
-import '../styles/login.css'; // Import the new CSS file
+import '../styles/login.css';
 
 const Main = () => {
   return (
     <div>
-        {/* <img src={require('../assets/login1.jpg')} 
-          alt="Login Page Image" /> */}
+        <img src='../assets/login1.jpg'></img>
         <h2>Connect with researchers, democratize science.</h2>
         <p>
           Connect with researchers, democratize science. Have a 
