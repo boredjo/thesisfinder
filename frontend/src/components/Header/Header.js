@@ -28,9 +28,7 @@ const Header = ({ isAuthenticated, username }) => {
           <>
             <button id='login-button' onClick={handleLoginClick}>Log in</button>
             
-            <Link to="/signup">
-            <button id='signup-button'>Join for free</button>
-            </Link>
+            <Link id='signup-link' to="/signup">Join for free</Link>
           </>
         )}
       </nav>
