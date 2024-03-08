@@ -11,7 +11,6 @@ const LandingPage = () => {
       <div>
       <div className="header-section">
         <h2>
-          Connect with researchers, democratize science.
           Connect with researchers, democratize science. Have a 
           lingering question or a debate? Your curiosity is more suited 
           for research. Need answers but lack a full-time researcher? 

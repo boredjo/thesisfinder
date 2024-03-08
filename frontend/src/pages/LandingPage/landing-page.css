@@ -12,10 +12,12 @@
 
   .header-section h2 {
     font-family: 'Noto Sans';
-    
-    margin-left: 15px;
-    margin-right: 15px;
+    font-size: 30px;
+    font-weight: bold;
+    margin-left: 150px;
+    margin-right: 150px;
     padding: 15px;
+    text-align: left;
   }
 
   #image-1 {
