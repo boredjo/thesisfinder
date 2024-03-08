@@ -9,13 +9,15 @@ const LandingPage = () => {
     <div className="content-container">
       <img src={require('../../assets/login1.jpg')} id="image-1" alt="Login Page Image" />
       <div>
-        <h2>Connect with researchers, democratize science.</h2>
-        <p>
+      <div className="header-section">
+        <h2>
+          Connect with researchers, democratize science.
           Connect with researchers, democratize science. Have a 
           lingering question or a debate? Your curiosity is more suited 
           for research. Need answers but lack a full-time researcher? 
           Pose questions and incentivize with prize money.
-        </p>
+        </h2>
+      </div>
         <button>Join for free</button>
         <h2>Explore Research Ideas</h2>
         <p>
