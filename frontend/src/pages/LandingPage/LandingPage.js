@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 
 import '../../styles/main.css';
 import '../../styles/index.css';
@@ -16,7 +17,9 @@ const LandingPage = () => {
           for research. Need answers but lack a full-time researcher? 
           Pose questions and incentivize with prize money.
         </h2>
-        <button id="sign-up-button">Join for free</button>
+        <Link to="/signup">
+          <button id="sign-up-button">Join for free</button>
+        </Link>
       </div>
         <h2>Explore Research Ideas</h2>
         <p>
