@@ -2,9 +2,9 @@ import React from 'react';
 
 import '../../styles/main.css';
 import '../../styles/index.css';
-import './login.css';
+import './landingpage.css';
 
-const Login = () => {
+const LandingPage = () => {
   return (
     <div className="content-container">
       <img src={require('../../assets/login1.jpg')} id="image-1" alt="Login Page Image" />
@@ -30,4 +30,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LandingPage;
