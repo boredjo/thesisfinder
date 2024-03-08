@@ -1,11 +1,24 @@
   #image-1 {
     width: 100%;
     height: auto;
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
   }
 
   @media (min-width: 1080px) {
     #image-1 {
       width: 50%;
-      height: auto;
     }
+
+    .content-container {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
   }
