@@ -1,7 +1,7 @@
 // /frontend/src/pages/LoginPage.js
 import React, { useState } from 'react';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
+import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
 
 
 const LoginPage = () => {

@@ -3,9 +3,9 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
-import Login from './pages/Login';
-import LoginPage from './pages/LoginPage'; // Import your login page component
-import SignupPage from './pages/SignupPage'; // Import your signup page component
+import Login from './pages/Login/Login';
+import LoginPage from './pages/LoginPage/LoginPage'; // Import your login page component
+import SignupPage from './pages/SignupPage/SignupPage'; // Import your signup page component
 
 import LoginModal from "react-login-modal-sm";
 

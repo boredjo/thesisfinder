@@ -1,10 +1,10 @@
 // /frontend/src/pages/SignupPage.js
 import React, { useState } from 'react';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
-import '../styles/main.css';
-import '../styles/index.css';
-import '../styles/signuppage.css';
+import Header from '../../components/Header/Header';
+import Footer from '../../components/Footer/Footer';
+import '../../styles/main.css';
+import '../../styles/index.css';
+import './signuppage.css';
 
 const SignupPage = () => {
   // State to manage input values

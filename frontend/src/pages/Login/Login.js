@@ -1,15 +1,13 @@
-// /frontend/src/pages/Login.js
 import React from 'react';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
-import '../styles/main.css';
-import '../styles/index.css';
-import '../styles/login.css'; // Import the new CSS file
+
+import '../../styles/main.css';
+import '../../styles/index.css';
+import './login.css';
 
 const Login = () => {
   return (
     <div className="content-container">
-      <img src={require('../assets/login1.jpg')} id="image-1" alt="Login Page Image" />
+      <img src={require('../../assets/login1.jpg')} id="image-1" alt="Login Page Image" />
       <div>
         <h2>Connect with researchers, democratize science.</h2>
         <p>
