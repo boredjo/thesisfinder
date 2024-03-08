@@ -1,0 +1,11 @@
+  #image-1 {
+    width: 100%;
+    height: auto;
+  }
+
+  @media (min-width: 1080px) {
+    #image-1 {
+      width: 50%;
+      height: auto;
+    }
+  }

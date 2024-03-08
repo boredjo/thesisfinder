@@ -9,8 +9,8 @@ import '../styles/login.css'; // Import the new CSS file
 const Login = () => {
   return (
     <div>
-        {/* <img src={require('../assets/login1.jpg')} 
-          alt="Login Page Image" /> */}
+        <img src={require('../assets/login1.jpg')} 
+          id='image-1' alt="Login Page Image" />
         <h2>Connect with researchers, democratize science.</h2>
         <p>
           Connect with researchers, democratize science. Have a 
