@@ -1,8 +1,7 @@
-// /frontend/src/components/Header.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import LoginModal from '../LoginModal/LoginModal'; // Import the LoginModal component
-import './header.css'; // Import the styles for the header
+import LoginModal from '../LoginModal/LoginModal';
+import './header.css';
 
 const Header = ({ isAuthenticated, username }) => {
   const [showLoginModal, setShowLoginModal] = useState(false);

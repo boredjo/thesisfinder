@@ -1,6 +1,5 @@
-// /frontend/src/components/Footer.js
-
 import React from 'react';
+import './footer.css'; // Import the styles for the header
 
 const Footer = () => {
   return (
