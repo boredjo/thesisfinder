@@ -8,7 +8,7 @@ import './landing-page.css';
 const LandingPage = (props) => {
   const history = useNavigate();
   
-  const onKeyPress = (event) => {
+  const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       history.push('/exploresearch')
     }
@@ -37,7 +37,12 @@ const LandingPage = (props) => {
             diverse ideas and stay informed about the latest developments 
             in your field.
           </p>
-          <input type="text" placeholder="Search Ideas" id="search-ideas"></input>
+          <input 
+            type="text" 
+            placeholder="Search Ideas" 
+            id="search-ideas"
+            onKeyPress={handleKeyPress}
+          ></input>
           <h2>Features Ideas</h2>
         </div>
       </div>
