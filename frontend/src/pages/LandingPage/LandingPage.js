@@ -2,7 +2,7 @@ import React from 'react';
 
 import '../../styles/main.css';
 import '../../styles/index.css';
-import './landingpage.css';
+import './landing-page.css';
 
 const LandingPage = () => {
   return (
