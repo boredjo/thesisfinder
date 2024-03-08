@@ -13,6 +13,7 @@ const Header = ({ isAuthenticated, username }) => {
   const handleLoginModalClose = () => {
     setShowLoginModal(false);
   };
+ 
 
   return (
     <header>
@@ -25,8 +26,11 @@ const Header = ({ isAuthenticated, username }) => {
           </>
         ) : (
           <>
-            <button onClick={handleLoginClick}>Log in</button>
-            <Link to="/signup">Join for free</Link>
+            <button id='login-button' onClick={handleLoginClick}>Log in</button>
+            
+            <Link to="/signup">
+            <button id='signup-button'>Join for free</button>
+            </Link>
           </>
         )}
       </nav>
