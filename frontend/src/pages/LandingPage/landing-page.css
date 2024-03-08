@@ -4,6 +4,13 @@
     align-items: flex-end;
   }
 
+  .content-container #image-1 {
+    width: 100%;
+    height: auto;
+    margin-left: auto;
+    margin-right: 0;
+  }
+
   .header-section {
     background-color: #ececec;
     text-align: center;
@@ -14,22 +21,15 @@
     font-family: 'Noto Sans';
     font-size: 30px;
     font-weight: bold;
-    margin-left: 150px;
-    margin-right: 150px;
+    margin-left: 175px;
+    margin-right: 175px;
     padding: 20px;
     text-align: left;
   }
 
-  #image-1 {
-    width: 100%;
-    height: auto;
-    margin-left: auto;
-    margin-right: 0;
-  }
-
-  #sign-up-button {
-    background-color: red; /* Adjust color as needed */
-    color: #fff;
+  .header-section button {
+    background-color: red;
+    color: #ffffff;
     padding: 1rem 2rem;
     border: none;
     border-radius: 3px;
@@ -39,14 +39,44 @@
     margin: 10px;
   }
 
+  .main-section #image-2 {
+    width: 33%;
+    display: block;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .main-section h2 {
+    text-align: center;
+    font-weight: bold;
+    padding: 10px;
+  }
+
+  .main-section p {
+    font-family: "Noto Sans";
+    text-align: center;
+    margin-left: 175px;
+    margin-right: 175px;
+    font-size: 30px;
+  }
+  
+  .main-section #search-ideas {
+    display: block;
+    
+  }
+
+  /* Responsive Design portion */
   @media (min-width: 1080px) {
-    #image-1 {
+    .content-container #image-1 {
       width: 50%;
     }
 
+    .header-section {
+      display:flex;
+    }
+
     .content-container {
-        flex-direction: row;
-        align-items: flex-start;
-        justify-content: space-between;
-      }
+      display:flex;
+    }
   }
