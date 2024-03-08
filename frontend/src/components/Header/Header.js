@@ -17,7 +17,7 @@ const Header = ({ isAuthenticated, username }) => {
 
   return (
     <header>
-      <h1 id='header-title'>ThesisFinder</h1>
+      <Link id='header-title' to="/">ThesisFinder</Link>
       <nav>
         {isAuthenticated ? (
           <>

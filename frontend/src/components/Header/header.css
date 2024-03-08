@@ -13,6 +13,7 @@
     font-family: 'IBM Plex Mono';
     font-weight: bold;
     font-size: 2em;
+    text-decoration: none; 
   }
 
   #login-button {
