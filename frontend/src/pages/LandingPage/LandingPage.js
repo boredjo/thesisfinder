@@ -1,11 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import '../../styles/main.css';
 import '../../styles/index.css';
 import './landing-page.css';
 
-const LandingPage = () => {
+const LandingPage = (props) => {
+  const history = useNavigate();
+  
+  const onKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      history.push('/exploresearch')
+    }
+  }
+
   return (
     <div className="content-container">
       <img src={require('../../assets/image1.jpg')} id="image-1" alt="Image 1" />

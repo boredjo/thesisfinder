@@ -4,15 +4,12 @@
 import React from 'react';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
-import 'styles/main.css';
-import 'styles/explore.css';
+import '../../styles/main.css';
+import './explore-search.css';
 
 const ExploreSearch = () => {
   return (
     <div>
-      <Header />
-
-      <Footer />
 
     </div>
   );
