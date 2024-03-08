@@ -16,8 +16,8 @@ const LandingPage = () => {
           for research. Need answers but lack a full-time researcher? 
           Pose questions and incentivize with prize money.
         </h2>
+        <button id="sign-up-button">Join for free</button>
       </div>
-        <button>Join for free</button>
         <h2>Explore Research Ideas</h2>
         <p>
           Discover a curated collection of research concepts. Access 
