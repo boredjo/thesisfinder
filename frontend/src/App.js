@@ -13,14 +13,14 @@ const App = () => {
   return (
     <div>
       <Router>
-        <Header isAuthenticated={false} /> {/* Pass the authentication status as a prop */}
+        <Header isAuthenticated={false} /> 
         <Routes>
-          <Route path="/" element={<Login />} /> {/* Default homepage route */}
+          <Route path="/" element={<Login />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
         </Routes>
         <Footer />
-      </Router>
+      </Router> 
     </div>
   );
 };

@@ -17,26 +17,20 @@ const Header = ({ isAuthenticated, username }) => {
 
   return (
     <header>
-      <h1>ThesisFinder</h1>
+      <h1 id='header-title'>ThesisFinder</h1>
       <nav>
         {isAuthenticated ? (
           <>
-            {/* Display username if authenticated */}
             <p>Welcome, {username}!</p>
-            {/* Add a logout button or link */}
             <Link to="/logout">Logout</Link>
           </>
         ) : (
           <>
-            {/* Add a login link */}
             <button onClick={handleLoginClick}>Log in</button>
-            {/* Add a signup link */}
             <Link to="/signup">Join for free</Link>
           </>
         )}
       </nav>
-
-      {/* Render the LoginModal component */}
       <LoginModal show={showLoginModal} handleClose={handleLoginModalClose} />
     </header>
   );

@@ -1,12 +1,10 @@
 // /frontend/src/pages/Login.js
 import React from 'react';
-import Header from '../components/Header/Header';
-import Footer from '../components/Footer/Footer';
 import '../styles/main.css';
 import '../styles/index.css';
 import '../styles/login.css'; // Import the new CSS file
 
-const Login = () => {
+const Main = () => {
   return (
     <div>
         {/* <img src={require('../assets/login1.jpg')} 
@@ -31,4 +29,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Main;
