@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 
+import FeaturesIdeas from '../../components/FeatureIdeas/FeatureIdeas';
+
 import '../../styles/main.css';
 import '../../styles/index.css';
 import './landing-page.css';
@@ -13,6 +15,12 @@ const LandingPage = (props) => {
       history.push('/exploresearch')
     }
   }
+
+  const ideas = [
+    { title: 'Idea 1' },
+    { title: 'Idea 2' },
+    { title: 'Idea 3' },
+  ];
 
   return (
     <div className="content-container">
@@ -43,7 +51,9 @@ const LandingPage = (props) => {
             id="search-ideas"
             onKeyPress={handleKeyPress}
           ></input>
-          <h2>Features Ideas</h2>
+          <hr id='section-divider'></hr>
+          <h2>Featured Ideas</h2>
+          <FeaturesIdeas ideas={ideas} />
         </div>
       </div>
     </div>
