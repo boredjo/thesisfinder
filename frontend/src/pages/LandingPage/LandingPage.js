@@ -21,19 +21,22 @@ const LandingPage = (props) => {
       title: 'Idea 1',
       tags: ['tag1', 'tag2'],
       date: 'Jan 2024',
-      author: 'Author 1'
+      author: 'Author 1',
+      authorImage: require('../../assets/avatar1.png'),
     },
     { 
       title: 'Idea 2',
       tags: ['tag3', 'tag4'],
       date: 'Feb 2024',
-      author: 'Author 2'
+      author: 'Author 2',
+      authorImage: require('../../assets/avatar1.png'),
     },
     { 
       title: 'Idea 3',
       tags: ['tag5', 'tag6'],
       date: 'Mar 2024',
-      author: 'Author 3'
+      author: 'Author 3',
+      authorImage: require('../../assets/avatar1.png'),
     },
   ];
 
