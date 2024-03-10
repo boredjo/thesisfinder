@@ -30,7 +30,7 @@
     margin-right: auto;
   }
 
-.result-box {
+  .result-box {
     display: flex;
     justify-content: space-between;
     align-items: center;
