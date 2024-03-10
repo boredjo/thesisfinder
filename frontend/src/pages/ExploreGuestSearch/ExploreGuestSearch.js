@@ -1,6 +1,6 @@
 // ExploreGuestSearch.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
 import FeaturesIdeas from '../../components/FeatureIdeas/FeatureIdeas';
@@ -14,8 +14,14 @@ const ExploreGuestSearch = () => {
   const { query: initialQuery } = useParams();
   const [query, setQuery] = useState(initialQuery || '');
   const [sortBy, setSortBy] = useState('relevance'); // Default sort option
+  const [currentPage, setCurrentPage] = useState(1);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Reset to the first page when query or sorting changes
+    setCurrentPage(1);
+  }, [query, sortBy]);
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -27,20 +33,43 @@ const ExploreGuestSearch = () => {
 
   const handleSortChange = (event) => {
     setSortBy(event.target.value);
-    // You can apply sorting logic here based on the selected value (event.target.value)
   };
 
   const filteredIdeas = ideas.filter((idea) =>
     idea.title.toLowerCase().includes(query.toLowerCase())
   );
 
-  // Apply sorting logic based on the selected value in the dropdown
-  // You can extend this logic for other sorting options
-  if (sortBy === 'newest') {
-    filteredIdeas.sort((a, b) => new Date(b.date) - new Date(a.date));
-  } else if (sortBy === 'oldest') {
-    filteredIdeas.sort((a, b) => new Date(a.date) - new Date(b.date));
-  } // Add more sorting options as needed
+  const itemsPerPage = 5;
+  const numberOfPages = Math.ceil(filteredIdeas.length / itemsPerPage);
+
+  // Ensure that currentPage stays within valid bounds
+  useEffect(() => {
+    if (currentPage > numberOfPages) {
+      setCurrentPage(numberOfPages);
+    }
+  }, [currentPage, numberOfPages]);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentIdeas = filteredIdeas.slice(indexOfFirstItem, indexOfLastItem);
+
+  const pageNumbers = Array.from({ length: numberOfPages }, (_, index) => index + 1);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < numberOfPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   return (
     <div>
@@ -84,7 +113,20 @@ const ExploreGuestSearch = () => {
           </div>
         </div>
       </div>
-      <FeaturesIdeas ideas={filteredIdeas} />
+      <FeaturesIdeas ideas={currentIdeas} />
+      <div className="pagination">
+        <span onClick={handlePreviousPage}>&lt;</span>
+        {pageNumbers.map((number) => (
+          <span
+            key={number}
+            onClick={() => handlePageChange(number)}
+            className={number === currentPage ? 'active' : ''}
+          >
+            {number}
+          </span>
+        ))}
+        <span onClick={handleNextPage}>&gt;</span>
+      </div>
     </div>
   );
 };
