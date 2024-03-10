@@ -2,18 +2,16 @@
 // Main menu accessible to users
 
 import React from 'react';
-import Header from '../../components/Header/Header';
-import Footer from '../../components/Footer/Footer';
-import 'styles/main.css';
-import 'styles/home.css';
+import '../../styles/main.css';
+import '../../styles/mainheader.css';
+import './home.css';
 
 const Home = () => {
   return (
     <div className="home-container">
-      <Header />
-
-      <Footer />
-
+      <header className="main-header">
+        
+      </header>
     </div>
   );
 };
