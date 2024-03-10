@@ -1,0 +1,47 @@
+  .filter-container {
+    margin-top: 20px;
+    border: 1px solid #ececec;
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .header-info h2 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .header-info p {
+    font-family: 'Noto Sans';
+    margin-left: 75px;
+    margin-right: 75px;
+    margin-bottom: 20px;
+  }
+
+  .search-container #search-bar {
+    display: block;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+.result-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .sort-container {
+    margin-top: 0;
+  }
+  
+  .sort-container label {
+    margin-right: 10px;
+  }
+  
+  
