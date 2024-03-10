@@ -1,3 +1,22 @@
+  .filter-container {
+    margin-top: 20px;
+    border: 1px solid #ececec;
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .result-box {
+    border: 1px solid #ececec;
+    padding: 10px;
+    background-color: #f8f8f8;
+  }
+  
+
+  
   .header-info h2 {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -10,4 +29,11 @@
     margin-left: 75px;
     margin-right: 75px;
     margin-bottom: 20px;
+  }
+
+  .search-container #search-bar {
+    display: block;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
   }

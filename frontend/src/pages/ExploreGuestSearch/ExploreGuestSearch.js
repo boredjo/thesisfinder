@@ -50,7 +50,9 @@ const ExploreGuestSearch = () => {
           onChange={(e) => setQuery(e.target.value)}
         />
       </div>
-      <h2>Search Results for "{query}"</h2>
+      <div className='filter-container'>
+        <h2>Showing results for "{query}"</h2>
+      </div>
       <FeaturesIdeas ideas={filteredIdeas} />
     </div>
   );
