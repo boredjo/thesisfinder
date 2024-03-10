@@ -18,24 +18,61 @@ const LandingPage = (props) => {
 
   const ideas = [
     { 
-      title: 'Idea 1',
-      tags: ['tag1', 'tag2'],
+      title: 'Exploring Sustainable Urban Agriculture',
+      tags: [
+        'Urban Agriculture', 
+        'Sustainability', 
+        'Food Security',
+        'City Planning',
+      ],
       date: 'Jan 2024',
-      author: 'Author 1',
+      author: 'Emma Thompson',
       authorImage: require('../../assets/avatar1.png'),
     },
     { 
-      title: 'Idea 2',
-      tags: ['tag3', 'tag4'],
-      date: 'Feb 2024',
-      author: 'Author 2',
+      title: 'Unlocking the Secrets of Dark Matter',
+      tags: [
+        'Astrophysics', 
+        'Dark Matter', 
+        'Cosmology', 
+        'Particle Physics'
+      ],
+      date: 'Jan 2024',
+      author: 'Adrian Martinez',
       authorImage: require('../../assets/avatar1.png'),
     },
     { 
-      title: 'Idea 3',
-      tags: ['tag5', 'tag6'],
-      date: 'Mar 2024',
-      author: 'Author 3',
+      title: 'Revolutionizing Renewable Energy Storage',
+      tags: [
+        'Renewable Energy', 
+        'Energy Storage',
+        'Sustainability',
+      ],
+      date: 'Jan 2024',
+      author: 'Olivia Johnson',
+      authorImage: require('../../assets/avatar1.png'),
+    },
+    { 
+      title: 'Cognitive Enhancements through Neurofeedback',
+      tags: [
+        'Neurofeedback', 
+        'Brain Health',
+        'Psychology',
+      ],
+      date: 'Jan 2024',
+      author: 'Ethan Davis',
+      authorImage: require('../../assets/avatar1.png'),
+    },
+    { 
+      title: 'Biodiversity Conversation in Urban Environments',
+      tags: [
+        'Biodiversity', 
+        'Conversation',
+        'Urban Ecology',
+        'Environmental Science',
+      ],
+      date: 'Jan 2024',
+      author: 'Isabella Rodriguez',
       authorImage: require('../../assets/avatar1.png'),
     },
   ];

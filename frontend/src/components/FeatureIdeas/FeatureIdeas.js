@@ -18,7 +18,7 @@ const FeaturesIdeas = ({ ideas }) => {
           <p className="date">{idea.date}</p>
           <div className="author-container">
             <img
-              src={idea.authorImage} // Assuming you've set the image path in the data
+              src={idea.authorImage}
               alt={`${idea.author}'s profile`}
               className="author-image"
             />
