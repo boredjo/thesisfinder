@@ -12,7 +12,7 @@ const LandingPage = (props) => {
   
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      history.push('/exploresearch')
+      history(`/explore-guest-search/${event.target.value}`)
     }
   }
 
