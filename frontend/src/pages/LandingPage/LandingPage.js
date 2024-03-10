@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 
 import FeaturesIdeas from '../../components/FeatureIdeas/FeatureIdeas';
@@ -10,14 +10,25 @@ import '../../styles/index.css';
 import './landing-page.css';
 
 const LandingPage = (props) => {
+  const [featuredIdeas, setFeaturedIdeas] = useState([]);
   const history = useNavigate();
-  
+
+  useEffect(() => {
+    // Sort ideas by date and show only first five
+    const sortedIdeas = ideas.sort((a, b) => {
+      return new Date(b.date) - new Date(a.date);
+    });
+    const selectedIdeas = sortedIdeas.slice(0, 5);
+
+    setFeaturedIdeas(selectedIdeas);
+  }, []);
+
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       const query = event.target.value;
       history(`/explore-guest-search/${query}`);
     }
-  }
+  };
 
   return (
     <div className="content-container">
@@ -32,7 +43,7 @@ const LandingPage = (props) => {
           </h2>
           <Link to="/signup">
             <button>Join for free</button>
-            </Link>
+          </Link>
         </div>
         <div className="main-section">
           <img src={require('../../assets/image2.png')} id="image-2" alt="Image 2" />
@@ -52,7 +63,7 @@ const LandingPage = (props) => {
           </div>
           <hr id='section-divider'></hr>
           <h2>Featured Ideas</h2>
-          <FeaturesIdeas ideas={ideas} />
+          <FeaturesIdeas ideas={featuredIdeas} />
         </div>
       </div>
     </div>
