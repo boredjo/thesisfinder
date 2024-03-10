@@ -17,9 +17,24 @@ const LandingPage = (props) => {
   }
 
   const ideas = [
-    { title: 'Idea 1' },
-    { title: 'Idea 2' },
-    { title: 'Idea 3' },
+    { 
+      title: 'Idea 1',
+      tags: ['tag1', 'tag2'],
+      date: 'Jan 2024',
+      author: 'Author 1'
+    },
+    { 
+      title: 'Idea 2',
+      tags: ['tag3', 'tag4'],
+      date: 'Feb 2024',
+      author: 'Author 2'
+    },
+    { 
+      title: 'Idea 3',
+      tags: ['tag5', 'tag6'],
+      date: 'Mar 2024',
+      author: 'Author 3'
+    },
   ];
 
   return (
