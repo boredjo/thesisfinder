@@ -23,13 +23,12 @@
     margin-bottom: 20px;
   }
 
-  /* explore-guest-search.css */
-
-.pagination {
+  .pagination {
     display: flex;
     list-style: none;
     padding: 0;
     margin: 20px 0;
+    justify-content: center; /* Center horizontally */
   }
   
   .pagination span {
@@ -52,26 +51,4 @@
   .pagination span:hover.active {
     background-color: #45a049;
   }  
-
-  .search-container #search-bar {
-    display: block;
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .result-box {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .sort-container {
-    margin-top: 0;
-  }
-  
-  .sort-container label {
-    margin-right: 10px;
-  }
-  
   
