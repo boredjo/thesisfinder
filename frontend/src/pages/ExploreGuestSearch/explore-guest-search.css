@@ -23,6 +23,27 @@
     margin-bottom: 20px;
   }
 
+  .search-container #search-bar {
+    display: block;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .result-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .sort-container {
+    margin-top: 0;
+  }
+  
+  .sort-container label {
+    margin-right: 10px;
+  }
+  
   .pagination {
     display: flex;
     list-style: none;
@@ -44,11 +65,12 @@
   }
   
   .pagination span.active {
-    background-color: #4caf50;
+    background-color: red;
     color: white;
   }
   
   .pagination span:hover.active {
-    background-color: #45a049;
-  }  
+    background-color: red;
+  }
+  
   
