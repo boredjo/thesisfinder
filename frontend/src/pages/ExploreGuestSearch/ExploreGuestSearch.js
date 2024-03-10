@@ -55,6 +55,22 @@ const ExploreGuestSearch = () => {
 
   const pageNumbers = Array.from({ length: numberOfPages }, (_, index) => index + 1);
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < numberOfPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
   return (
     <div>
       <div className='header-info'>
@@ -92,22 +108,24 @@ const ExploreGuestSearch = () => {
               <option value="relevance">Relevance</option>
               <option value="newest">Newest</option>
               <option value="oldest">Oldest</option>
-              {/* Sorting Options Available */}
+              {/* Add more sorting options as needed */}
             </select>
           </div>
         </div>
       </div>
       <FeaturesIdeas ideas={currentIdeas} />
       <div className="pagination">
+        <span onClick={handlePreviousPage}>&lt;</span>
         {pageNumbers.map((number) => (
           <span
             key={number}
-            onClick={() => setCurrentPage(number)}
+            onClick={() => handlePageChange(number)}
             className={number === currentPage ? 'active' : ''}
           >
             {number}
           </span>
         ))}
+        <span onClick={handleNextPage}>&gt;</span>
       </div>
     </div>
   );

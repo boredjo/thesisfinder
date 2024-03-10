@@ -23,6 +23,36 @@
     margin-bottom: 20px;
   }
 
+  /* explore-guest-search.css */
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+  }
+  
+  .pagination span {
+    padding: 8px 12px;
+    margin: 0 4px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #f8f8f8;
+  }
+  
+  .pagination span:hover {
+    background-color: #ddd;
+  }
+  
+  .pagination span.active {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .pagination span:hover.active {
+    background-color: #45a049;
+  }  
+
   .search-container #search-bar {
     display: block;
     width: 90%;
