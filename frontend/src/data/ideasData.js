@@ -7,7 +7,7 @@ const ideas = [
         'Food Security',
         'City Planning',
       ],
-      date: 'Jan 2024',
+      date: 'Feb 2024',
       author: 'Emma Thompson',
       authorImage: require('../assets/avatar1.png'),
     },

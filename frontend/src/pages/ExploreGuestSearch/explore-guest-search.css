@@ -8,15 +8,7 @@
     margin-left: auto;
     margin-right: auto;
   }
-  
-  .result-box {
-    border: 1px solid #ececec;
-    padding: 10px;
-    background-color: #f8f8f8;
-  }
-  
 
-  
   .header-info h2 {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -37,3 +29,19 @@
     margin-left: auto;
     margin-right: auto;
   }
+
+.result-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .sort-container {
+    margin-top: 0;
+  }
+  
+  .sort-container label {
+    margin-right: 10px;
+  }
+  
+  
