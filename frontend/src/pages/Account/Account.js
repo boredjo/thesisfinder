@@ -3,13 +3,16 @@
 // Accessible from home page
 
 import React from 'react';
-import 'styles/main.css';
-import 'styles/account.css';
+import '../../styles/main.css';
+import '../../styles/mainheader.css';
+import './account.css';
 
 const Account = () => {
   return (
     <div>
-
+      <header className="main-header">
+        
+      </header>
     </div>
   );
 };

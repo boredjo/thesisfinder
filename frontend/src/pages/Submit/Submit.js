@@ -2,18 +2,16 @@
 // Page for submitting research ideas
 
 import React from 'react';
-import Header from '../../components/Header/Header';
-import Footer from '../../components/Footer/Footer';
-import 'styles/main.css';
-import 'styles/submit.css';
+import '../../styles/main.css';
+import '../../styles/mainheader.css';
+import './submit.css';
 
 const Submit = () => {
   return (
     <div>
-      <Header />
-
-      <Footer />
-
+      <header className="main-header">
+        
+      </header>
     </div>
   );
 };
