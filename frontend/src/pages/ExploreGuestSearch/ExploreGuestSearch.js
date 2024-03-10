@@ -1,5 +1,3 @@
-// ExploreGuestSearch.js
-
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
@@ -15,6 +13,7 @@ const ExploreGuestSearch = () => {
   const [query, setQuery] = useState(initialQuery || '');
   const [sortBy, setSortBy] = useState('relevance'); // Default sort option
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentIdeas, setCurrentIdeas] = useState([]);
 
   const navigate = useNavigate();
 
@@ -39,6 +38,19 @@ const ExploreGuestSearch = () => {
     idea.title.toLowerCase().includes(query.toLowerCase())
   );
 
+  // Sorting logic
+  useEffect(() => {
+    let sortedIdeas = [...filteredIdeas];
+  
+    if (sortBy === 'newest') {
+      sortedIdeas.sort((a, b) => new Date(b.date) - new Date(a.date));
+    } else if (sortBy === 'oldest') {
+      sortedIdeas.sort((a, b) => new Date(a.date) - new Date(b.date));
+    }
+  
+    setCurrentIdeas(sortedIdeas);
+  }, [sortBy, filteredIdeas]);
+
   const itemsPerPage = 5;
   const numberOfPages = Math.ceil(filteredIdeas.length / itemsPerPage);
 
@@ -51,9 +63,12 @@ const ExploreGuestSearch = () => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentIdeas = filteredIdeas.slice(indexOfFirstItem, indexOfLastItem);
+  const currentIdeasToShow = currentIdeas.slice(indexOfFirstItem, indexOfLastItem);
 
-  const pageNumbers = Array.from({ length: numberOfPages }, (_, index) => index + 1);
+  const pageNumbers = Array.from(
+    { length: numberOfPages }, 
+    (_, index) => index + 1
+  );
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -105,15 +120,15 @@ const ExploreGuestSearch = () => {
               value={sortBy}
               onChange={handleSortChange}
             >
+              {/* Current sorting options */}
               <option value="relevance">Relevance</option>
               <option value="newest">Newest</option>
               <option value="oldest">Oldest</option>
-              {/* Add more sorting options as needed */}
             </select>
           </div>
         </div>
       </div>
-      <FeaturesIdeas ideas={currentIdeas} />
+      <FeaturesIdeas ideas={currentIdeasToShow} />
       <div className="pagination">
         <span onClick={handlePreviousPage}>&lt;</span>
         {pageNumbers.map((number) => (
