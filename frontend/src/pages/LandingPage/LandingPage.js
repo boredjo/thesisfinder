@@ -31,7 +31,7 @@ const LandingPage = (props) => {
             Connect with researchers, democratize science. Have a 
             lingering question or a debate? Your curiosity is more suited 
             for research. Need answers but lack a full-time researcher? 
-            Pose questions and incentivize with prize money
+            Pose questions and incentivize with prize money!
           </h2>
           <Link to="/signup">
             <button>Join for free</button>
