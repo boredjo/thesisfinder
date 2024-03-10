@@ -1,9 +1,10 @@
+// FeaturesIdeas.js
 import React from 'react';
-import './feature-ideas.css'
+import './feature-ideas.css';
 
 const FeaturesIdeas = ({ ideas }) => {
   return (
-    <div>
+    <div className="features-ideas">
       {ideas.map((idea, index) => (
         <div key={index} className="idea-container">
           <h3>{idea.title}</h3>

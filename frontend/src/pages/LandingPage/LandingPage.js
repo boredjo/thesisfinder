@@ -54,18 +54,20 @@ const LandingPage = (props) => {
         </div>
         <div className="main-section">
           <img src={require('../../assets/image2.png')} id="image-2" alt="Image 2" />
-          <h2>Explore Research Ideas</h2>
-          <p>
-            Discover a curated collection of research concepts. Access 
-            diverse ideas and stay informed about the latest developments 
-            in your field.
-          </p>
-          <input 
-            type="text" 
-            placeholder="Search Ideas" 
-            id="search-ideas"
-            onKeyPress={handleKeyPress}
-          ></input>
+          <div className="explore-header">
+            <h2>Explore Research Ideas</h2>
+            <p>
+              Discover a curated collection of research concepts. Access 
+              diverse ideas and stay informed about the latest developments 
+              in your field.
+            </p>
+            <input 
+              type="text" 
+              placeholder="Search Ideas" 
+              id="search-ideas"
+              onKeyPress={handleKeyPress}
+            ></input>
+          </div>
           <hr id='section-divider'></hr>
           <h2>Featured Ideas</h2>
           <FeaturesIdeas ideas={ideas} />

@@ -29,10 +29,11 @@
   
   .date {
     color: #ececec;
-    
+    text-align: left;
   }
   
   .author {
     color: black;
+    text-align:left;
   }
   
