@@ -51,9 +51,11 @@ const AvatarUpload = () => {
             Use a Webcam
           </button>
         </div>
+        <div className='preview-container'>
+          <h3>Profile Preview</h3>
+          <ProfilePreview avatarImage={avatarImage} name="John Doe" location="University of XYZ" />
+        </div>
       </div>
-      {/* Add the ProfilePreview component */}
-      <ProfilePreview avatarImage={avatarImage} name="John Doe" location="University of XYZ" />
       <div className="bottom-container">
         <hr />
         <button className="conditions-button" onClick={openModal}>

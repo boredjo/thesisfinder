@@ -39,7 +39,8 @@
   margin-bottom: 100px;
 }
 
-.upload-button, .webcam-button {
+.upload-button,
+.webcam-button {
   width: 300px;
   padding: 10px;
   border: none;
@@ -89,3 +90,15 @@
   text-decoration: underline; /* Underline text */
 }
 
+.preview-container {
+  margin-left: auto;
+  max-width: 300px; /* Adjust the max-width as needed */
+  margin-top: 20px; /* Adjust the margin-top as needed */
+  margin-right: 30px;
+}
+
+.preview-container img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
