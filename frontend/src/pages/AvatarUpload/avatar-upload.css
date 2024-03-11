@@ -39,8 +39,7 @@
   margin-bottom: 100px;
 }
 
-.upload-button,
-.webcam-button {
+.upload-button, .webcam-button {
   width: 300px;
   padding: 10px;
   border: none;
@@ -75,5 +74,18 @@
   background-color: #ececec;
   margin: 20px auto;
   margin-top: 50px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
+
+.conditions-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.conditions-button:hover {
+  color: red; /* Change text color on hover (you can adjust the color) */
+  text-decoration: underline; /* Underline text */
+}
+
