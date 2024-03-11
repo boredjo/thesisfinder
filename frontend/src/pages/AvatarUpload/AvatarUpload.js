@@ -45,9 +45,9 @@ const AvatarUpload = () => {
             Use a Webcam
           </button>
         </div>
-        <div className='bottom-container'>
-          
-        </div>
+      </div>
+      <div className='bottom-container'>
+        <hr></hr>
       </div>
     </div>
   );
