@@ -43,7 +43,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="signup-container">
+    <div className="main-container">
       <div className='header-container'>
         <h2>Join a Growing Community of Researchers</h2>
         <p>
@@ -52,60 +52,66 @@ const Signup = () => {
         </p>
         <hr></hr>
       </div>
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          First Name:
-          <input
-            type="text"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Last Name:
-          <input
-            type="text"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          County/Region:
-          <input
-            type="text"
-            name="region"
-            value={formData.region}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Email:
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <label>
-          Password:
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
-        <button type="submit">Sign Up</button>
-      </form>
+      <div className='signup-container'>
+        <form onSubmit={handleSubmit}>
+          <label id='first-name'>
+            First Name:
+            <input
+              type="text"
+              name="firstName"
+              placeholder='First Name'
+              value={formData.firstName}
+              onChange={handleChange}
+            />
+          </label>
+          <br />
+          <label id='last-name'>
+            Last Name:
+            <input
+              type="text"
+              name="lastName"
+              placeholder='Last Name'
+              value={formData.lastName}
+              onChange={handleChange}
+            />
+          </label>
+          <br />
+          <label id='county-region'>
+            County/Region:
+            <input
+              type="text"
+              name="region"
+              placeholder='County/Region'
+              value={formData.region}
+              onChange={handleChange}
+            />
+          </label>
+          <br />
+          <label id='email'>
+            Email:
+            <input
+              type="email"
+              name="email"
+              placeholder='Email'
+              value={formData.email}
+              onChange={handleChange}
+            />
+          </label>
+          <br />
+          <label id='password'>
+            Password:
+            <input
+              type="password"
+              name="password"
+              placeholder='Password'
+              value={formData.password}
+              onChange={handleChange}
+            />
+          </label>
+          <br />
+          <button type="submit">Submit</button>
+        </form>
+      </div>
     </div>
   );
 };
