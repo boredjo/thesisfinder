@@ -9,8 +9,9 @@ import ExploreSearch from './pages/ExploreSearch/ExploreSearch';
 import ExploreGuestSearch from './pages/ExploreGuestSearch/ExploreGuestSearch';
 import Signup from './pages/Signup/Signup';
 import Login from './pages/Login/Login';
+import AvatarUpload from './pages/AvatarUpload/AvatarUpload';
 
-import LoginModal from "react-login-modal-sm";
+// import LoginModal from "react-login-modal-sm";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="signup/avatar-upload" element={<AvatarUpload />} />
           <Route path="/explore-guest-search/:query" element={<ExploreGuestSearch />} />
         </Routes>
         <Footer />

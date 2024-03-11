@@ -1,0 +1,71 @@
+.main-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-container h3 {
+  font-family: 'Noto Sans';
+  font-size: 26px;
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  margin-left: 0%;
+  margin-right: 33%;
+}
+
+.upload-container {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  margin-top: 20px;
+}
+
+.avatar-preview {
+  margin-right: 20px;
+}
+
+.avatar-preview img {
+  width: 200px;
+  height: auto;
+  border-radius: 50%;
+  margin-left: 10%;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 0;
+  margin-top: 30px;
+  margin-bottom: 100px;
+}
+
+.upload-button,
+.webcam-button {
+  width: 300px;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  text-align: center;
+}
+
+.upload-button {
+  background-color: red;
+  color: #ffffff;
+}
+
+.webcam-button {
+  background-color: white;
+  color: red;
+  border: 2px solid red;
+}
+
+.webcam-button:hover {
+  background-color: #e0e0e0;
+  border-color: #e0e0e0;
+}
+
+#file-input {
+  display: none;
+}

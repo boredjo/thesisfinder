@@ -19,27 +19,21 @@ const Signup = () => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleContinue = (e) => {
     e.preventDefault();
 
-    // Validate form fields (add more validation as needed)
+    // Validation
+    const isFormValid = Object.values(formData).every((value) => value.trim() !== '');
+    if (!isFormValid) {
+      alert('Please fill in all fields.');
+      return;
+    }
 
-    // Read existing users data from localStorage
-    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+    // Save form data in local storage
+    localStorage.setItem('signupFormData', JSON.stringify(formData));
 
-    // Add the new user to the existing users array
-    const newUserData = {
-      id: existingUsers.length + 1, // Assign a unique ID (you can use a library like uuid)
-      ...formData,
-    };
-
-    existingUsers.push(newUserData);
-
-    // Save the updated users array back to localStorage
-    localStorage.setItem('users', JSON.stringify(existingUsers));
-
-    // Redirect to the login page after successful registration
-    navigate('/login');
+    // Navigate to the avatar upload page
+    navigate('/signup/avatar-upload');
   };
 
   return (
@@ -50,11 +44,11 @@ const Signup = () => {
           Collaborate with colleagues and read the latest publications 
           in your field. Sign up now!
         </p>
-        <hr></hr>
+        <hr />
       </div>
       <div className='signup-container'>
-        <form onSubmit={handleSubmit}>
-          <label id='first-name'>
+        <form>
+          <label>
             First Name:
             <input
               type="text"
@@ -65,7 +59,7 @@ const Signup = () => {
             />
           </label>
           <br />
-          <label id='last-name'>
+          <label>
             Last Name:
             <input
               type="text"
@@ -76,7 +70,7 @@ const Signup = () => {
             />
           </label>
           <br />
-          <label id='county-region'>
+          <label>
             County/Region:
             <input
               type="text"
@@ -87,7 +81,7 @@ const Signup = () => {
             />
           </label>
           <br />
-          <label id='email'>
+          <label>
             Email:
             <input
               type="email"
@@ -98,7 +92,7 @@ const Signup = () => {
             />
           </label>
           <br />
-          <label id='password'>
+          <label>
             Password:
             <input
               type="password"
@@ -109,7 +103,9 @@ const Signup = () => {
             />
           </label>
           <br />
-          <button type="submit">Submit</button>
+          <div className='continue-container'>
+            <button onClick={handleContinue}>Continue</button>
+          </div>
         </form>
       </div>
     </div>
