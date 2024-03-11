@@ -12,6 +12,7 @@ const Signup = () => {
     region: '',
     email: '',
     password: '',
+    work: '',
   });
 
   const handleChange = (e) => {
@@ -66,6 +67,17 @@ const Signup = () => {
               name="lastName"
               placeholder='Last Name'
               value={formData.lastName}
+              onChange={handleChange}
+            />
+          </label>
+          <br />
+          <label>
+            School/Work Location:
+            <input
+              type="text"
+              name="work"
+              placeholder='School/Work Location'
+              value={formData.work}
               onChange={handleChange}
             />
           </label>

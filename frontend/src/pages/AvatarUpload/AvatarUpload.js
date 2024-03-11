@@ -1,6 +1,8 @@
+// AvatarUpload.js
 import React, { useState } from 'react';
 import './avatar-upload.css';
 import ConditionsModal from '../../components/ConditionsModal/ConditionsModal';
+import ProfilePreview from '../../components/ProfilePreview/ProfilePreview';
 import defaultAvatar from '../../assets/avatar1.png';
 
 const AvatarUpload = () => {
@@ -50,6 +52,8 @@ const AvatarUpload = () => {
           </button>
         </div>
       </div>
+      {/* Add the ProfilePreview component */}
+      <ProfilePreview avatarImage={avatarImage} name="John Doe" location="University of XYZ" />
       <div className="bottom-container">
         <hr />
         <button className="conditions-button" onClick={openModal}>
