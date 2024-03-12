@@ -19,7 +19,7 @@ const AvatarUpload = () => {
 
   // In Signup.js after localStorage.setItem('signupFormData', JSON.stringify(formData));
   const users = JSON.parse(localStorage.getItem('users')) || [];
-  // console.log('Users in Local Storage:', users);
+  console.log('Users in Local Storage:', users);
 
   // Use the selectedFile or defaultAvatar based on the condition
   const avatarImage = selectedFile ? URL.createObjectURL(selectedFile) : defaultAvatar;

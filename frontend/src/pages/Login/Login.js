@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 
+import { setAuthenticatedUser } from '../../utils/authService';
+
 import './login.css';
 
 const Login = () => {
@@ -14,11 +16,6 @@ const Login = () => {
   });
 
   const [error, setError] = useState('');
-  
-  // In Signup.js after localStorage.setItem('signupFormData', JSON.stringify(formData));
-  const users = JSON.parse(localStorage.getItem('users')) || [];
-  // console.log('Users in Local Storage:', users);
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,6 +33,12 @@ const Login = () => {
 
     // Check if the user exists and the password is correct
     if (user && user.password === formData.password) {
+      // Set the authenticated user in local storage
+      setAuthenticatedUser({
+        email: user.email,
+        // Add any other user-related info you may need
+      });
+
       // Redirect to the home page after successful login
       navigate('/');
     } else {
@@ -51,20 +54,6 @@ const Login = () => {
         email: state.signupFormData.email || '',
         password: '', // Leave the password field empty for security reasons
       });
-    }
-  }, [location]);
-
-  React.useEffect(() => {
-    const { state } = location;
-    if (state && state.signupFormData) {
-      setFormData({
-        email: state.signupFormData.email,
-        password: '', // Leave the password field empty for security reasons
-      });
-  
-      // Log for debugging
-      // console.log('Signup Form Data (Login):', state.signupFormData);
-      // console.log('Avatar Image:', state.avatarImage);
     }
   }, [location]);
 
