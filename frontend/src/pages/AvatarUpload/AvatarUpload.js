@@ -19,7 +19,7 @@ const AvatarUpload = () => {
 
   // In Signup.js after localStorage.setItem('signupFormData', JSON.stringify(formData));
   const users = JSON.parse(localStorage.getItem('users')) || [];
-  console.log('Users in Local Storage:', users);
+  // console.log('Users in Local Storage:', users);
 
   // Use the selectedFile or defaultAvatar based on the condition
   const avatarImage = selectedFile ? URL.createObjectURL(selectedFile) : defaultAvatar;
@@ -42,7 +42,7 @@ const AvatarUpload = () => {
     const signupFormData = JSON.parse(localStorage.getItem('signupFormData')) || {};
   
     // Log signupFormData for debugging
-    console.log('Signup Form Data (Skip Step):', signupFormData);
+    // console.log('Signup Form Data (Skip Step):', signupFormData);
   
     // Navigate to the login page with signup data and default avatar
     navigate('/login', { state: { signupFormData, avatarImage: defaultAvatar } });

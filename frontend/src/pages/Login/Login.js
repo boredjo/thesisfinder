@@ -17,7 +17,7 @@ const Login = () => {
   
   // In Signup.js after localStorage.setItem('signupFormData', JSON.stringify(formData));
   const users = JSON.parse(localStorage.getItem('users')) || [];
-  console.log('Users in Local Storage:', users);
+  // console.log('Users in Local Storage:', users);
 
 
   const handleChange = (e) => {
@@ -63,8 +63,8 @@ const Login = () => {
       });
   
       // Log for debugging
-      console.log('Signup Form Data (Login):', state.signupFormData);
-      console.log('Avatar Image:', state.avatarImage);
+      // console.log('Signup Form Data (Login):', state.signupFormData);
+      // console.log('Avatar Image:', state.avatarImage);
     }
   }, [location]);
 
