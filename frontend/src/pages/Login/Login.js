@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+// Login.js
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 
 import './login.css';
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [formData, setFormData] = useState({
     email: '',
@@ -12,6 +14,11 @@ const Login = () => {
   });
 
   const [error, setError] = useState('');
+  
+  // In Signup.js after localStorage.setItem('signupFormData', JSON.stringify(formData));
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+  console.log('Users in Local Storage:', users);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,6 +42,31 @@ const Login = () => {
       setError('Invalid email or password');
     }
   };
+
+  // Pre-fill login form with signup data if available
+  useEffect(() => {
+    const { state } = location;
+    if (state && state.signupFormData) {
+      setFormData({
+        email: state.signupFormData.email || '',
+        password: '', // Leave the password field empty for security reasons
+      });
+    }
+  }, [location]);
+
+  React.useEffect(() => {
+    const { state } = location;
+    if (state && state.signupFormData) {
+      setFormData({
+        email: state.signupFormData.email,
+        password: '', // Leave the password field empty for security reasons
+      });
+  
+      // Log for debugging
+      console.log('Signup Form Data (Login):', state.signupFormData);
+      console.log('Avatar Image:', state.avatarImage);
+    }
+  }, [location]);
 
   return (
     <div>

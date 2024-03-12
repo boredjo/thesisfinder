@@ -22,20 +22,37 @@ const Signup = () => {
 
   const handleContinue = (e) => {
     e.preventDefault();
-
+  
     // Validation
     const isFormValid = Object.values(formData).every((value) => value.trim() !== '');
     if (!isFormValid) {
       alert('Please fill in all fields.');
       return;
     }
-
+  
+    // Create a user object
+    const newUser = {
+      id: Date.now(), // Unique identifier (timestamp in this example)
+      ...formData,
+    };
+  
+    // Retrieve existing users or initialize an empty array
+    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+  
+    // Append the new user to the array
+    const updatedUsers = [...existingUsers, newUser];
+  
+    // Save the updated array back to local storage
+    localStorage.setItem('users', JSON.stringify(updatedUsers));
+  
     // Save form data in local storage
     localStorage.setItem('signupFormData', JSON.stringify(formData));
-
+  
     // Navigate to the avatar upload page
     navigate('/signup/avatar-upload');
   };
+  
+  
 
   return (
     <div className="main-container">
