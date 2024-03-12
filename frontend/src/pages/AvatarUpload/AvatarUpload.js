@@ -1,5 +1,6 @@
 // AvatarUpload.js
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './avatar-upload.css';
 import ConditionsModal from '../../components/ConditionsModal/ConditionsModal';
 import ProfilePreview from '../../components/ProfilePreview/ProfilePreview';
@@ -9,10 +10,16 @@ const AvatarUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
   };
+
+  // In Signup.js after localStorage.setItem('signupFormData', JSON.stringify(formData));
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+  console.log('Users in Local Storage:', users);
 
   // Use the selectedFile or defaultAvatar based on the condition
   const avatarImage = selectedFile ? URL.createObjectURL(selectedFile) : defaultAvatar;
@@ -29,6 +36,17 @@ const AvatarUpload = () => {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  const handleSkipStep = () => {
+    // Retrieve signup data from local storage
+    const signupFormData = JSON.parse(localStorage.getItem('signupFormData')) || {};
+  
+    // Log signupFormData for debugging
+    console.log('Signup Form Data (Skip Step):', signupFormData);
+  
+    // Navigate to the login page with signup data and default avatar
+    navigate('/login', { state: { signupFormData, avatarImage: defaultAvatar } });
+  };  
 
   return (
     <div className="main-container">
@@ -52,7 +70,6 @@ const AvatarUpload = () => {
           </button>
         </div>
         <div className='preview-container'>
-          <h3>Profile Preview</h3>
           <ProfilePreview avatarImage={avatarImage} name="John Doe" location="University of XYZ" />
         </div>
       </div>
@@ -60,6 +77,9 @@ const AvatarUpload = () => {
         <hr />
         <button className="conditions-button" onClick={openModal}>
           View conditions for sharing content
+        </button>
+        <button className="skip-button" onClick={handleSkipStep}>
+          Skip this step
         </button>
       </div>
       {isModalOpen && <ConditionsModal closeModal={closeModal} />}
