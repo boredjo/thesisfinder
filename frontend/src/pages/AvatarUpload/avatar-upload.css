@@ -93,8 +93,9 @@
 .preview-container {
   margin-left: auto;
   max-width: 300px; /* Adjust the max-width as needed */
-  margin-top: 20px; /* Adjust the margin-top as needed */
-  margin-right: 30px;
+  margin-top: 0px; /* Adjust the margin-top as needed */
+  margin-right: 10%;
+
 }
 
 .preview-container img {
