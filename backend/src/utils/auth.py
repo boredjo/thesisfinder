@@ -1,6 +1,6 @@
  
 from werkzeug.wrappers import Request, Response, ResponseStream
-from models.user import user
+from models.user import User
 class auth_middleware():
     '''
     Simple auth WSGI middleware
@@ -21,11 +21,11 @@ class auth_middleware():
             return res(environ, start_response)
         
         if userName == "anonymous":
-            environ['user'] = user.ANON()
+            environ['user'] = User.ANON()
             return self.app(environ, start_response)
 
         if userName == "jo":
-            environ['user'] = user.find_user(userName)
+            environ['user'] = User.find_user(userName)
             return self.app(environ, start_response)
         
         res = Response(u'Authorization failed', mimetype= 'text/plain', status=401)

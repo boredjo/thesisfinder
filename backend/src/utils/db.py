@@ -4,21 +4,26 @@ from dotenv import dotenv_values
 
 # Load variables from .env file
 config = dotenv_values(".env")
-print('read .env')
-print(config)
 # Connect to MariaDB Platform
 
-conn = mysql.connector.connect(
-    user=config['DB_USER'],
-    password=config['DB_PASSWORD'],
-    host='192.168.100.39',
-    port=3306,
-    database=config['DB_DATABASE']
-)
-print('connected')
+try:
+    # Connect to MySQL
+    conn = mysql.connector.connect(
+        user=config['DB_USER'],
+        password=config['DB_PASSWORD'],
+        host=config['DB_HOST'],
+        port=int(config['DB_PORT']),
+        database=config['DB_DATABASE'],
+        autocommit=True
+    )
+    print('connected')
+
+    # If the connection is successful, proceed with further operations
+    
+except mysql.connector.Error as e:
+    print(f"Error connecting to MySQL: {e}")
+    sys.exit(1)
 
 
-# Get Cursor
-cur = conn.cursor()
-cur.execute(
-    "SELECT * FROM AuthToken")
+# # Get Cursor
+# cur = conn.cursor(buffered=True)

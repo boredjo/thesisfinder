@@ -1,6 +1,9 @@
 from flask import jsonify
+from utils.db import conn
+import mysql.connector
+from mysql.connector import errorcode
 
-class user:
+class User:
     @classmethod
     def ANON(cls):
         return cls('anonymous', 'Anonymous', 'User', 'US', '', ' ')
@@ -17,22 +20,78 @@ class user:
         self.password_hash = password_hash
 
     def find_user(user_name):
-        return user('jo', 'Johannes', 'Kandler', 'DE', 'test@mail.com', 'password')
+        with conn.cursor(buffered=True) as cur:
+            try:
+                cur.execute(
+                    """
+                    SELECT username, first_name, last_name, country, email, password_hash FROM User WHERE username = %s ;
+                    """
+                    , [user_name]
+                )
+                row = cur.fetchone()
+            except mysql.connector.Error as err:
+                print("MySQL Error: ", err.msg)
+
+        return User(row[0], row[1], row[2], row[3], row[4], row[5])
 
     def store(self):
-        if user.isAnon : 
+        if self.isAnon() : 
             print("ERROR: tried to save anon account")
         else:
-            print(self.name)
+            with conn.cursor(buffered=True) as cur:
+                try:
+                    cur.execute(
+                        """
+                        INSERT INTO User (username, first_name, last_name, country, email, password_hash) VALUES (%s, %s, %s, %s, %s, %s);
+                        """
+                        ,[self.name, self.first_name, self.last_name, self.country, self.email, self.password_hash]
+                    )
+                except mysql.connector.Error as err:
+                    if err.errno == errorcode.ER_DUP_ENTRY:
+                        print(-1)
+                        return -1
+                    else:
+                        print("MySQL Error: ", err.msg)
 
     def update(self, new_user):
-        print(new_user.name)
+        with conn.cursor(buffered=True) as cur:
+            try:
+                cur.execute(
+                    """
+                    UPDATE User SET first_name = %s, last_name = %s, country = %s, email = %s, password_hash = %s WHERE username = %s;
+                    """
+                    ,[new_user.first_name, new_user.last_name, new_user.country, new_user.email, new_user.password_hash, self.name]
+                )
+            except mysql.connector.Error as err:
+                print("MySQL Error: ", err.msg)
 
     def jsonify(self):
         return jsonify({
             'user': self.name,
-            'email': self.email
+            'email': self.email,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'country': self.country,
         })
 
-    def nameTaken(name):
-        return name == 'jo'
+    def nameTaken(self):
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT username  FROM User WHERE username = %s OR email = %s;
+                """
+                , [self.name, self.email]
+            )
+            rowcount = len(cur.fetchall())          
+        return rowcount != 0
+
+    def emailTaken(self):
+        with conn.cursor() as cur:
+            cur.execute(
+                """
+                SELECT username  FROM User WHERE email = %s;
+                """
+                , [self.email]
+            )
+            rowcount = len(cur.fetchall())          
+        return rowcount != 0
