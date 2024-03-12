@@ -3,6 +3,7 @@ from flask import Blueprint, request, jsonify
 from models.user import User
 from datetime import datetime
 from utils.db import conn
+from utils.logs import log_error
 import mysql.connector
 from mysql.connector import errorcode
 
@@ -17,13 +18,14 @@ def get_token():
         username = data['user']
         password = data['password']
     except Exception as e:
-        print(e)
+        log_error(e, "login.py - get_token() - parse data")
         Response(u'Could process the request', mimetype= 'text/plain', status=422)
     
     # get requested user info
     try:
         user = User.find_user(username)
-    except:
+    except Exception as e:
+        log_error(e, "login.py - get_token() - find user in DB")
         return Response(u"Couldn't find user", mimetype= 'text/plain', status=422)
     
     if user.password_hash == password:
@@ -37,11 +39,7 @@ def get_token():
                     , [token, user.name]
                 )
             except mysql.connector.Error as err:
-                    if err.errno == errorcode.ER_DUP_ENTRY:
-                        print(-1)
-                        return -1
-                    else:
-                        print("MySQL Error: ", err.msg)
+                    log_error(err, "login.py - get_token() - inserting token into DB")
         return jsonify(
             token = token
         )
