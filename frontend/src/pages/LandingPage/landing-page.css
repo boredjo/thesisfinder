@@ -67,10 +67,11 @@
     width: 50%;
     margin-left: auto;
     margin-right: auto;
+    padding: 10px;
   }
 
   .main-section #section-divider {
-    width: 810px;
+    width: 66%;
     height: 2px;
     background-color: #ececec;
     margin: 20px auto;

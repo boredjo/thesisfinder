@@ -5,12 +5,13 @@ import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 
 import LandingPage from './pages/LandingPage/LandingPage';
-import LoginPage from './pages/LoginPage/LoginPage';
-import SignupPage from './pages/SignupPage/SignupPage';
 import ExploreSearch from './pages/ExploreSearch/ExploreSearch';
 import ExploreGuestSearch from './pages/ExploreGuestSearch/ExploreGuestSearch';
+import Signup from './pages/Signup/Signup';
+import Login from './pages/Login/Login';
+import AvatarUpload from './pages/AvatarUpload/AvatarUpload';
 
-import LoginModal from "react-login-modal-sm";
+// import LoginModal from "react-login-modal-sm";
 
 const App = () => {
   return (
@@ -19,9 +20,9 @@ const App = () => {
         <Header isAuthenticated={false} /> 
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/explore-search" element={<ExploreSearch />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="signup/avatar-upload" element={<AvatarUpload />} />
           <Route path="/explore-guest-search/:query" element={<ExploreGuestSearch />} />
         </Routes>
         <Footer />

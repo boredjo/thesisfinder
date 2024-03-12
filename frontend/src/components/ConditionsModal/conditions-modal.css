@@ -1,0 +1,67 @@
+/* conditions-modal.css */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  max-width: 800px;
+  width: 100%;
+  max-height: 80vh; /* Set a maximum height for the modal content */
+  overflow-y: auto; /* Add scrollbar */
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  /* position: fixed; */
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.modal-header h2 {
+  margin: 0;
+}
+
+.modal-body {
+  padding: 60px 10px 10px;
+  overflow-y: auto; /* Add scrollbar */
+  max-height: calc(100vh - 60px); /* Calculate max height considering the fixed header */
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.conditions-modal-text {
+  margin-bottom: 20px;
+}
+
+.conditions-modal-text p {
+  font-weight: bold;
+}
+
+.conditions-modal-text ul {
+  list-style-type: disc;
+  padding: 0;
+}
+
+.conditions-modal-text li {
+  margin-left: 20px;
+}
