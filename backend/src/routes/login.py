@@ -16,8 +16,9 @@ def get_token():
         data = request.get_json()
         username = data['user']
         password = data['password']
-    except:
-        return Response(u'Could process the request', mimetype= 'text/plain', status=422)
+    except Exception as e:
+        print(e)
+        Response(u'Could process the request', mimetype= 'text/plain', status=422)
     
     # get requested user info
     try:
