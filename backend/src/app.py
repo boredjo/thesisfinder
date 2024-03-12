@@ -2,6 +2,7 @@ from flask import Flask, request
 from werkzeug.wrappers import Request, Response, ResponseStream
 
 from utils.auth import auth_middleware
+from utils.logs import log_middleware
 from routes.profilepicture import profile_picture_blueprint
 from routes.user import user_blueprint
 from routes.login import login_blueprint
@@ -9,6 +10,7 @@ from routes.login import login_blueprint
 app = Flask('ThesisFinder')
 
 # calling our middleware
+app.wsgi_app = log_middleware(app.wsgi_app)
 app.wsgi_app = auth_middleware(app.wsgi_app)
 
 # import routes

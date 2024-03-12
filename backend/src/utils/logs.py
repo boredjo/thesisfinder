@@ -1,3 +1,4 @@
+from werkzeug.wrappers import Request, Response, ResponseStream
 from datetime import datetime
 
 # define colors
@@ -16,4 +17,14 @@ def log_error(e, location_in_code = 'unspecified'):
 def log_info(message, location_in_code = 'unspecified'):
     print(f'{GRAY}[{datetime.now().strftime("%H:%M:%S")}]{BLUE} INFO:{ENDC} {message} {GRAY}[location: {location_in_code}]{ENDC}') 
 
- 
+class log_middleware():
+    def __init__(self, app):
+        self.app = app
+
+    def __call__(self, environ, start_response):
+        request = Request(environ)
+        print(f'{GRAY}[{datetime.now().strftime("%H:%M:%S")}]{YELLOW} REQUEST-HEADER:{ENDC} {list(request.headers)} {ENDC}')
+        
+        print(f'{GRAY}[{datetime.now().strftime("%H:%M:%S")}]{YELLOW} REQUEST-BODY:{ENDC} {request.get_json()} {ENDC}')
+
+        return res(environ, start_response)
