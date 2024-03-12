@@ -1,5 +1,6 @@
 import mysql.connector
 import sys
+import os
 from dotenv import dotenv_values
 
 # Load variables from .env file
@@ -9,11 +10,11 @@ config = dotenv_values(".env")
 try:
     # Connect to MySQL
     conn = mysql.connector.connect(
-        user=config['DB_USER'],
-        password=config['DB_PASSWORD'],
-        host=config['DB_HOST'],
-        port=int(config['DB_PORT']),
-        database=config['DB_DATABASE'],
+        user=os.environ['DB_USER'],
+        password=os.environ['DB_PASSWORD'],
+        host=os.environ['DB_HOST'],
+        port=int(os.environ['DB_PORT']),
+        database=os.environ['DB_DATABASE'],
         autocommit=True
     )
     print('connected')
