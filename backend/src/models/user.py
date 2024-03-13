@@ -84,7 +84,7 @@ class User:
             """
             SELECT username FROM User 
             WHERE email = %s
-            NOT(username = %s);
+            AND NOT(username = %s);
             """
             , [self.email, self.name]
         )             
