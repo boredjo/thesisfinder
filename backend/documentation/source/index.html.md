@@ -45,6 +45,7 @@ You must replace <code>tokentokentoken</code> with your personal API token obtai
 # Content
 
 > You always need a JSON object in the body
+
 ```shell
 # The Data cannot be empty
 curl --location --request GET 'https://api.thesisfinder.com/user/' \
