@@ -13,8 +13,8 @@ app = Flask('ThesisFinder')
 
 @app.route('/', methods=['GET', 'POST'])
 def hello():
-    return current_app.send_static_file('../documentation/build/index.html')
-    
+    return current_app.send_static_file('./doc_build/index.html')
+
 # calling our middleware
 app.wsgi_app = auth_middleware(app.wsgi_app)
 app.wsgi_app = mysql_middleware(app.wsgi_app)
