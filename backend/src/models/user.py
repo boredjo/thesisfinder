@@ -79,11 +79,13 @@ class User:
         )
         return len(cursor.fetchall())  != 0
 
-    def emailTaken(self, cursor):
+    def newEmailTaken(self, cursor):
         cursor.execute(
             """
-            SELECT username  FROM User WHERE email = %s;
+            SELECT username FROM User 
+            WHERE email = %s
+            NOT(name = %s);
             """
-            , [self.email]
+            , [self.email, self.name]
         )             
         return len(cursor.fetchall())  != 0

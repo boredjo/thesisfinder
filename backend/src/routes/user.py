@@ -23,7 +23,7 @@ def post_user():
     
     # update database
     if user.name == new_user.name: # updateing user info
-        if new_user.emailTaken(request.environ['cursor']):
+        if new_user.newEmailTaken(request.environ['cursor']):
             request.environ['logger'].message("POST_USER", f'{new_user.email} is already taken')
             return Response(u'Username or Email is already taken', mimetype= 'text/plain', status=422)
         user.update(new_user, request.environ['cursor'])
