@@ -89,3 +89,11 @@ class User:
             , [self.email, self.name]
         )             
         return len(cursor.fetchall())  != 0
+    
+    def delete(self, cursor):
+        cursor.execute(
+            """
+            DELETE FROM User WHERE username = %s;
+            """
+            , [self.name, self]
+        )

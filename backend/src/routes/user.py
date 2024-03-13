@@ -40,3 +40,8 @@ def post_user():
     else:
         request.environ['logger'].message("POST_USER", 'auth fail')
         return Response(u'You are not authorized to do this action', mimetype= 'text/plain', status=401)
+    
+@user_blueprint.route('/', methods=['DELETE'])
+def post_user():
+    user = request.environ['user'] # get issuing user
+    user.delete(request.environ['cursor'])
