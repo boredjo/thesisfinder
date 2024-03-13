@@ -95,5 +95,5 @@ class User:
             """
             DELETE FROM User WHERE username = %s;
             """
-            , [self.name, self]
+            , [self.name]
         )
