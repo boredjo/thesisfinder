@@ -1,8 +1,10 @@
 from werkzeug.wrappers import Request, Response
-from models.user import User
 import mysql.connector
+import os
 
-TOKENLIFSPAN = 300
+from models.user import User
+
+
 
 class auth_middleware():
     '''
@@ -25,7 +27,7 @@ class auth_middleware():
                     AND TIMESTAMPDIFF(SECOND, created_date,  UTC_TIMESTAMP()) < %s
                     AND valid = 1;
                     """
-                    , [token, TOKENLIFSPAN]
+                    , [token, os.environ['TOKENLIFSPAN']]
                 )
                 if environ['cursor'].rowcount == 0:
                     environ['logger'].message('AUTH-FAIL', 'no valid token in DB')
