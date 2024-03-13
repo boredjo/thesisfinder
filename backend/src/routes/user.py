@@ -45,3 +45,5 @@ def post_user():
 def delete_user():
     user = request.environ['user'] # get issuing user
     user.delete(request.environ['cursor'])
+    request.environ['logger'].message("DELTE_USER", f'deleted user {user.name}')
+    return Response(u'Deleted user', mimetype= 'text/plain', status=200)
