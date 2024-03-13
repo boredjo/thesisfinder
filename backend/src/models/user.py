@@ -1,5 +1,4 @@
 from flask import jsonify
-from utils.db import conn
 import mysql.connector
 from mysql.connector import errorcode
 
@@ -19,44 +18,41 @@ class User:
         self.email = email
         self.password_hash = password_hash
 
-    def find_user(user_name):
-        with conn.cursor(buffered=True) as cur:
-            try:
-                cur.execute(
-                    """
-                    SELECT username, first_name, last_name, country, email, password_hash FROM User WHERE username = %s ;
-                    """
-                    , [user_name]
-                )
-                row = cur.fetchone()
-            except mysql.connector.Error as err:
-                print("MySQL Error: ", err.msg)
+    def find_user(user_name, cursor):
+        try:
+            cursor.execute(
+                """
+                SELECT username, first_name, last_name, country, email, password_hash FROM User WHERE username = %s ;
+                """
+                , [user_name]
+            )
+            row = cursor.fetchone()
+        except mysql.connector.Error as err:
+            print("MySQL Error: ", err.msg)
 
         return User(row[0], row[1], row[2], row[3], row[4], row[5])
 
-    def store(self):
+    def store(self, cursor):
         if self.isAnon() : 
             print("ERROR: tried to save anon account")
         else:
-            with conn.cursor(buffered=True) as cur:
-                try:
-                    cur.execute(
-                        """
-                        INSERT INTO User (username, first_name, last_name, country, email, password_hash) VALUES (%s, %s, %s, %s, %s, %s);
-                        """
-                        ,[self.name, self.first_name, self.last_name, self.country, self.email, self.password_hash]
-                    )
-                except mysql.connector.Error as err:
-                    if err.errno == errorcode.ER_DUP_ENTRY:
-                        print(-1)
-                        return -1
-                    else:
-                        print("MySQL Error: ", err.msg)
-
-    def update(self, new_user):
-        with conn.cursor(buffered=True) as cur:
             try:
-                cur.execute(
+                cursor.execute(
+                    """
+                    INSERT INTO User (username, first_name, last_name, country, email, password_hash) VALUES (%s, %s, %s, %s, %s, %s);
+                    """
+                    ,[self.name, self.first_name, self.last_name, self.country, self.email, self.password_hash]
+                )
+            except mysql.connector.Error as err:
+                if err.errno == errorcode.ER_DUP_ENTRY:
+                    print(-1)
+                    return -1
+                else:
+                    print("MySQL Error: ", err.msg)
+
+    def update(self, new_user, cursor):
+            try:
+                cursor.execute(
                     """
                     UPDATE User SET first_name = %s, last_name = %s, country = %s, email = %s, password_hash = %s WHERE username = %s;
                     """
@@ -74,24 +70,20 @@ class User:
             'country': self.country,
         })
 
-    def nameTaken(self):
-        with conn.cursor() as cur:
-            cur.execute(
-                """
-                SELECT username  FROM User WHERE username = %s OR email = %s;
-                """
-                , [self.name, self.email]
-            )
-            rowcount = len(cur.fetchall())          
-        return rowcount != 0
+    def nameTaken(self, cursor):
+        cursor.execute(
+            """
+            SELECT username  FROM User WHERE username = %s OR email = %s;
+            """
+            , [self.name, self.email]
+        )
+        return len(cursor.fetchall())  != 0
 
-    def emailTaken(self):
-        with conn.cursor() as cur:
-            cur.execute(
-                """
-                SELECT username  FROM User WHERE email = %s;
-                """
-                , [self.email]
-            )
-            rowcount = len(cur.fetchall())          
-        return rowcount != 0
+    def emailTaken(self, cursor):
+        cursor.execute(
+            """
+            SELECT username  FROM User WHERE email = %s;
+            """
+            , [self.email]
+        )             
+        return len(cursor.fetchall())  != 0

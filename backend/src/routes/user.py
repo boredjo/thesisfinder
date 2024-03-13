@@ -22,14 +22,14 @@ def post_user():
     
     # update database
     if user.name == new_user.name: # updateing user info
-        if new_user.emailTaken():
+        if new_user.emailTaken(request.environ['cursor']):
             return Response(u'Username or Email is already taken', mimetype= 'text/plain', status=422)
-        user.update(new_user)
+        user.update(new_user, request.environ['cursor'])
         return Response(u'updating user info', mimetype= 'text/plain', status=200)
     elif user.isAnon(): # create new user
-        if new_user.nameTaken():
+        if new_user.nameTaken(request.environ['cursor']):
             return Response(u'Username or Email is already taken', mimetype= 'text/plain', status=422)
-        new_user.store()
+        new_user.store(request.environ['cursor'])
         return Response(u'create new user', mimetype= 'text/plain', status=200)
     else:
         return Response(u'You are not authorized to do this action', mimetype= 'text/plain', status=401)
