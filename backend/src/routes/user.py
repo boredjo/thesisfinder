@@ -36,7 +36,7 @@ def post_user():
             return Response(u'Username or Email is already taken', mimetype= 'text/plain', status=422)
         new_user.store(request.environ['cursor'])
         request.environ['logger'].message("POST_USER", f'{new_user.name} created')
-        return Response(u'create new user', mimetype= 'text/plain', status=200)
+        return Response(u'created new user', mimetype= 'text/plain', status=200)
     else:
         request.environ['logger'].message("POST_USER", 'auth fail')
         return Response(u'You are not authorized to do this action', mimetype= 'text/plain', status=401)
