@@ -42,6 +42,6 @@ def post_user():
         return Response(u'You are not authorized to do this action', mimetype= 'text/plain', status=401)
     
 @user_blueprint.route('/', methods=['DELETE'])
-def post_user():
+def delete_user():
     user = request.environ['user'] # get issuing user
     user.delete(request.environ['cursor'])
