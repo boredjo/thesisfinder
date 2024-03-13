@@ -85,6 +85,7 @@ This endpoint is used to retrive the authentication token. This request should b
 ## Get User Information
 
 > you can send this anonmously
+
 ```shell
 curl --location --request GET 'https://api.thesisfinder.com/user/' \
 --header 'Content-Type: application/json' \
@@ -109,6 +110,7 @@ This endpoint gives the information about the user identified by the auth token.
 ## Post a New User
 
 > this has to be sent anonymously
+
 ```shell
 curl --location 'https://api.thesisfinder.com/user/' \
 --header 'Content-Type: application/json' \
@@ -127,6 +129,7 @@ This endpoint registers a new user with the data base. The username and emails a
 ## Update an Exsiting User
 
 > this also uses the POST-method
+
 ```shell
 curl --location 'https://api.thesisfinder.com/user/' \
 --header 'Content-Type: application/json' \
@@ -148,6 +151,7 @@ This endpoint updates an existing user in the data base. The username and emails
 ## Delete an Exsiting User
 
 > this has to be sent authenticated
+
 ```shell
 curl --location --request DELETE 'https://api.thesisfinder.com/user/' \
 --header 'Content-Type: application/json' \
