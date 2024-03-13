@@ -10,7 +10,7 @@ class parse_middleware():
 
     def __call__(self, environ, start_response):
         request = Request(environ)
-        if request.path == '/': # pass trough for the documentation
+        if request.path.startswith("/doc"): # pass trough for the documentation
             return self.app(environ, start_response)
         
 
