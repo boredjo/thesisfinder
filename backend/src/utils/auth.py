@@ -34,6 +34,7 @@ class auth_middleware():
                 else:
                     row = environ['cursor'].fetchone()
                     environ['user'] = User.find_user(row[0], environ['cursor'])
+                    environ['logger'].message('AUTH', environ['user'].name)
                     return self.app(environ, start_response)
             except mysql.connector.Error as e:
                 environ['logger'].error(e, 'auth.py - check for valid tokens')
