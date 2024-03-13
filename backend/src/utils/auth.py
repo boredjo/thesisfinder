@@ -17,6 +17,9 @@ class auth_middleware():
 
     def __call__(self, environ, start_response):
         request = Request(environ)
+        if request.path == '/': # pass trough for the documentation
+            return self.app(environ, start_response)
+
         if 'Token' in request.headers.keys():
             token = request.headers['Token']
             try:

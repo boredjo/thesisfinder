@@ -9,11 +9,15 @@ class parse_middleware():
         self.app = app
 
     def __call__(self, environ, start_response):
+        request = Request(environ)
+        if request.path == '/': # pass trough for the documentation
+            return self.app(environ, start_response)
+        
+
         # establish logger
         if not 'logger' in environ.keys():
             environ['logger'] = Logger()
 
-        request = Request(environ)
         environ['logger'].message('HEADER', list(request.headers))
  
         if 'Content-Type' in request.headers.keys() and request.headers['Content-Type'] == 'application/json':

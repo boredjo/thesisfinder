@@ -7,6 +7,7 @@ RUN pip install -r requirements.txt
 COPY ./database ./database
 COPY ./src ./src
 COPY ./assets ./assets
+COPY ./documentation/build ./documentation/build 
 #Running your APP and doing some PORT Forwarding
 WORKDIR /src
 

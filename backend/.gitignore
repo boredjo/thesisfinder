@@ -10,3 +10,4 @@ database/profile_pics/*
 lib64
 .env
 env/
+./lib

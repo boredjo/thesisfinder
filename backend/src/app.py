@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, current_app
 from werkzeug.wrappers import Request, Response, ResponseStream
 
 from utils.auth import auth_middleware
@@ -11,6 +11,10 @@ from routes.login import login_blueprint
 
 app = Flask('ThesisFinder')
 
+@app.route('/', methods=['GET', 'POST'])
+def hello():
+    return current_app.send_static_file('../documentation/build/index.html')
+    
 # calling our middleware
 app.wsgi_app = auth_middleware(app.wsgi_app)
 app.wsgi_app = mysql_middleware(app.wsgi_app)
@@ -22,9 +26,6 @@ app.register_blueprint(user_blueprint, url_prefix='/user')
 app.register_blueprint(login_blueprint, url_prefix='/login')
 
 
-@app.route('/', methods=['GET', 'POST'])
-def hello():
-    return Response(u"It works, right?", mimetype= 'text/plain', status=200)
 
 if __name__ == "__main__":
     app.run('0.0.0.0', '3000')

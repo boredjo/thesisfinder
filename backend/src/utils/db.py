@@ -1,4 +1,4 @@
-from werkzeug.wrappers import Response
+from werkzeug.wrappers import Response, Request
 from dotenv import load_dotenv
 import mysql.connector
 import sys
@@ -28,6 +28,10 @@ class mysql_middleware():
         self.app = app
 
     def __call__(self, environ, start_response):
+        request = Request(environ)
+        if request.path == '/': # pass trough for the documentation
+            return self.app(environ, start_response)
+
         if not self.connection.is_connected():
             environ['logger'].info('Reconecting to DB', 'db.py')
             self.connection.reconnect(3)
