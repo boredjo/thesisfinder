@@ -10,7 +10,7 @@ from utils.logs import log_error
 
 login_blueprint = Blueprint('login', __name__)
 
-@login_blueprint.route('/', methods=['GET'])
+@login_blueprint.route('/', methods=['POST'])
 def get_token():
     data = request.environ['parsed_data']
     if 'user' in data.keys() and 'password' in data.keys():
