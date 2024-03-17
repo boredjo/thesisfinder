@@ -1,8 +1,7 @@
-from flask import Flask, request, send_from_directory
-from werkzeug.wrappers import Request, Response, ResponseStream
-import os
-import base64
+from flask import Flask, send_from_directory
+from dotenv import load_dotenv
 
+load_dotenv('.env') # load env if possible
 
 from utils.auth import auth_middleware
 from utils.db import mysql_middleware
@@ -25,9 +24,10 @@ app.register_blueprint(profile_picture_blueprint, url_prefix='/profilepicture')
 app.register_blueprint(user_blueprint, url_prefix='/user')
 app.register_blueprint(login_blueprint, url_prefix='/login')
 
+
 # serve api documentation
 @app.route('/doc/')
-def serve_website():
+def serve_documentation():
     return send_from_directory('static', 'index.html')
 
 @app.route('/doc/<path:filename>')
