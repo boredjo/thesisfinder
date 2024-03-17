@@ -19,7 +19,12 @@ class parse_middleware():
             environ['logger'] = Logger()
 
         environ['logger'].message('HEADER', list(request.headers))
- 
+
+        # do not parse GET request
+        if request.method == 'GET':
+            return self.app(environ, start_response)
+
+        # parse request body
         if 'Content-Type' in request.headers.keys() and request.headers['Content-Type'] == 'application/json':
             try:
                 environ['parsed_data'] = request.get_json()
