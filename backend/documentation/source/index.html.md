@@ -44,16 +44,11 @@ You must replace <code>tokentokentoken</code> with your personal API token obtai
 
 # Content
 
-> You always need a JSON object in the body
-
 ```shell
-# The Data cannot be empty
 curl --location --request GET 'https://api.thesisfinder.com/user/' \
 --header 'Content-Type: application/json' \
 --header 'Token: tokentokentoken' \
---data-raw '{}'
 ```
-> Make sure to send `Content-Type: application/json`
 
 Thesisfinder API always expect data in the `application/json` type. If no data should be send, send an empty json object.
 
@@ -62,13 +57,14 @@ Thesisfinder API always expect data in the `application/json` type. If no data s
 ## Get Token
 
 ```shell
-curl --location --request GET 'https://api.thesisfinder.com/login/' \
+curl --location 'https://api.thesisfinder.com/login/' \
 --header 'Content-Type: application/json' \
 --data-raw '{
 	"user": "username",
 	"password": "password"
 }'
 ```
+> Make sure to send `Content-Type: application/json`
 
 > The above command returns JSON structured like this:
 
@@ -90,7 +86,6 @@ This endpoint is used to retrive the authentication token. This request should b
 curl --location --request GET 'https://api.thesisfinder.com/user/' \
 --header 'Content-Type: application/json' \
 --header 'Token: tokentokentoken' \
---data-raw '{}'
 ```
 > The above command returns JSON structured like this:
 
@@ -158,7 +153,7 @@ curl --location --request DELETE 'https://api.thesisfinder.com/user/' \
 --header 'Token: tokentokentoken' \
 --data-raw '{}'
 ```
-
+> The body cannot be empty
 
 This endpoint deletes an existing user in the data base. The user authenticated by the toekn will be deleted 
 
