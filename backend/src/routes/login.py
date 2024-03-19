@@ -40,6 +40,4 @@ def get_token():
         except mysql.connector.Error as err:
                 request.environ['logger'].error(err, "login.py - get_token() - inserting token into DB")
         request.environ['logger'].message('CREATED TOKEN', token)
-        return jsonify(
-            token = token
-        )
+        return jsonify(token = token)
