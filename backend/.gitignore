@@ -11,3 +11,4 @@ src/static/images
 src/static/javascripts
 src/static/stylesheets
 src/static/index.html
+build.sh
