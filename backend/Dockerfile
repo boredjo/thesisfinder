@@ -7,9 +7,14 @@ RUN pip install -r requirements.txt
 COPY ./database ./database
 COPY ./src ./src
 COPY ./assets ./assets
-COPY ./documentation/build ./documentation/build 
+
 #Running your APP and doing some PORT Forwarding
 WORKDIR /src
+
+# pass api version
+ARG version
+ENV API_VERSION $version
+
 
 ENV PYTHONUNBUFFERED True
 CMD ["gunicorn", "--enable-stdio-inheritance", "--bind",  "0.0.0.0:3000", "app:app"]
