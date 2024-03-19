@@ -51,6 +51,9 @@ def delete_user():
         return Response(u'You are not authorized to do this action', mimetype= 'text/plain', status=401)
     
     user.delete(request.environ['cursor'])
-    delete_picture(user.name)
+    try:
+        delete_picture(user.name)
+    except FileNotFoundError:
+        pass
     request.environ['logger'].message("DELTE_USER", f'deleted user {user.name}')
     return Response(u'Deleted user', mimetype= 'text/plain', status=200)
