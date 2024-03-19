@@ -1,19 +1,22 @@
 #Using python
 FROM python:3.9-slim
-# Using Layered approach for the installation of requirements
-COPY requirements.txt ./requirements.txt
-RUN pip install -r requirements.txt
-#Copy files to your container
-COPY ./src ./src
-COPY ./assets ./assets
+# add new user
+RUN adduser --system --no-create-home thesisfinder
 
-#Running your APP and doing some PORT Forwarding
-WORKDIR /src
+# copy files
+WORKDIR /thesisfinder
+COPY . .
+
+# install pip packages
+RUN python3 -m pip install -r requirements.txt
+
+# set workdir
+WORKDIR src
 
 # pass api version
 ARG version
 ENV API_VERSION $version
-
-
 ENV PYTHONUNBUFFERED True
+
+USER thesisfinder
 CMD ["gunicorn", "--enable-stdio-inheritance", "--bind",  "0.0.0.0:3000", "app:app"]
