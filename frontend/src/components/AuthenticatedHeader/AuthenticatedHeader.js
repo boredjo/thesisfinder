@@ -1,24 +1,36 @@
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
 import './authenticated-header.css';
 
 const AuthenticatedHeader = () => {
+  const navigate = useNavigate();
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      const query = event.target.value;
+      navigate(`/explore-guest-search/${query}`);
+    }
+  };
+
   return (
-    <header className="main-header">
-      <div className="left-section">
-        <img className="thesisfinder-logo" src={require('../../assets/thesisfinderlogo.png')} alt="Thesis-Finder-Logo" />
-        <button className="left-section-button">Home</button>
-        <div className="button-selector"></div>
-        <button className="left-section-button">Ideas</button>
+    <header>
+      <div className='main-container'>
+        <Link id='header-title' to="/">ThesisFinder</Link>
       </div>
-      <div className="middle-section">
-        <input className="main-header-search" type="text" placeholder="Search for research ideas, sponsorships, people, etc." />
+      <div className='link-container'>
+        <Link id='home-link' to="/home">Home</Link>
+        <Link id='ideas-link' to='/explore-guest-search/e'>Ideas</Link>
       </div>
-      <div className="right-section">
-        <img className="dark-mode-button" src={require('../../assets/darkmodeimage.png')} alt="Dark Mode" />
-        <img className="notification-button" src={require('../../assets/notificationimage.png')} alt="Notification" />
-        <img className="account-button" src={require('../../assets/avatar1.png')} alt="User Account" />
-        <button className="header-submit-button">Submit</button>
+      <div className='search-bar-container'>
+        <input 
+          type="text" 
+          placeholder="Search Ideas" 
+          id="search-ideas"
+          onKeyPress={handleKeyPress}
+        ></input>
       </div>
+      
     </header>
   );
 };

@@ -11,7 +11,7 @@
   #header-title {
     color: red;
     font-family: 'IBM Plex Mono';
-    font-weight: bold;
+    /* font-weight: bold; */
     font-size: 2em;
     text-decoration: none; 
   }

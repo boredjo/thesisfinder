@@ -1,0 +1,44 @@
+.main-container {
+  display: flex
+}
+#header-title {
+  color: red;
+  font-family: 'IBM Plex Mono';
+  /* font-weight: bold; */
+  font-size: 2em;
+  text-decoration: none; 
+}
+
+#home-link {
+  color:black;
+  font-size: 1.25em;
+  font-family: 'Fredoka One';
+  font-weight: normal;
+}
+
+#ideas-link {
+  color:black;
+  font-size: 1.25em;
+  font-family: 'Fredoka One';
+  font-weight: normal;
+  margin-right: 66%
+}
+
+/* authenticated-header.css */
+#home-link:hover,
+#ideas-link:hover {
+  position: relative;
+}
+
+#home-link:hover::after,
+#ideas-link:hover::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: -10px; /* Adjust this value to change the distance from the links */
+  width: 100%;
+  height: 2px;
+  background-color: red;
+  padding: 5%;
+}

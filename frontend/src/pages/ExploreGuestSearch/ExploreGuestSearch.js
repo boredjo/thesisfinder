@@ -14,63 +14,48 @@ const ExploreGuestSearch = () => {
   const [sortBy, setSortBy] = useState('relevance'); // Default sort option
   const [currentPage, setCurrentPage] = useState(1);
   const [currentIdeas, setCurrentIdeas] = useState([]);
-
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Reset to the first page when query or sorting changes
-    setCurrentPage(1);
+    setCurrentPage(1); // Reset to the first page when query or sorting changes
   }, [query, sortBy]);
 
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      const newQuery = event.target.value;
-      setQuery(newQuery);
-      navigate(`/explore-guest-search/${newQuery}`);
-    }
-  };
-
-  const handleSortChange = (event) => {
-    setSortBy(event.target.value);
-  };
-
-  const filteredIdeas = ideas.filter((idea) =>
-    idea.title.toLowerCase().includes(query.toLowerCase())
-  );
-
-  // Sorting logic
   useEffect(() => {
-    let sortedIdeas = [...filteredIdeas];
-  
+    let sortedIdeas = [...ideas];
+
     if (sortBy === 'newest') {
       sortedIdeas.sort((a, b) => new Date(b.date) - new Date(a.date));
     } else if (sortBy === 'oldest') {
       sortedIdeas.sort((a, b) => new Date(a.date) - new Date(b.date));
     }
-  
+
     setCurrentIdeas(sortedIdeas);
-  }, [sortBy, filteredIdeas]);
+  }, [sortBy]);
 
-  const itemsPerPage = 5;
-  const numberOfPages = Math.ceil(filteredIdeas.length / itemsPerPage);
+  const filteredIdeas = currentIdeas.filter(idea =>
+    idea.title.toLowerCase().includes(query.toLowerCase())
+  );
 
-  // Ensure that currentPage stays within valid bounds
   useEffect(() => {
+    const numberOfPages = Math.ceil(filteredIdeas.length / itemsPerPage);
+
+    // Ensure that currentPage stays within valid bounds
     if (currentPage > numberOfPages) {
       setCurrentPage(numberOfPages);
     }
-  }, [currentPage, numberOfPages]);
+  }, [currentPage, filteredIdeas]);
 
+  const itemsPerPage = 5;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentIdeasToShow = currentIdeas.slice(indexOfFirstItem, indexOfLastItem);
+  const currentIdeasToShow = filteredIdeas.slice(indexOfFirstItem, indexOfLastItem);
 
   const pageNumbers = Array.from(
-    { length: numberOfPages }, 
+    { length: Math.ceil(filteredIdeas.length / itemsPerPage) },
     (_, index) => index + 1
   );
 
-  const handlePageChange = (pageNumber) => {
+  const handlePageChange = pageNumber => {
     setCurrentPage(pageNumber);
   };
 
@@ -81,9 +66,22 @@ const ExploreGuestSearch = () => {
   };
 
   const handleNextPage = () => {
-    if (currentPage < numberOfPages) {
+    if (currentPage < pageNumbers.length) {
       setCurrentPage(currentPage + 1);
     }
+  };
+
+  const handleKeyPress = event => {
+    if (event.key === 'Enter') {
+      const newQuery = event.target.value;
+      setQuery(newQuery);
+      setCurrentPage(1); // Set currentPage to 1 when navigating
+      navigate(`/explore-guest-search/${newQuery}`);
+    }
+  };
+
+  const handleSortChange = event => {
+    setSortBy(event.target.value);
   };
 
   return (

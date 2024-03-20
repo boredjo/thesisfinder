@@ -22,7 +22,9 @@ const App = () => {
   return (
     <div>
       <Router>
-        {authToken ? <AuthenticatedHeader /> : <Header /> } 
+        {/* {authToken ? <AuthenticatedHeader /> : <Header /> }  */}
+        <AuthenticatedHeader />
+        {/* <Header /> */}
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
