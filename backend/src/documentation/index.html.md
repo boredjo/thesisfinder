@@ -165,17 +165,16 @@ This endpoint deletes an existing user in the data base. The user authenticated 
 > you can send this anonmously
 
 ```shell
-curl --location --request POST 'https://tf-api.boredjo.eu/profilepicture' \
---header 'Token: tokentokentoken' \
---header 'Content-Type: application/json' \
---data '{
-    "user": "test"
-}'
+curl --location 'https://data.thesisfinder.com/profilepicture/username'
 ```
-> The above command returns an `image/png` of size 256 x 256
+> make sure to replace `username` with the username associated with the profile picture
 
-This endpoint returns the profile picture associated with an account. If no picture is set, it returns a default picture. Sending this anonymously will return the anonymous profile picture. 
+> This request gets the anonymous user profile picture
+```shell
+curl --location 'https://data.thesisfinder.com/profilepicture/anonymous'
+```
 
+This endpoint returns the profile picture associated with an account. If no picture is set, it returns a default picture. The image will be a `image/png` with 256 x 256 resolution.
 
 ## Update a Profile Picture
 
@@ -184,7 +183,7 @@ Currently the API can only handle `image/png`.
 > this has to be sent authenticated
 
 ```shell
-curl --location --request PUT 'https://data.thesisfinder.com/profilepicture' \
+curl --location 'https://data.thesisfinder.com/profilepicture' \
 --header 'Content-Type: image/png' \
 --header 'Token: tokentokentoken' \
 --data 'image.png'
