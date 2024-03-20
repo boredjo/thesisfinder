@@ -35,8 +35,8 @@ def check_folder(directory):
         return False
 
 def pre_check():
-    if not check_permissions("../database"): sys.exit(1)
-    if not check_folder("../database/idea_attachments"): sys.exit(1)
-    if not check_folder("../database/profile_pics"): sys.exit(1)
+    if not check_permissions("../database/"): sys.exit(1)
+    if not check_folder("../database/idea_attachments/"): sys.exit(1)
+    if not check_folder("../database/profile_pics/"): sys.exit(1)
 
     log_info("Permissons on Database folder are granted", "check_permissons.py")
