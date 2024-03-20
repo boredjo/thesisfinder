@@ -23,14 +23,14 @@ const LandingPage = (props) => {
     setFeaturedIdeas(selectedIdeas);
   }, []);
   
-  useEffect(() => {
-    // Check if the authentication token exists
-    const authToken = localStorage.getItem('authToken');
-    if (authToken) {
-      // Redirect to Home.js if the token exists
-      navigate('/home');
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   // Check if the authentication token exists
+  //   const authToken = localStorage.getItem('authToken');
+  //   if (authToken) {
+  //     // Redirect to Home.js if the token exists
+  //     navigate('/home');
+  //   }
+  // }, [navigate]);
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
