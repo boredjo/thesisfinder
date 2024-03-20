@@ -2,7 +2,7 @@
 on every page involving the site's main features, such as
 Home.js and Submit.js*/
 
-/* body {
+body {
   padding: 70px 35px;
 }
 
@@ -132,4 +132,4 @@ button {
   border: none;
   border-radius: 2px;
   padding: 12px 24px;
-} */
+}
