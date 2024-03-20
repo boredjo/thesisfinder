@@ -55,4 +55,12 @@ def delete_profilepicture():
     if user.isAnon():
         request.environ['logger'].message("DELETE_PROFILEPIC", 'auth fail')
         return Response(u'You are not authorized to do this action', mimetype= 'text/plain', status=401)
-
+    
+    else:
+        try:
+            delete_picture(user.name)
+        except FileNotFoundError:
+            request.environ['logger'].message("PROFILEPIC", "image not found")
+            return Response(u'Image already deleted', mimetype= 'text/plain', status=401)
+        request.environ['logger'].message("PROFILEPIC", f"Updated file {PICTURE_PATH + user.name}.png")
+        return Response(u'Image deleted', mimetype= 'text/plain', status=200)
