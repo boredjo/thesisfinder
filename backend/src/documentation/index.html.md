@@ -42,15 +42,6 @@ The API token also identifies the user. To use the API anonymously, just emit th
 You must replace <code>tokentokentoken</code> with your personal API token obtained from <code>/login/</code>.
 </aside>
 
-# Content
-
-```shell
-curl --location --request GET 'https://api.thesisfinder.com/user/' \
---header 'Content-Type: application/json' \
---header 'Token: tokentokentoken' \
-```
-
-Thesisfinder API always expect data in the `application/json` type. Unless it is a `GET` or `DELETE` request, the body cannot be empty. At a minimum, an empty JSON object has to be sent.
 
 # Login
 
@@ -204,3 +195,114 @@ curl --location --request DELETE 'https://data.thesisfinder.com/profilepicture' 
 
 
 This endpoint deletes an existing profile picture. Then the default picture will be sent instead.
+
+# Idea
+
+## Get Ideas
+
+Ideas have a hash value as id. The title has to be unique and not longer than 200 characters. An Idea can have up to 5 tags. There is also the user name of author attached to it.
+
+### Featured Ideas
+
+> you can send this anonmously
+
+```shell
+curl --location --request GET 'https://api.thesisfinder.com/idea/featured' \
+--header 'Token: tokentokentoken' \
+```
+> The above command returns JSON that contains a list of five results structured like this:
+
+```json
+{
+	"ideas":[
+		{
+			"id" : "somehash",
+			"title": "Exploring Sustainable Urban Agriculture",
+			"author": "anonymous",
+			"date_posted": "2024-02-24",
+			"tags":["Urban Agriculture", "Sustainability", "Food security"]
+		},
+		...
+	]
+}
+```
+
+This endpoint gives a list 5 questions, meant to be displayed at the featured idea page
+
+### Idea Details
+
+> this method requires the idea id to look up the details of the question
+
+```shell
+curl --location --request GET 'https://api.thesisfinder.com/idea/details/ideaid' \
+--header 'Token: tokentokentoken' \
+```
+> The above command returns JSON that contains a list of five results structured like this:
+
+```json
+{
+	"id" : "somehash",
+	"title": "Exploring Sustainable Urban Agriculture",
+	"author": "anonymous",
+	"date_posted": "2024-02-24",
+	"tags":["Urban Agriculture", "Sustainability", "Food security"],
+	"description": "some long text",
+	"attachments": ["filename_a", "filename_b"],
+	"views": 123124,
+}
+```
+
+
+## Post an Idea
+
+> This is how a post request should be structured
+
+```shell
+curl --location 'https://api.thesisfinder.com/idea/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"title": "Exploring Sustainable Urban Agriculture",
+	"tags":["Urban Agriculture", "Sustainability", "Food security"],
+	"description": "some long text",
+}'
+```
+> The above command returns JSON that contains a the idea id:
+
+```json
+{
+	"id" : "somehash"
+}
+```
+
+This endpoint registers a new idea, which will be associated with the user authenticated. The return will be the idea id.
+
+
+## Update an Exsiting Idea
+
+> You need to be authentiacted as the author to perform this action
+
+```shell
+curl --location 'https://api.thesisfinder.com/idea/ideaid' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+		"title": "Exploring Sustainable Urban Agriculture",
+	"tags":["Urban Agriculture", "Sustainability", "Food security"],
+	"description": "some long text",
+}'
+```
+
+
+You can only update Title, Description, and Tags
+
+## Delete an Exsiting Idea
+
+> You need to be authentiacted as the author to perform this action
+
+```shell
+curl --location --request DELETE 'https://api.thesisfinder.com/idea/ideaid' \
+--header 'Content-Type: application/json' \
+--header 'Token: tokentokentoken'
+```
+
+
+This will not delete the idea, but only make it invisible
