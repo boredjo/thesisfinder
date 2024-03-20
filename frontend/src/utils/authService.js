@@ -16,3 +16,8 @@ export const setAuthenticatedUser = (user) => {
 export const clearAuthenticatedUser = () => {
   localStorage.removeItem(AUTH_USER_KEY);
 };
+
+// authService.js
+export const setAuthToken = (token) => {
+  localStorage.setItem('authToken', token);
+};
