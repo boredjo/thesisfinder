@@ -18,7 +18,6 @@ app = Flask('ThesisFinder')
 def logging_before():
     # Store the start time for the request
     app_ctx.start_time = time.perf_counter()
-    time.sleep(5)
 
 @app.after_request
 def logging_after(response):
