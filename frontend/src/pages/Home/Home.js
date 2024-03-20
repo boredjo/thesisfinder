@@ -22,7 +22,7 @@ const Home = () => {
 
   return (
     <div>
-      {/* <header className="main-header">
+      <header className="main-header">
         <div className="left-section">
           <img className="thesisfinder-logo" src={require('../../assets/thesisfinderlogo.png')} alt="Thesis-Finder-Logo" />
           <button className="left-section-button">Home</button>
@@ -38,7 +38,7 @@ const Home = () => {
           <img className="account-button" src={require('../../assets/avatar1.png')} alt="User Account" />
           <button className="header-submit-button">Submit</button>
         </div>
-      </header> */}
+      </header>
     </div>
   );
 };
