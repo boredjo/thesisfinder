@@ -1,33 +1,56 @@
-.main-container {
-  display: flex
+/* authenticated-header.css */
+
+/* Container for the header elements */
+header {
+  display: flex;
+  justify-content: flex-start; /* Align items to the left */
+  align-items: center; /* Vertically center items */
 }
+
+/* Style for the header title */
 #header-title {
   color: red;
   font-family: 'IBM Plex Mono';
-  /* font-weight: bold; */
   font-size: 2em;
-  text-decoration: none; 
+  text-decoration: none;
 }
 
-#home-link {
-  color:black;
-  font-size: 1.25em;
-  font-family: 'Fredoka One';
-  font-weight: normal;
+/* Style for the links */
+.link-container {
+  display: flex;
+  align-items: center; /* Align links vertically */
 }
 
+#home-link,
 #ideas-link {
-  color:black;
+  color: black;
   font-size: 1.25em;
   font-family: 'Fredoka One';
   font-weight: normal;
-  margin-right: 66%
 }
 
-/* authenticated-header.css */
+/* Style for the search bar */
+.search-bar-container {
+
+}
+
+#search-ideas {
+  width: 310px; /* Adjust search bar width as needed */
+  padding: 8px; /* Adjust search bar padding */
+}
+
+#home-link,
+#ideas-link,
+#search-ideas,
+#dark-mode-button,
+#notification-button {
+  margin-left: 5%;
+}
+
 #home-link:hover,
 #ideas-link:hover {
   position: relative;
+  text-decoration: none;
 }
 
 #home-link:hover::after,
@@ -41,4 +64,15 @@
   height: 2px;
   background-color: red;
   padding: 5%;
+}
+
+/* Make all elements inside header smaller depending on window size */
+@media screen and (max-width: 1080px) {
+  header {
+    font-size: 0.6em; /* Adjust font size for smaller screens */
+    padding: auto
+  }
+
+  #search-ideas {
+  }
 }
