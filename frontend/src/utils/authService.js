@@ -1,9 +1,10 @@
-// authService.js
+// // authService.js
 const AUTH_USER_KEY = 'authenticatedUser';
 
 // Get authenticated user from localStorage
 export const getAuthenticatedUser = () => {
   const user = JSON.parse(localStorage.getItem(AUTH_USER_KEY));
+  // console.log(user)
   return user || null;
 };
 
@@ -15,9 +16,12 @@ export const setAuthenticatedUser = (user) => {
 // Clear authenticated user from localStorage
 export const clearAuthenticatedUser = () => {
   localStorage.removeItem(AUTH_USER_KEY);
+  localStorage.removeItem('authToken');
 };
 
 // authService.js
 export const setAuthToken = (token) => {
   localStorage.setItem('authToken', token);
 };
+
+

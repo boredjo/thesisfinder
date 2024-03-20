@@ -1,15 +1,14 @@
-// AvatarUpload.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './avatar-upload.css';
 import ConditionsModal from '../../components/ConditionsModal/ConditionsModal';
 import ProfilePreview from '../../components/ProfilePreview/ProfilePreview';
 import defaultAvatar from '../../assets/avatar1.png';
+import { registerUser } from '../../utils/api'; // Import the registerUser API function
 
 const AvatarUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   const navigate = useNavigate();
 
   const handleFileChange = (e) => {
@@ -17,17 +16,7 @@ const AvatarUpload = () => {
     setSelectedFile(file);
   };
 
-  // In Signup.js after localStorage.setItem('signupFormData', JSON.stringify(formData));
-  const users = JSON.parse(localStorage.getItem('users')) || [];
-  console.log('Users in Local Storage:', users);
-
-  // Use the selectedFile or defaultAvatar based on the condition
   const avatarImage = selectedFile ? URL.createObjectURL(selectedFile) : defaultAvatar;
-
-  const handleWebcamCapture = async () => {
-    // Implement your webcam capture logic here
-    // This function will be called when the "Use a Webcam" button is clicked
-  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -37,15 +26,29 @@ const AvatarUpload = () => {
     setIsModalOpen(false);
   };
 
-  const handleSkipStep = () => {
-    // Retrieve signup data from local storage
+  const handleSkipStep = async () => {
     const signupFormData = JSON.parse(localStorage.getItem('signupFormData')) || {};
-  
-    // Log signupFormData for debugging
-    // console.log('Signup Form Data (Skip Step):', signupFormData);
-  
-    // Navigate to the login page with signup data and default avatar
-    navigate('/login', { state: { signupFormData, avatarImage: defaultAvatar } });
+    const avatarImage = defaultAvatar; // Use default avatar image for skipping step
+
+    try {
+      // Call the registerUser API with the signup form data
+      console.log(signupFormData.username)
+
+      await registerUser({
+        user: signupFormData.email,
+        first_name: signupFormData.firstName,
+        last_name: signupFormData.lastName,
+        country: signupFormData.region, // Assuming region corresponds to country
+        email: signupFormData.email,
+        password: signupFormData.password,
+      });
+
+      // Navigate to the login page with signup data and default avatar
+      navigate('/login', { state: { signupFormData, avatarImage } });
+    } catch (error) {
+      console.error('Error registering user:', error.message);
+      // Handle error
+    }
   };  
 
   return (
@@ -65,9 +68,6 @@ const AvatarUpload = () => {
             Upload a photo
           </label>
           <input id="file-input" type="file" accept="image/*" onChange={handleFileChange} />
-          <button className="webcam-button" onClick={handleWebcamCapture}>
-            Use a Webcam
-          </button>
         </div>
         <div className='preview-container'>
           <ProfilePreview avatarImage={avatarImage} name="John Doe" location="University of XYZ" />
