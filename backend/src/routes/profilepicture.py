@@ -25,19 +25,20 @@ def resize_image(username):
     im = im.resize((256, 256))
     im.save(PICTURE_PATH + username + ".png")
 
-@profile_picture_blueprint.route('/', methods=['GET'])
+@profile_picture_blueprint.route('/', methods=['Post'])
 def get_profile_picture():
-    user = request.environ['user']
-    if user.isAnon():
-        file = load_binary("../assets/anonymous.png")
-    else:
+    data = request.environ['parsed_data']
+    if 'user' in data.keys():
+        user = data['user']
         try:
             file = load_binary(PICTURE_PATH + user.name + ".png")
         except:
-            file = load_binary("../assets/default_picture.png")  
+            file = load_binary("../assets/default_picture.png")
+    else:
+        file = load_binary("../assets/anonymous.png")
     return Response(file, mimetype= 'image/png', status=200)
 
-@profile_picture_blueprint.route('/', methods=['POST'])
+@profile_picture_blueprint.route('/', methods=['PUT'])
 def post_profile_picture():
     user = request.environ['user']
     if user.isAnon():
