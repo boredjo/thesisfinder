@@ -235,4 +235,49 @@ curl --location --request DELETE 'https://api.thesisfinder.com/user/' \
 ```
 
 
-This endpoint deletes an existing user in the data base. The user authenticated by the toekn will be deleted 
+This endpoint deletes an existing user in the data base. The user authenticated by the toekn will be deleted. All token associated with the user become invalid and theprofile picture will be deleted.
+
+# Profile Picture
+
+## Get Profile picture
+
+> you can send this anonmously
+
+```shell
+curl --location 'https://tf-api.boredjo.eu/profilepicture' \
+--header 'Token: tokentokentoken'
+```
+> The above command returns an `image/png` of size 256 x 256
+
+This endpoint returns the profile picture associated with an account. If no picture is set, it returns a default picture. Sending this anonymously will return the anonymous profile picture. 
+
+![Default Profile Picture](./images/default_picture.png)
+
+## Post a Profile Picture
+
+Currently the API can only handle `image/png`.
+
+> this has to be sent authenticated
+
+```shell
+curl --location 'https://data.thesisfinder.com/profilepicture' \
+--header 'Content-Type: image/png' \
+--header 'Token: tokentokentoken' \
+--data 'image.png'
+```
+
+
+This endpoint overrides the current image with a new one. All images get resized to 256 x 256.
+
+
+## Delete a Profile Picture
+
+> this has to be sent authenticated
+
+```shell
+curl --location --request DELETE 'https://data.thesisfinder.com/profilepicture' \
+--header 'Token: tokentokentoken'
+```
+
+
+This endpoint deletes an existing profile picture. Then the default picture will be sent instead.
