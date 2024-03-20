@@ -1,0 +1,6 @@
+src/documentation
+.env
+build.sh
+Dockerfile
+README.md
+.gitignore
