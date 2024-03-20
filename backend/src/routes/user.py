@@ -1,6 +1,9 @@
-from werkzeug.wrappers import Request, Response, ResponseStream
+from werkzeug.wrappers import Response
 from flask import Blueprint, request
+
+
 from models.user import User
+from routes.profilepicture import delete_picture
 
 user_blueprint = Blueprint('user', __name__)
 
@@ -44,6 +47,14 @@ def post_user():
 @user_blueprint.route('/', methods=['DELETE'])
 def delete_user():
     user = request.environ['user'] # get issuing user
+    if user.isAnon():
+        request.environ['logger'].message("DELETE_USER", 'auth fail')
+        return Response(u'You are not authorized to do this action', mimetype= 'text/plain', status=401)
+    
     user.delete(request.environ['cursor'])
+    try:
+        delete_picture(user.name)
+    except FileNotFoundError:
+        pass
     request.environ['logger'].message("DELTE_USER", f'deleted user {user.name}')
     return Response(u'Deleted user', mimetype= 'text/plain', status=200)

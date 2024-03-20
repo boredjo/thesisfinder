@@ -1,6 +1,12 @@
 from flask import jsonify
+import bcrypt
 import mysql.connector
 from mysql.connector import errorcode
+
+def get_hashed_password(plain_text_password):
+    # Hash a password for the first time
+    #   (Using bcrypt, the salt is saved into the hash itself)
+    return bcrypt.hashpw(plain_text_password.encode('utf-8'), bcrypt.gensalt())
 
 class User:
     @classmethod
@@ -41,7 +47,7 @@ class User:
                     """
                     INSERT INTO User (username, first_name, last_name, country, email, password_hash) VALUES (%s, %s, %s, %s, %s, %s);
                     """
-                    ,[self.name, self.first_name, self.last_name, self.country, self.email, self.password_hash]
+                    ,[self.name, self.first_name, self.last_name, self.country, self.email, get_hashed_password(self.password_hash).decode('utf-8')]
                 )
             except mysql.connector.Error as err:
                 if err.errno == errorcode.ER_DUP_ENTRY:
@@ -56,7 +62,7 @@ class User:
                     """
                     UPDATE User SET first_name = %s, last_name = %s, country = %s, email = %s, password_hash = %s WHERE username = %s;
                     """
-                    ,[new_user.first_name, new_user.last_name, new_user.country, new_user.email, new_user.password_hash, self.name]
+                    ,[new_user.first_name, new_user.last_name, new_user.country, new_user.email, get_hashed_password(new_user.password_hash).decode('utf-8'), self.name]
                 )
             except mysql.connector.Error as err:
                 print("MySQL Error: ", err.msg)
@@ -94,6 +100,7 @@ class User:
         cursor.execute(
             """
             DELETE FROM User WHERE username = %s;
+            DELETE FORM AuthTokens WHERE username = %s:
             """
-            , [self.name]
+            , [self.name, self.name]
         )

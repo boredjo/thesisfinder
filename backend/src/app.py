@@ -1,5 +1,6 @@
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, request, g as app_ctx
 from dotenv import load_dotenv
+import time
 
 load_dotenv('.env') # load env if possible
 
@@ -13,6 +14,19 @@ from routes.login import login_blueprint
 
 app = Flask('ThesisFinder')
 
+@app.before_request
+def logging_before():
+    # Store the start time for the request
+    app_ctx.start_time = time.perf_counter()
+
+@app.after_request
+def logging_after(response):
+    # Get total time in milliseconds
+    total_time = time.perf_counter() - app_ctx.start_time
+    time_in_ms = int(total_time * 1000)
+    # Log the time taken for the endpoint 
+    request.environ['logger'].message("DONE", f'time: {time_in_ms}')
+    return response
 
 # calling our middleware
 app.wsgi_app = auth_middleware(app.wsgi_app)
