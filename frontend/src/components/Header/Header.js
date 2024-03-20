@@ -16,7 +16,7 @@ const Header = () => {
 
   const handleLogoutClick = () => {
     clearAuthenticatedUser();
-    navigate('/login');
+    navigate('/');
   };
 
   const handleLoginModalClose = () => {

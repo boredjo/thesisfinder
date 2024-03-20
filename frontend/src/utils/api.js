@@ -44,14 +44,21 @@ const makeRequest = async (url, method, headers, data) => {
       throw new Error(`Request failed with status ${response.status}. Response: ${errorData}`);
     }
 
-    return await response.json();
+    // Check if response is JSON
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      return await response.json();
+    } else {
+      // Return null for non-JSON responses
+      return null;
+    }
   } catch (error) {
     console.error('API Request Error:', error.message);
     throw error;
   }
 };
 
-// Get Token API request
+
 // Get Token API request
 const getToken = (user, password) => {
   const requestData = {
@@ -67,6 +74,17 @@ const getToken = (user, password) => {
   );
 };
 
+// Register User API request
+const registerUser = (userData) => {
+  return makeRequest(
+    '/user',
+    'POST',
+    { 'Content-Type': 'application/json' },
+    userData
+  );
+};
+
 export {
   getToken,
+  registerUser,
 };

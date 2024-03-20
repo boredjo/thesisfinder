@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { registerUser } from '../../utils/api';
+
 import './signup.css';
 
 const Signup = () => {
@@ -47,12 +49,11 @@ const Signup = () => {
   
     // Save form data in local storage
     localStorage.setItem('signupFormData', JSON.stringify(formData));
-  
+
     // Navigate to the avatar upload page
     navigate('/signup/avatar-upload');
   };
-  
-  
+
 
   return (
     <div className="main-container">

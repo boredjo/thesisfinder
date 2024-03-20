@@ -11,7 +11,7 @@ import './landing-page.css';
 
 const LandingPage = (props) => {
   const [featuredIdeas, setFeaturedIdeas] = useState([]);
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Sort ideas by date and show only first five
@@ -22,11 +22,20 @@ const LandingPage = (props) => {
 
     setFeaturedIdeas(selectedIdeas);
   }, []);
+  
+  useEffect(() => {
+    // Check if the authentication token exists
+    const authToken = localStorage.getItem('authToken');
+    if (authToken) {
+      // Redirect to Home.js if the token exists
+      navigate('/home');
+    }
+  }, [navigate]);
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       const query = event.target.value;
-      history(`/explore-guest-search/${query}`);
+      navigate(`/explore-guest-search/${query}`);
     }
   };
 
