@@ -157,85 +157,6 @@ curl --location --request DELETE 'https://api.thesisfinder.com/user/' \
 This endpoint deletes an existing user in the data base. The user authenticated by the toekn will be deleted 
 
 
-# Profile Picture
-
-## Get a profile picture
-
-> you can send this anonmously
-
-```shell
-curl --location --request GET 'https://api.thesisfinder.com/user/' \
---header 'Content-Type: application/json' \
---header 'Token: tokentokentoken' \
-```
-> The above command returns JSON structured like this:
-
-```json
-{
-    "country": "US",
-    "email": "",
-    "first_name": "Anonymous",
-    "last_name": "User",
-    "user": "anonymous"
-}
-```
-> This is the anonymous result
-
-This endpoint gives the information about the user identified by the auth token. An endpoint to obtain other useres information (without being logged in as that user) is not planned.
-
-## Post a New User
-
-> this has to be sent anonymously
-
-```shell
-curl --location 'https://api.thesisfinder.com/user/' \
---header 'Content-Type: application/json' \
---data-raw '{
-	"user": "username",
-	"first_name": "First Name",
-	"last_name": "Last Name",
-	"country": "US",
-	"email": "email@example.com",
-	"password": "password"
-}'
-```
-
-This endpoint registers a new user with the data base. The username and emails are checked for uniqueness. 
-
-## Update an Exsiting User
-
-> this also uses the POST-method
-
-```shell
-curl --location 'https://api.thesisfinder.com/user/' \
---header 'Content-Type: application/json' \
---header 'Token: tokentokentoken' \
---data-raw '{
-	"user": "username",
-	"first_name": "First Name",
-	"last_name": "Last Name",
-	"country": "US",
-	"email": "email@example.com",
-	"password": "password"
-}'
-```
-> this has to be sent authenticated
-
-
-This endpoint updates an existing user in the data base. The username and emails are checked for uniqueness agian to avoid conflicts. 
-
-## Delete an Exsiting User
-
-> this has to be sent authenticated
-
-```shell
-curl --location --request DELETE 'https://api.thesisfinder.com/user/' \
---header 'Content-Type: application/json' \
---header 'Token: tokentokentoken'
-```
-
-
-This endpoint deletes an existing user in the data base. The user authenticated by the toekn will be deleted. All token associated with the user become invalid and theprofile picture will be deleted.
 
 # Profile Picture
 
@@ -251,7 +172,6 @@ curl --location 'https://tf-api.boredjo.eu/profilepicture' \
 
 This endpoint returns the profile picture associated with an account. If no picture is set, it returns a default picture. Sending this anonymously will return the anonymous profile picture. 
 
-![Default Profile Picture](./images/default_picture.png)
 
 ## Post a Profile Picture
 
