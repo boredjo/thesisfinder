@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import LoginModal from '../LoginModal/LoginModal';
+import { getAuthenticatedUser, clearAuthenticatedUser } from '../../utils/authService';
 
 import './header.css';
 
-const Header = ({ isAuthenticated, username }) => {
+const Header = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const authenticatedUser = getAuthenticatedUser();
+  const navigate = useNavigate();
 
   const handleLoginClick = () => {
     setShowLoginModal(true);
+  };
+
+  const handleLogoutClick = () => {
+    clearAuthenticatedUser();
+    navigate('/login');
   };
 
   const handleLoginModalClose = () => {
@@ -19,10 +27,10 @@ const Header = ({ isAuthenticated, username }) => {
     <header>
       <Link id='header-title' to="/">ThesisFinder</Link>
       <nav>
-        {isAuthenticated ? (
+        {authenticatedUser ? (
           <>
-            <p>Welcome, {username}!</p>
-            <Link to="/logout">Logout</Link>
+            <p>Welcome, {authenticatedUser.username}!</p>
+            <button onClick={handleLogoutClick}>Logout</button>
           </>
         ) : (
           <>

@@ -1,6 +1,7 @@
-// Login.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { getToken } from '../../utils/api';
+import { setAuthenticatedUser, setAuthToken } from '../../utils/authService'; // Import setAuthToken
 
 import './login.css';
 
@@ -14,32 +15,40 @@ const Login = () => {
   });
 
   const [error, setError] = useState('');
-  
-  // In Signup.js after localStorage.setItem('signupFormData', JSON.stringify(formData));
-  const users = JSON.parse(localStorage.getItem('users')) || [];
-  console.log('Users in Local Storage:', users);
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Read existing users data from localStorage
-    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+    try {
+      // Call the API to get the authentication token
+      const response = await getToken(formData.email, formData.password);
 
-    // Find the user with the provided email
-    const user = existingUsers.find((u) => u.email === formData.email);
+      // Check if the response has a token
+      if (response && response.token) {
+        // Set the authenticated user in local storage
+        setAuthenticatedUser({
+          email: formData.email,
+          // Add any other user-related info you may need
+        });
 
-    // Check if the user exists and the password is correct
-    if (user && user.password === formData.password) {
-      // Redirect to the home page after successful login
-      navigate('/');
-    } else {
-      setError('Invalid email or password');
+        // Set the authentication token in local storage
+        setAuthToken(response.token);
+
+        console.log(response.token)
+
+        // Redirect to the home page after successful login
+        navigate('/');
+      } else {
+        setError('Invalid email or password');
+      }
+    } catch (error) {
+      setError('Error during login. Please try again.');
+      console.error(error);
     }
   };
 
@@ -51,20 +60,6 @@ const Login = () => {
         email: state.signupFormData.email || '',
         password: '', // Leave the password field empty for security reasons
       });
-    }
-  }, [location]);
-
-  React.useEffect(() => {
-    const { state } = location;
-    if (state && state.signupFormData) {
-      setFormData({
-        email: state.signupFormData.email,
-        password: '', // Leave the password field empty for security reasons
-      });
-  
-      // Log for debugging
-      console.log('Signup Form Data (Login):', state.signupFormData);
-      console.log('Avatar Image:', state.avatarImage);
     }
   }, [location]);
 

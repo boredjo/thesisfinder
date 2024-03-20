@@ -42,7 +42,7 @@ const AvatarUpload = () => {
     const signupFormData = JSON.parse(localStorage.getItem('signupFormData')) || {};
   
     // Log signupFormData for debugging
-    console.log('Signup Form Data (Skip Step):', signupFormData);
+    // console.log('Signup Form Data (Skip Step):', signupFormData);
   
     // Navigate to the login page with signup data and default avatar
     navigate('/login', { state: { signupFormData, avatarImage: defaultAvatar } });
