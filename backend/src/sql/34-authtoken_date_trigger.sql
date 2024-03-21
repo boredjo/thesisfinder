@@ -1,6 +1,0 @@
-CREATE DEFINER=`tf`@`%` TRIGGER created_date
-BEFORE INSERT
-ON AuthTokens FOR EACH ROW
-BEGIN
-    SET NEW.created_date  = UTC_TIMESTAMP();
-END;

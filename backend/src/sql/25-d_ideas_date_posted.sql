@@ -1,1 +1,0 @@
-DROP TRIGGER IF EXISTS ideas_date_posted;

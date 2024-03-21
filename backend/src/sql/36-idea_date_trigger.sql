@@ -1,6 +1,0 @@
-CREATE DEFINER=`tf`@`%` TRIGGER ideas_date_posted
-BEFORE INSERT
-ON Ideas FOR EACH ROW
-BEGIN
-    SET NEW.date_posted = UTC_TIMESTAMP();
-END
