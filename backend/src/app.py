@@ -11,6 +11,7 @@ from utils.check_permissions import pre_check
 from routes.profilepicture import profile_picture_blueprint
 from routes.user import user_blueprint
 from routes.login import login_blueprint
+from routes.idea import idea_blueprint
 
 pre_check() # check folder structure
 rebase()
@@ -40,6 +41,7 @@ app.wsgi_app = parse_middleware(app.wsgi_app)
 app.register_blueprint(profile_picture_blueprint, url_prefix='/profilepicture')
 app.register_blueprint(user_blueprint, url_prefix='/user')
 app.register_blueprint(login_blueprint, url_prefix='/login')
+app.register_blueprint(idea_blueprint, url_prefix='/idea')
 
 
 # serve api documentation
