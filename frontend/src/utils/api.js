@@ -29,15 +29,12 @@ const makeRequest = async (url, method, headers, data) => {
 
     const response = await fetch(`${API_BASE_URL}${url}`, requestConfig);
 
-    console.log(response.ok)
-
     // Check if response is ok before processing
     if (!response.ok) {
       let errorData;
       try {
         // Try to read the response body as text
         errorData = await response.text();
-        console.log(errorData)
       } catch (error) {
         // If reading the response body fails, provide a generic error message
         errorData = 'Unable to read response body';
@@ -60,7 +57,6 @@ const makeRequest = async (url, method, headers, data) => {
     throw error;
   }
 };
-
 
 // Get Token API request
 const getToken = (user, password) => {
@@ -96,8 +92,30 @@ const getUser = (token) => {
   );
 };
 
+// Create User API request
+const createUser = (userData) => {
+  return makeRequest(
+    '/user',
+    'POST',
+    { 'Content-Type': 'application/json' },
+    userData
+  );
+};
+
+// Update User API request
+const updateUser = (userData, token) => {
+  return makeRequest(
+    '/user',
+    'POST',
+    { 'Content-Type': 'application/json', 'Token': token },
+    userData
+  );
+};
+
 export {
   getToken,
   registerUser,
   getUser,
+  createUser,
+  updateUser
 };
