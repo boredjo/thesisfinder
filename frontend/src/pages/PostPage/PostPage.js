@@ -50,7 +50,7 @@ const PostPage = ({ ideas }) => {
             <section id="attachments">
               <h2>Attachments</h2>
               <div className="attachment-item">
-                <img className="attachment-icon" src="../assets/researchdocimage.png" alt="Attachment Icon" />
+                <img className="attachment-icon" src={require('../../assets/researchdocimage.png')} id="Attachment Icon" alt="Attachment Icon" />
                 <div className="attachment-info">
                   <span className="attachment-name">attachment-name.pdf</span>
                   <span className="attachment-size">attachment-size</span>
@@ -73,7 +73,7 @@ const PostPage = ({ ideas }) => {
             <div id="claimed-by">
               <h3>Claimed by:</h3>
               <ul>
-                <li><img src="../assets/avatar1.png" alt="Claimant Name" /><span>Claimant Name</span></li>
+                <li><img src={require('../../assets/avatar1.png')} id="Claimant Name" alt="Claimant Name" /><span>Claimant Name</span></li>
               </ul>
             </div>
           </aside>
