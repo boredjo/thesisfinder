@@ -1,26 +1,53 @@
-// /frontend/src/pages/Account.js
-// Account options page
-// Accessible from home page
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../styles/main.css';
 import '../../styles/mainheader.css';
 import './account.css';
+import { getUser } from '../../utils/api'; // Import getUser function
 
 const Account = () => {
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        // Call the getUser function to fetch user data
+        const token = localStorage.getItem('authToken');
+        const response = await getUser(token);
+
+        if (response) {
+          setUserData(response);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   return (
     <div>
       {/* Put authenticatedheader.js here */}
       {/* Top part with pfp, name, and description */}
-      <div className="profile-header">
-        {/* src path is a placeholder, replace with actual image data */}
-        <img className="profile-image" src="../assets/avatar1.png" alt="Profile image" />
-        <div className="profile-info">
-          <h1>Name of Account</h1>
-          <p>Description Placeholder</p>
-          <button className="edit-btn">Edit</button>
-        </div>
-      </div>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        userData && ( // Conditionally render only if userData is not null
+          <div className="profile-header">
+            {/* src path is a placeholder, replace with actual image data */}
+            <img className="profile-image" src="../assets/avatar1.png" alt="Profile image" />
+            <div className="profile-info">
+              <h1>{`${userData.first_name} ${userData.last_name}`}</h1>
+              <p>{userData.email}</p>
+              {/* Replace with actual description */}
+              <p>Description Placeholder</p>
+              <button className="edit-btn">Edit</button>
+            </div>
+          </div>
+        )
+      )}
 
       {/* Toolbar */}
       <nav className="profile-nav">
@@ -60,10 +87,13 @@ const Account = () => {
           </select>
         </div>
 
-        <div className="input-group">
-          <label htmlFor="email">Email</label>
-          <input type="email" id="email" placeholder="Enter your email address" />
-        </div>
+        {/* Render email input only if userData is not null */}
+        {userData && (
+          <div className="input-group">
+            <label htmlFor="email">Email</label>
+            <input type="email" id="email" value={userData.email} readOnly />
+          </div>
+        )}
 
         <div className="actions">
           <button className="cancel-btn">Cancel</button>
@@ -74,4 +104,4 @@ const Account = () => {
   );
 };
 
-export default Account; 
+export default Account;
