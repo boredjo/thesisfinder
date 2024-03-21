@@ -31,17 +31,47 @@ def rebase():
             log_error(e, 'db.py - establish connection')
             sys.exit(1)
 
+        # wipe database
+        cursor = connection.cursor(buffered=True)
+        with open('sql/delete.sql', 'r') as file:
+            log_info(f"Deleting everything", 'db.py')
+            ddl_sql = file.read()
+        cursor.execute(ddl_sql, multi=True)
+        cursor.close()
 
-        # Read the SQL files
-        sql_files = sorted([f for f in os.listdir('sql/') if f.endswith(".sql")])
+        # create tables
+        sql_files = sorted([f for f in os.listdir('sql/tables/') if f.endswith(".sql")])
         for filename in sql_files:
             connection.reconnect()
             cursor = connection.cursor(buffered=True)
-            with open(os.path.join('sql/', filename), 'r') as file:
+            with open(os.path.join('sql/tables/', filename), 'r') as file:
                 log_info(f"Executing {filename}", 'db.py')
                 ddl_sql = file.read()
             cursor.execute(ddl_sql)
             cursor.close()
+        
+        # create trigger
+        sql_files = sorted([f for f in os.listdir('sql/trigger/') if f.endswith(".sql")])
+        for filename in sql_files:
+            connection.reconnect()
+            cursor = connection.cursor(buffered=True)
+            with open(os.path.join('sql/trigger/', filename), 'r') as file:
+                log_info(f"Executing {filename}", 'db.py')
+                ddl_sql = file.read()
+            cursor.execute(ddl_sql)
+            cursor.close()
+
+        # insert data
+        sql_files = sorted([f for f in os.listdir('sql/data/') if f.endswith(".sql")])
+        for filename in sql_files:
+            connection.reconnect()
+            cursor = connection.cursor(buffered=True)
+            with open(os.path.join('sql/data/', filename), 'r') as file:
+                log_info(f"Executing {filename}", 'db.py')
+                ddl_sql = file.read()
+            cursor.execute(ddl_sql, multi=True)
+            cursor.close()
+
 
         connection.close()
         log_info("Rebase succesful", 'db.py')
