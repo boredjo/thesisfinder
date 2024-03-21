@@ -1,12 +1,70 @@
 from flask import jsonify
+from datetime import datetime
+import mysql.connector
+from mysql.connector import errorcode
+import base64
 
-class idea:
+class Idea:
 
-    def __init__(self, title, tags, date, author, description):
+    def __init__(self, title, tags, author, description, id = ''):
+        if id == '':
+            hash = datetime.now().strftime("%Y%m%d%H%M%S%f").encode('utf-8')
+            self.id = base64.b64encode(hash).decode('utf-8')
+        else : self.id = id
         self.title = title
         self.tags = tags
-        self.date = date
         self.author = author
         self.description = description
+        self.views = 0
+        self.date_posted = datetime.now()
         self.claimed_by = []
         self.sponsorships = []
+        self.attachments = []
+
+    def store(self, cursor):
+        for i in range(5-len(self.tags)):
+            self.tags.append("NULL")
+        cursor.execute(
+            """
+            INSERT INTO Ideas (hash, title, author, description, tag1, tag2, tag3, tag4, tag5) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
+            """
+            ,[self.id, self.title, self.author, self.description.encode(), self.tags[0], self.tags[1], self.tags[2], self.tags[3], self.tags[4]]
+        )
+
+    
+    def find_idea(id, cursor):
+        cursor.execute(
+            """
+            SELECT title, author, description, tag1, tag2, tag3, tag4, tag5, views, date_posted FROM Ideas WHERE hash = %s ;
+            """
+            , [id]
+        )
+        row = cursor.fetchone()
+        tags = list([row[3], row[4], row[5], row[6], row[7]])
+        new_idea = Idea(row[0], tags, row[1], row[2], id=id)
+        new_idea.views = int(row[8])
+        new_idea.date_posted = row[9]
+        return new_idea
+    
+    def update(self, cursor):
+        for i in range(5-len(self.tags)):
+            self.tags.append("NULL")
+        cursor.execute(
+            """
+            UPDATE Ideas SET title = %s, description = %s, tag1 = %s, tag2 = %s, tag3 = %s, tag4 = %s, tag5 = %s WHERE hash = %s;
+            """
+            ,[self.title, self.description.encode(), self.tags[0], self.tags[1], self.tags[2], self.tags[3], self.tags[4], self.id]
+        )
+
+    def jsonify(self):
+        return jsonify({
+            "id" : self.id,
+            "title": self.title,
+            "author": self.author,
+            "date_posted": self.date_posted,
+            "tags": self.tags,
+            "description": self.description,
+            "attachments": self.attachments,
+            "views": self.views,
+        })
+
