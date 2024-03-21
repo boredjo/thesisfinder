@@ -229,9 +229,10 @@ curl --location --request GET 'https://api.thesisfinder.com/idea/featured' \
 
 This endpoint gives a list 5 questions, meant to be displayed at the featured idea page
 
+
 ### Idea Details
 
-> this method requires the idea id to look up the details of the question
+> This method requires the idea id to look up the details of the question
 
 ```shell
 curl --location --request GET 'https://api.thesisfinder.com/idea/details/ideaid' \
@@ -252,6 +253,7 @@ curl --location --request GET 'https://api.thesisfinder.com/idea/details/ideaid'
 }
 ```
 
+To get more details send a request to `https://api.thesisfinder.com/idea/details`
 
 ## Post an Idea
 
