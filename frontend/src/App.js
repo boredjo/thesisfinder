@@ -12,6 +12,7 @@ import Login from './pages/Login/Login';
 import AvatarUpload from './pages/AvatarUpload/AvatarUpload';
 import Home from './pages/Home/Home';
 import PostPage from './pages/PostPage/PostPage'; // Import PostPage component
+import Account from './pages/Account/Account.js';
 
 import ideas from './data/ideasData.js'
 
@@ -19,6 +20,7 @@ import { getAuthToken } from './utils/authService';
 
 const App = () => {
   const authToken = getAuthToken();
+  console.log(authToken)
 
   return (
     <div>
@@ -33,6 +35,7 @@ const App = () => {
           <Route path="/home" element={<Home />} />
           {/* Route for individual post pages */}
           <Route path="/post-page/:id" element={<PostPage ideas={ideas} />} />
+          <Route path="/account" element={<Account />} />
         </Routes>
         <Footer />
       </Router>
