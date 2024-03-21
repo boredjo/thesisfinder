@@ -65,7 +65,6 @@ def update_idea(idea_id):
     data = request.environ['parsed_data']
     if 'tags' in data.keys(): idea.tags = data['tags']
     if 'description' in data.keys(): idea.tags = data['description']
-    if 'title' in data.keys(): idea.title = data['title']
 
     try: 
         idea.update(request.environ['cursor'])
