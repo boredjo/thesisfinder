@@ -40,7 +40,7 @@ class Idea:
             , [id]
         )
         row = cursor.fetchone()
-        tags = list([row[3], row[4], row[5], row[6], row[7]])
+        tags = list([row[3:7]])
         new_idea = Idea(row[0], tags, row[1], row[2], id=id)
         new_idea.views = int(row[8])
         new_idea.date_posted = row[9]
@@ -56,6 +56,14 @@ class Idea:
             ,[self.title, self.description.encode(), self.tags[0], self.tags[1], self.tags[2], self.tags[3], self.tags[4], self.id]
         )
 
+    def delete(self, cursor):
+        cursor.execute(
+            """
+            DELETE FROM Ideas WHERE hash = %s;
+            """
+            , [self.id]
+        )
+
     def jsonify(self):
         return jsonify({
             "id" : self.id,
@@ -67,4 +75,20 @@ class Idea:
             "attachments": self.attachments,
             "views": self.views,
         })
+    
+    def get_random(n, cursor):
+        data = []
+        cursor.execute(
+            """
+            SELECT title, author, tag1, tag2, tag3, tag4, tag5, date_posted FROM Ideas ORDER BY RAND() LIMIT %s ;
+            """
+            , [n]
+        )
+        for _ in range(n):
+            row = cursor.fetchone()
+            tags = list([row[2:6]])
+            idea = Idea(row[0], tags, row[1], "", id=id)
+            idea.date_posted = row[7]
+            data.append(idea)
+        return data
 

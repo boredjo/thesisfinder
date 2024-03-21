@@ -9,11 +9,19 @@ from routes.profilepicture import delete_picture
 
 idea_blueprint = Blueprint('idea', __name__)
 
-@idea_blueprint.route('/featured', methods=['GET'])
-def get_featured_ideas():
-
-    user = request.environ['user']
-    return user.jsonify()
+@idea_blueprint.route('/featured/<path:n>', methods=['GET'])
+def get_featured_ideas(n=5):
+    data = Idea.get_random(5)
+    json_array = [
+        jsonify(
+            id= idea.id,
+            title=idea.title,
+            author=idea.author,
+            date_posted=idea.date_posted,
+            tags=idea.tags
+        ) for idea in data
+    ]
+    return jsonify(ideas=[])
 
 @idea_blueprint.route('/details/<path:idea_id>', methods=['GET'])
 def get_idea_details(idea_id):
@@ -57,7 +65,6 @@ def update_idea(idea_id):
         request.environ['logger'].message("UPDATE_IDEA", "idea doesn't exists")
         return Response(u"The idea doesn't exists", mimetype= 'text/plain', status=422)
 
-    print(idea.author , idea.author == user.name)
     if not idea.author == user.name or user.isAnon():
         request.environ['logger'].message("UPDATE_IDEA", "not the author")
         return Response(u'You are not authorized to do this action', mimetype= 'text/plain', status=401)
@@ -75,17 +82,21 @@ def update_idea(idea_id):
     request.environ['logger'].message("UPDATE_IDEA", f'idea {idea.id} update')
     return Response(u'idea updated', mimetype= 'text/plain', status=200)
     
-# @idea_blueprint.route('/', methods=['DELETE'])
-# def delete_user():
-#     user = request.environ['user'] # get issuing user
-#     if user.isAnon():
-#         request.environ['logger'].message("DELETE_USER", 'auth fail')
-#         return Response(u'You are not authorized to do this action', mimetype= 'text/plain', status=401)
+@idea_blueprint.route('/<path:idea_id>', methods=['DELETE'])
+def delete_idea(idea_id):
+    user = request.environ['user'] # get issuing user
+    try: 
+        idea = Idea.find_idea(idea_id, request.environ['cursor'])
+    except mysql.connector.Error as err:
+        request.environ['logger'].message("DELETE_IDEA", "idea doesn't exists")
+        return Response(u"The idea doesn't exists", mimetype= 'text/plain', status=422)
     
-#     user.delete(request.environ['cursor'])
-#     try:
-#         delete_picture(user.name)
-#     except FileNotFoundError:
-#         pass
-#     request.environ['logger'].message("DELTE_USER", f'deleted user {user.name}')
-#     return Response(u'Deleted user', mimetype= 'text/plain', status=200)
+    if not idea.author == user.name or user.isAnon():
+        request.environ['logger'].message("DELETE_IDEA", "not the author")
+        return Response(u'You are not authorized to do this action', mimetype= 'text/plain', status=401)
+
+
+    idea.delete(request.environ['cursor'])
+
+    request.environ['logger'].message("DELETE_IDEA", f'idea {idea.id} deleted')
+    return Response(u'idea deleted', mimetype= 'text/plain', status=200)
