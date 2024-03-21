@@ -1,6 +1,7 @@
 from flask import Flask, send_from_directory, request, g as app_ctx
 from dotenv import load_dotenv
 import time
+import os
 
 load_dotenv('.env') # load env if possible
 
@@ -14,7 +15,8 @@ from routes.login import login_blueprint
 from routes.idea import idea_blueprint
 
 pre_check() # check folder structure
-rebase()
+if os.environ['REBASE']: rebase()
+
 
 app = Flask('ThesisFinder')
 
