@@ -5,7 +5,7 @@ import time
 load_dotenv('.env') # load env if possible
 
 from utils.auth import auth_middleware
-from utils.db import mysql_middleware
+from utils.db import mysql_middleware, rebase
 from utils.parse import parse_middleware
 from utils.check_permissions import pre_check
 from routes.profilepicture import profile_picture_blueprint
@@ -13,6 +13,7 @@ from routes.user import user_blueprint
 from routes.login import login_blueprint
 
 pre_check() # check folder structure
+rebase()
 
 app = Flask('ThesisFinder')
 
