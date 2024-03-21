@@ -11,10 +11,11 @@ import Signup from './pages/Signup/Signup';
 import Login from './pages/Login/Login';
 import AvatarUpload from './pages/AvatarUpload/AvatarUpload';
 import Home from './pages/Home/Home';
+import PostPage from './pages/PostPage/PostPage'; // Import PostPage component
+
+import ideas from './data/ideasData.js'
 
 import { getAuthToken } from './utils/authService';
-
-// import LoginModal from "react-login-modal-sm";
 
 const App = () => {
   const authToken = getAuthToken();
@@ -22,19 +23,19 @@ const App = () => {
   return (
     <div>
       <Router>
-        {authToken ? <AuthenticatedHeader /> : <Header /> } 
-        {/* <AuthenticatedHeader /> */}
-        {/* <Header /> */}
+        {authToken ? <AuthenticatedHeader /> : <Header />}
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="signup/avatar-upload" element={<AvatarUpload />} />
+          <Route path="/signup/avatar-upload" element={<AvatarUpload />} />
           <Route path="/explore-guest-search/:query" element={<ExploreGuestSearch />} />
           <Route path="/home" element={<Home />} />
+          {/* Route for individual post pages */}
+          <Route path="/post-page/:id" element={<PostPage ideas={ideas} />} />
         </Routes>
         <Footer />
-      </Router> 
+      </Router>
     </div>
   );
 };
