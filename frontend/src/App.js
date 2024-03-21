@@ -22,7 +22,7 @@ const App = () => {
   return (
     <div>
       <Router>
-        {/* {authToken ? <AuthenticatedHeader /> : <Header /> }  */}
+        {authToken ? <AuthenticatedHeader /> : <Header /> } 
         {/* <AuthenticatedHeader /> */}
         {/* <Header /> */}
         <Routes>

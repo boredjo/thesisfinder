@@ -56,9 +56,12 @@ header {
 #search-ideas,
 #dark-mode-button,
 #notification-button,
-#avatar-button, 
 #add-new-button {
   margin-left: 5%;
+}
+
+.header-link {
+  margin-left: 5%
 }
 
 #home-link:hover,
