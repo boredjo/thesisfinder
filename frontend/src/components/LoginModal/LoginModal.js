@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { setAuthenticatedUser, setAuthToken } from '../../utils/authService'; // Import setAuthToken
+import { getToken } from '../../utils/api'; // Import getToken function
 
 import './loginmodal.css';
 
@@ -23,11 +24,8 @@ const LoginModal = ({ show, handleClose }) => {
     e.preventDefault();
 
     try {
-      // Call the API to get the authentication token (Replace getToken with your actual API call)
-      // const response = await getToken(formData.email, formData.password);
-
-      // For demonstration, assume login is successful and set token
-      const response = { token: 'example_token' };
+      // Call the API to get the authentication token
+      const response = await getToken(formData.email, formData.password);
 
       // Check if the response has a token
       if (response && response.token) {
