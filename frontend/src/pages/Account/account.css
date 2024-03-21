@@ -1,0 +1,151 @@
+.profile-header {
+  background-color: #ffffff;
+  padding: 35px 25px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgb(212, 212, 212);
+}
+
+.profile-image {
+  width: 86px;
+  height: 86px;
+  margin-right: 20px;
+  border-radius: 50%; 
+  object-fit: cover;
+  border: none;
+}
+
+.profile-info {
+  flex-grow: 1;
+}
+
+.profile-info h1 {
+  margin: 5px 0;
+  color: #333333;
+  font-size: 24px;
+}
+
+.profile-info p {
+  font-size: 14px;
+  color: #666666;
+  margin: 5px 0;
+}
+
+.edit-btn {
+  display: inline-block;
+  font-size: 14px;
+  background-color: transparent;
+  border: none;
+  color: #333333;
+  padding: 5px 0;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.edit-btn:hover,
+.edit-btn:focus {
+  text-decoration: underline;
+}
+
+.profile-nav ul {
+  display: flex;
+  justify-content: left;
+  list-style-type: none;
+  margin: 0;
+  padding: 4px;
+  overflow: hidden;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+.profile-nav li {
+  display: inline-block;
+}
+
+.profile-nav li a {
+  font-size: 13px;
+  text-decoration: none;
+  background-color: white;
+  color: black;
+  border: none;
+  height: 60px;
+  margin: 0 20px;
+  padding: 5px;
+  transition:
+    border-color 0.1s;
+}
+
+.profile-nav li a:hover,
+.profile-nav li a:focus {
+  border-bottom: 5px solid rgb(236, 54, 14);
+  padding-bottom: 0;
+}
+
+.about-me {
+  left: 5px;
+  background-color: #ffffff;
+  border: 1px solid rgb(212, 212, 212);
+  border-radius: 1.5px; 
+  padding: 10px 20px;
+  margin: 15px 20px;
+  max-width: 600px; 
+  border-radius: 4px; 
+}
+
+.input-group {
+  margin-bottom: 10px;
+}
+
+.input-group label {
+  font-size: 14px;
+  display: block;
+  margin-bottom: 5px;
+  color: #333333;
+}
+
+.input-group input[type="text"],
+.input-group input[type="email"],
+.input-group textarea,
+.input-group select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.input-group textarea {
+  height: 100px;
+}
+
+.actions {
+  text-align: right;
+}
+
+.cancel-btn,
+.save-btn {
+  padding: 10px 20px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.cancel-btn {
+  background-color: rgb(244, 244, 244);
+  color: #333333;
+}
+.cancel-btn:hover {
+  background-color: rgb(220, 220, 220);
+}
+
+.save-btn {
+  background-color: rgb(236, 54, 14);
+  color: white;
+}
+
+.save-btn:hover,
+.save-btn:focus {
+  background-color: rgb(198, 47, 13);
+}
