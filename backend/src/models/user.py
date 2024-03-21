@@ -51,7 +51,6 @@ class User:
                 )
             except mysql.connector.Error as err:
                 if err.errno == errorcode.ER_DUP_ENTRY:
-                    print(-1)
                     return -1
                 else:
                     print("MySQL Error: ", err.msg)
