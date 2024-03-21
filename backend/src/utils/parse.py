@@ -8,6 +8,7 @@ from utils.logs import Logger
 JSON_PATHS = [
     "/use", # /user
     "/log", # /login
+    "/ide", # /idea
 ]
 
 IMAGE_PATHS = [
