@@ -1,13 +1,14 @@
-// FeaturesIdeas.js
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './feature-ideas.css';
 
 const FeaturesIdeas = ({ ideas }) => {
   return (
     <div className="features-ideas">
-      {ideas.map((idea, index) => (
-        <div key={index} className="idea-container">
-          <h3>{idea.title}</h3>
+      {ideas.map((idea) => (
+        <div key={idea.id} className="idea-container">
+          {/* Link each idea title to the post page */}
+          <Link to={`/post-page/${idea.id}`} className="idea-title">{idea.title}</Link>
           <div className="tags-container">
             {idea.tags.map((tag, tagIndex) => (
               <div key={tagIndex} className="tag">
