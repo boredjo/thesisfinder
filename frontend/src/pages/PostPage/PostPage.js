@@ -42,10 +42,18 @@ const PostPage = () => {
               <span className="author">Author(s): placeholder</span>
               <span className="date">Date Posted: </span>
             </div>
-            <section id="overview">
-              <h2>Overview</h2>
-              <p>overview placeholder</p>
-            </section>
+            <nav className="article-nav">
+              {/* Toolbar for switching between statuses of our project */}
+              <ul>
+                <li><a href="#">Overview</a></li>
+                <li><a href="#">Stats</a></li>
+                <li><a href="#">Comments</a></li>
+                <li><a href="#">More Info</a></li>
+                <li><a href="#">Suggested Ideas</a></li>
+                <li><a href="#">Research Papers</a></li>
+                <li><a href="#">Sponsors</a></li>
+              </ul>
+            </nav>
             <section id="description">
               <h2>Description</h2>
               {/* This copypasta is just a placeholder to show that the description expands to show the whole <p> element. Feel free to delete it lol. */}
