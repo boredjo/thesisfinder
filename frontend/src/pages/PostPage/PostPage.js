@@ -4,7 +4,7 @@ import '../../styles/main.css';
 import '../../styles/mainheader.css';
 import './post-page.css';
 
-const PostPage = ({ ideas }) => {
+const PostPage = ({ ideas, authToken }) => {
   // Retrieve the id parameter from the URL
   const { id } = useParams();
 
@@ -40,7 +40,13 @@ const PostPage = ({ ideas }) => {
                 <li><a href="#">More Info</a></li>
                 <li><a href="#">Suggested Ideas</a></li>
                 <li><a href="#">Research Papers</a></li>
-                <li><a href="#">Sponsors</a></li>
+                {/* Conditionally render the claim and sponsor buttons */}
+                {authToken && (
+                  <>
+                    <li><a href="#">Sponsors</a></li>
+                    <li><a href="#">Claim</a></li>
+                  </>
+                )}
               </ul>
             </nav>
             <section id="description">
@@ -64,9 +70,14 @@ const PostPage = ({ ideas }) => {
                 <li>Placeholder Collaborations</li>
               </ul>
             </section>
+            {/* Action buttons */}
             <div id="action-buttons">
-              <button type="button" id="claim-button">Claim</button>
-              <button type="button" id="sponsor-button">Sponsor</button>
+              {authToken && (
+                <>
+                  <button type="button" id="claim-button">Claim</button>
+                  <button type="button" id="sponsor-button">Sponsor</button>
+                </>
+              )}
             </div>
           </article>
           <aside>
