@@ -34,7 +34,7 @@ const App = () => {
           <Route path="/explore-guest-search/:query" element={<ExploreGuestSearch />} />
           <Route path="/home" element={<Home />} />
           {/* Route for individual post pages */}
-          <Route path="/post-page/:id" element={<PostPage ideas={ideas} />} />
+          <Route path="/post-page/:id" element={<PostPage ideas={ideas} authToken={authToken} />} />
           <Route path="/account" element={<Account />} />
         </Routes>
         <Footer />
