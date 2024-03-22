@@ -8,10 +8,18 @@ import './post-page.css';
 const PostPage = ({ ideas, authToken }) => {
   const { id } = useParams();
   const [showModal, setShowModal] = useState(false);
+  const [showSponsorModal, setShowSponsorModal] = useState(false); // State for the sponsor modal
   const [claimedBy, setClaimedBy] = useState(null); // State to store the user who claimed the idea
   const [formData, setFormData] = useState({
     title: '',
     description: '',
+    documents: [],
+    visibility: 'public',
+  });
+  const [sponsorFormData, setSponsorFormData] = useState({
+    amount: '',
+    purpose: '',
+    duration: '',
     documents: [],
     visibility: 'public',
   });
@@ -37,7 +45,15 @@ const PostPage = ({ ideas, authToken }) => {
       console.error('Error fetching user data:', error);
     }
   };
-  
+
+  const handleSponsorModalOpen = () => {
+    setShowSponsorModal(true);
+  };
+
+  const handleSponsorModalClose = () => {
+    setShowSponsorModal(false);
+  };
+
   const handleCloseModal = () => {
     setShowModal(false);
   };
@@ -63,11 +79,45 @@ const PostPage = ({ ideas, authToken }) => {
     });
   };
 
+  const handleSponsorFormChange = (e) => {
+    const { name, value } = e.target;
+    setSponsorFormData({
+      ...sponsorFormData,
+      [name]: value,
+    });
+  };
+
+  const handleSponsorDocumentChange = (e) => {
+    const files = Array.from(e.target.files);
+    const fileData = files.map((file) => ({
+      name: file.name,
+      type: file.type,
+      data: URL.createObjectURL(file),
+    }));
+    setSponsorFormData({
+      ...sponsorFormData,
+      documents: fileData,
+    });
+  };
+
+  const handleSponsorSubmit = (e) => {
+    e.preventDefault();
+    localStorage.setItem(`sponsorFormData_${id}`, JSON.stringify(sponsorFormData));
+    setSponsorFormData({
+      amount: '',
+      purpose: '',
+      duration: '',
+      documents: [],
+      visibility: 'public',
+    });
+    setShowSponsorModal(false);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Save form data to localStorage
     localStorage.setItem('claimFormData', JSON.stringify(formData));
-    
+
     // Fetch user information from the API using the authToken
     try {
       const userData = await getUser(authToken);
@@ -76,7 +126,7 @@ const PostPage = ({ ideas, authToken }) => {
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
-  
+
     // Clear form fields
     setFormData({
       title: '',
@@ -84,7 +134,7 @@ const PostPage = ({ ideas, authToken }) => {
       documents: [],
       visibility: 'public',
     });
-    
+
     // Close modal
     setShowModal(false);
   };
@@ -92,7 +142,6 @@ const PostPage = ({ ideas, authToken }) => {
 
   return (
     <div>
-      {/* Main content */}
       <main>
         <div id="tags">
           <ul>
@@ -149,30 +198,30 @@ const PostPage = ({ ideas, authToken }) => {
               {authToken && (
                 <>
                   <button type="button" id="claim-button" onClick={handleClaim}>Claim</button>
-                  <button type="button" id="sponsor-button">Sponsor</button>
+                  <button type="button" id="sponsor-button" onClick={handleSponsorModalOpen}>Sponsor</button>
                 </>
               )}
             </div>
           </article>
           <aside>
-          <div id="claimed-by">
-            <h3>Claimed by:</h3>
-            <ul>
-              {/* Display the claimed by information */}
-              {claimedBy ? (
-                <li>
-                  <img src={require('../../assets/avatar1.png')} id="Claimant Name" alt="Claimant Name" />
-                  <span>{claimedBy.username}</span>
-                </li>
-              ) : (
-                <li>Not claimed</li>
-              )}
-            </ul>
-          </div>
+            <div id="claimed-by">
+              <h3>Claimed by:</h3>
+              <ul>
+                {/* Display the claimed by information */}
+                {claimedBy ? (
+                  <li>
+                    <img src={require('../../assets/avatar1.png')} id="Claimant Name" alt="Claimant Name" />
+                    <span>{claimedBy.username}</span>
+                  </li>
+                ) : (
+                  <li>Not claimed</li>
+                )}
+              </ul>
+            </div>
           </aside>
         </div>
       </main>
-
+  
       {/* Modal for uploading papers */}
       {showModal && (
         <div className="modal display-block">
@@ -206,8 +255,46 @@ const PostPage = ({ ideas, authToken }) => {
           </section>
         </div>
       )}
+  
+      {/* Modal for sponsoring */}
+      {showSponsorModal && (
+        <div className="modal display-block">
+          <section className="modal-main">
+            <h2>Sponsor</h2>
+            <form onSubmit={handleSponsorSubmit}>
+              <div className="input-group">
+                <label htmlFor="amount">Amount ($100.00 - $5000.00)</label>
+                <input type="text" id="amount" name="amount" value={sponsorFormData.amount} onChange={handleSponsorFormChange} />
+              </div>
+              <div className="input-group">
+                <label htmlFor="purpose">Purpose</label>
+                <textarea id="purpose" name="purpose" value={sponsorFormData.purpose} onChange={handleSponsorFormChange}></textarea>
+              </div>
+              <div className="input-group">
+                <label htmlFor="duration">Duration</label>
+                <input type="text" id="duration" name="duration" value={sponsorFormData.duration} onChange={handleSponsorFormChange} />
+              </div>
+              <div className="input-group">
+                <label htmlFor="documents">Attach Supporting Documents (PDF)</label>
+                <input type="file" id="documents" name="documents" accept=".pdf" multiple onChange={handleSponsorDocumentChange} />
+              </div>
+              <div className="input-group">
+                <label htmlFor="visibility">Visibility Settings</label>
+                <select id="visibility" name="visibility" value={sponsorFormData.visibility} onChange={handleSponsorFormChange}>
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                </select>
+              </div>
+              <div className="actions">
+                <button type="submit" className="save-btn">Submit</button>
+                <button type="button" className="cancel-btn" onClick={handleSponsorModalClose}>Cancel</button>
+              </div>
+            </form>
+          </section>
+        </div>
+      )}
     </div>
   );
 };
-
-export default PostPage;
+  
+  export default PostPage;
