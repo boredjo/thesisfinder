@@ -7,16 +7,56 @@ import './post-page.css';
 const PostPage = ({ ideas, authToken }) => {
   const { id } = useParams();
   const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    documents: [],
+    visibility: 'public',
+  });
 
   const idea = ideas.find((idea) => idea.id === parseInt(id));
 
   const handleClaim = () => {
-    // Logic to handle claiming the idea
-    // Show the modal for uploading papers
     setShowModal(true);
   };
 
   const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleDocumentChange = (e) => {
+    const files = Array.from(e.target.files);
+    const fileData = files.map((file) => ({
+      name: file.name,
+      type: file.type,
+      data: URL.createObjectURL(file),
+    }));
+    setFormData({
+      ...formData,
+      documents: fileData,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Save form data to localStorage
+    localStorage.setItem('claimFormData', JSON.stringify(formData));
+    // Clear form fields
+    setFormData({
+      title: '',
+      description: '',
+      documents: [],
+      visibility: 'public',
+    });
+    // Close modal
     setShowModal(false);
   };
 
@@ -26,7 +66,6 @@ const PostPage = ({ ideas, authToken }) => {
       <main>
         <div id="tags">
           <ul>
-            {/* Map through the tags and render each one */}
             {idea.tags.map((tag, index) => (
               <li key={index}><a href="#">{tag}</a></li>
             ))}
@@ -34,9 +73,7 @@ const PostPage = ({ ideas, authToken }) => {
         </div>
         <div id="content">
           <article>
-            {/* Idea title */}
             <h1>{idea.title}</h1>
-            {/* Metadata */}
             <div className="metadata">
               <span className="author">Author(s): {idea.author}</span>
               <span className="date">Date Posted: {idea.date}</span>
@@ -49,7 +86,6 @@ const PostPage = ({ ideas, authToken }) => {
                 <li><a href="#">More Info</a></li>
                 <li><a href="#">Suggested Ideas</a></li>
                 <li><a href="#">Research Papers</a></li>
-                {/* Conditionally render the claim and sponsor buttons */}
                 {authToken && (
                   <>
                     <li><a href="#">Sponsors</a></li>
@@ -79,7 +115,6 @@ const PostPage = ({ ideas, authToken }) => {
                 <li>Placeholder Collaborations</li>
               </ul>
             </section>
-            {/* Action buttons */}
             <div id="action-buttons">
               {authToken && (
                 <>
@@ -105,26 +140,22 @@ const PostPage = ({ ideas, authToken }) => {
         <div className="modal display-block">
           <section className="modal-main">
             <h2>Upload Paper</h2>
-            <form>
-              {/* Title input */}
+            <form onSubmit={handleSubmit}>
               <div className="input-group">
                 <label htmlFor="title">Title</label>
-                <input type="text" id="title" />
+                <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} />
               </div>
-              {/* Description input */}
               <div className="input-group">
                 <label htmlFor="description">Description</label>
-                <textarea id="description"></textarea>
+                <textarea id="description" name="description" value={formData.description} onChange={handleChange}></textarea>
               </div>
-              {/* Attach supporting documents input */}
               <div className="input-group">
                 <label htmlFor="documents">Attach Supporting Documents (PDF)</label>
-                <input type="file" id="documents" accept=".pdf" multiple />
+                <input type="file" id="documents" name="documents" accept=".pdf" multiple onChange={handleDocumentChange} />
               </div>
-              {/* Visibility settings input */}
               <div className="input-group">
                 <label htmlFor="visibility">Visibility Settings</label>
-                <select id="visibility">
+                <select id="visibility" name="visibility" value={formData.visibility} onChange={handleChange}>
                   <option value="public">Public</option>
                   <option value="private">Private</option>
                 </select>
