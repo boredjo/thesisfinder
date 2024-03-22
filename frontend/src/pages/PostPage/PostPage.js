@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../../styles/main.css';
 import '../../styles/mainheader.css';
 import './post-page.css';
 
 const PostPage = ({ ideas, authToken }) => {
-  // Retrieve the id parameter from the URL
   const { id } = useParams();
+  const [showModal, setShowModal] = useState(false);
 
-  // Find the idea with the matching id
   const idea = ideas.find((idea) => idea.id === parseInt(id));
+
+  const handleClaim = () => {
+    // Logic to handle claiming the idea
+    // Show the modal for uploading papers
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <div>
@@ -44,7 +53,7 @@ const PostPage = ({ ideas, authToken }) => {
                 {authToken && (
                   <>
                     <li><a href="#">Sponsors</a></li>
-                    <li><a href="#">Claim</a></li>
+                    <li><a href="#" onClick={handleClaim}>Claim</a></li>
                   </>
                 )}
               </ul>
@@ -74,7 +83,7 @@ const PostPage = ({ ideas, authToken }) => {
             <div id="action-buttons">
               {authToken && (
                 <>
-                  <button type="button" id="claim-button">Claim</button>
+                  <button type="button" id="claim-button" onClick={handleClaim}>Claim</button>
                   <button type="button" id="sponsor-button">Sponsor</button>
                 </>
               )}
@@ -90,6 +99,44 @@ const PostPage = ({ ideas, authToken }) => {
           </aside>
         </div>
       </main>
+
+      {/* Modal for uploading papers */}
+      {showModal && (
+        <div className="modal display-block">
+          <section className="modal-main">
+            <h2>Upload Paper</h2>
+            <form>
+              {/* Title input */}
+              <div className="input-group">
+                <label htmlFor="title">Title</label>
+                <input type="text" id="title" />
+              </div>
+              {/* Description input */}
+              <div className="input-group">
+                <label htmlFor="description">Description</label>
+                <textarea id="description"></textarea>
+              </div>
+              {/* Attach supporting documents input */}
+              <div className="input-group">
+                <label htmlFor="documents">Attach Supporting Documents (PDF)</label>
+                <input type="file" id="documents" accept=".pdf" multiple />
+              </div>
+              {/* Visibility settings input */}
+              <div className="input-group">
+                <label htmlFor="visibility">Visibility Settings</label>
+                <select id="visibility">
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                </select>
+              </div>
+              <div className="actions">
+                <button type="submit" className="save-btn">Submit</button>
+                <button type="button" className="cancel-btn" onClick={handleCloseModal}>Cancel</button>
+              </div>
+            </form>
+          </section>
+        </div>
+      )}
     </div>
   );
 };
