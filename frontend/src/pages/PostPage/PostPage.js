@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { getUser } from '../../utils/api';
 import '../../styles/main.css';
 import '../../styles/mainheader.css';
 import './post-page.css';
@@ -7,6 +8,7 @@ import './post-page.css';
 const PostPage = ({ ideas, authToken }) => {
   const { id } = useParams();
   const [showModal, setShowModal] = useState(false);
+  const [claimedBy, setClaimedBy] = useState(null); // State to store the user who claimed the idea
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -16,10 +18,26 @@ const PostPage = ({ ideas, authToken }) => {
 
   const idea = ideas.find((idea) => idea.id === parseInt(id));
 
-  const handleClaim = () => {
-    setShowModal(true);
-  };
+  useEffect(() => {
+    // Load claimed by information from localStorage when component mounts
+    const claimedByData = localStorage.getItem(`claimedBy_${id}`);
+    if (claimedByData) {
+      setClaimedBy(JSON.parse(claimedByData));
+    }
+  }, [id]);
 
+  const handleClaim = async () => {
+    setShowModal(true);
+    // Fetch user information from the API using the authToken
+    try {
+      const userData = await getUser(authToken);
+      setClaimedBy(userData.username); // Update claimedBy state with the username
+      localStorage.setItem(`claimedBy_${id}`, JSON.stringify({ username: userData.username })); // Store claimed by information in localStorage
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+  
   const handleCloseModal = () => {
     setShowModal(false);
   };
@@ -45,10 +63,20 @@ const PostPage = ({ ideas, authToken }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Save form data to localStorage
     localStorage.setItem('claimFormData', JSON.stringify(formData));
+    
+    // Fetch user information from the API using the authToken
+    try {
+      const userData = await getUser(authToken);
+      setClaimedBy(userData.username); // Update claimedBy state with the username
+      localStorage.setItem(`claimedBy_${id}`, JSON.stringify({ username: userData.user })); // Store claimed by information in localStorage
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  
     // Clear form fields
     setFormData({
       title: '',
@@ -56,9 +84,11 @@ const PostPage = ({ ideas, authToken }) => {
       documents: [],
       visibility: 'public',
     });
+    
     // Close modal
     setShowModal(false);
   };
+  
 
   return (
     <div>
@@ -125,12 +155,20 @@ const PostPage = ({ ideas, authToken }) => {
             </div>
           </article>
           <aside>
-            <div id="claimed-by">
-              <h3>Claimed by:</h3>
-              <ul>
-                <li><img src={require('../../assets/avatar1.png')} id="Claimant Name" alt="Claimant Name" /><span>Claimant Name</span></li>
-              </ul>
-            </div>
+          <div id="claimed-by">
+            <h3>Claimed by:</h3>
+            <ul>
+              {/* Display the claimed by information */}
+              {claimedBy ? (
+                <li>
+                  <img src={require('../../assets/avatar1.png')} id="Claimant Name" alt="Claimant Name" />
+                  <span>{claimedBy.username}</span>
+                </li>
+              ) : (
+                <li>Not claimed</li>
+              )}
+            </ul>
+          </div>
           </aside>
         </div>
       </main>
