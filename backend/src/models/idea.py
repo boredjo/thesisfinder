@@ -42,8 +42,14 @@ class Idea:
         row = cursor.fetchone()
         tags = list([row[3:7]])
         new_idea = Idea(row[0], tags, row[1], row[2], id=id)
-        new_idea.views = int(row[8])
+        new_idea.views = int(row[8]) + 1
         new_idea.date_posted = row[9]
+        cursor.execute(
+            """
+            UPDATE Ideas SET views = %s WHERE hash = %s ;
+            """
+            , [new_idea.views, id]
+        )
         return new_idea
     
     def update(self, cursor):
