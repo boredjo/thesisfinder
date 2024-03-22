@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ideasData from '../../data/ideasData'; // Import the ideasData
 import '../../styles/main.css';
 import '../../styles/mainheader.css';
 import './submit.css';
@@ -52,47 +53,37 @@ const Submit = () => {
     });
   };
 
+  const generateUniqueId = () => {
+    // Generate a unique ID
+    return Math.random().toString(36).substr(2, 9);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-  
-    // Serialize formData to exclude non-serializable data
-    const serializableFormData = {
+
+    const newIdea = {
+      id: generateUniqueId(), // Generate unique ID for the new idea
       title: formData.title,
       description: formData.description,
       collaboration: formData.collaboration,
       documents: formData.documents,
       visibility: formData.visibility,
+      tags: [], // Add any additional fields as needed
+      date: new Date().toLocaleDateString(), // Date of submission
+      author: 'Anonymous', // Default author name
+      authorImage: '', // Default author image
     };
-  
-    // Retrieve existing data from localStorage or initialize as empty array if it doesn't exist
-    const existingDataJSON = localStorage.getItem('submitFormData');
-    let existingData = [];
-  
-    if (existingDataJSON) {
-      try {
-        existingData = JSON.parse(existingDataJSON);
-        if (!Array.isArray(existingData)) {
-          // If existingData is not an array, initialize as an empty array
-          existingData = [];
-        }
-      } catch (error) {
-        console.error('Error parsing existingData from localStorage:', error);
-        existingData = [];
-      }
-    }
-  
-    // Append the new submission to the existing data
-    const newData = [...existingData, serializableFormData];
-  
-    // Store the updated data back to localStorage
-    localStorage.setItem('submitFormData', JSON.stringify(newData));
-  
+
+    // Append the new idea to the ideasData
+    ideasData.push(newIdea);
+
+    // Store the updated ideasData to localStorage
+    localStorage.setItem('ideasData', JSON.stringify(ideasData));
+
     // Navigate back to "/home"
     navigate('/');
   };
-  
-  
-  
+
   return (
     <div className="submit-container">
       <h1>Submit Research Idea</h1>
@@ -134,7 +125,7 @@ const Submit = () => {
             <option value="public">Public</option>
             <option value="private">Private</option>
           </select>
-        </div>
+        </div>       
         <button type="submit">Submit</button>
       </form>
     </div>
