@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: registry.boredjo.eu/frontend:0.1v
+    ports:
+      - "80:80"
+    restart: always

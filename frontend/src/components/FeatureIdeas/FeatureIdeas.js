@@ -1,11 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { getIdeasData } from '../../data/ideasData';
 import './feature-ideas.css';
 
 const FeaturesIdeas = ({ ideas }) => {
+  const ideasData = getIdeasData(); // Load ideasData from localStorage
+
   return (
     <div className="features-ideas">
-      {ideas.map((idea) => (
+      {ideasData.map((idea) => (
         <div key={idea.id} className="idea-container">
           {/* Link each idea title to the post page */}
           <Link to={`/post-page/${idea.id}`} className="idea-title">{idea.title}</Link>

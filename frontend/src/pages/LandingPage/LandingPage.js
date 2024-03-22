@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 
 import FeaturesIdeas from '../../components/FeatureIdeas/FeatureIdeas';
+import { getIdeasData } from '../../data/ideasData.js';
 
 import ideas from '../../data/ideasData.js'
 
@@ -12,14 +13,16 @@ import './landing-page.css';
 const LandingPage = (props) => {
   const [featuredIdeas, setFeaturedIdeas] = useState([]);
   const navigate = useNavigate();
+  const ideasData = getIdeasData(); // Load ideasData from localStorage
 
   useEffect(() => {
+
     // Sort ideas by date and show only first five
-    const sortedIdeas = ideas.sort((a, b) => {
+    const sortedIdeas = ideasData.sort((a, b) => {
       return new Date(b.date) - new Date(a.date);
     });
     const selectedIdeas = sortedIdeas.slice(0, 5);
-
+    console.log(selectedIdeas)
     setFeaturedIdeas(selectedIdeas);
   }, []);
   
