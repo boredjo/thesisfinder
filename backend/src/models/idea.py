@@ -23,7 +23,7 @@ class Idea:
 
     def store(self, cursor):
         for i in range(5-len(self.tags)):
-            self.tags.append("NULL")
+            self.tags.append(None)
         cursor.execute(
             """
             INSERT INTO Ideas (hash, title, author, description, tag1, tag2, tag3, tag4, tag5) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);

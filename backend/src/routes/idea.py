@@ -9,7 +9,9 @@ from routes.profilepicture import delete_picture
 
 idea_blueprint = Blueprint('idea', __name__)
 
-
+with open('sql/data/03-tags.sql', 'r') as f_in:
+    lines = f_in.readlines()[1:-1]
+    tags = [line[2:-4] for line in lines]
 
 @idea_blueprint.route('/featured/', methods=['GET'])
 @idea_blueprint.route('/featured/<path:n>', methods=['GET'])
@@ -43,6 +45,8 @@ def get_idea_details(idea_id):
 @idea_blueprint.route('/', methods=['POST'])
 def post_idea():
     user = request.environ['user'] # get issuing user
+    
+
     # parse incoming data
     try:
         data = request.environ['parsed_data']
@@ -50,7 +54,11 @@ def post_idea():
     except Exception as e:
         request.environ['logger'].error(e, 'routes/idea.py - post_idea() - parse new idea data')
         return Response(u'Could process the request', mimetype= 'text/plain', status=422)
-    
+
+    for tag in new_idea.tags:
+        if tag not in tags:
+            request.environ['logger'].message("POST_IDEA", f'tag {tag} does not exists')
+            return Response(u'Tag does not exists', mimetype= 'text/plain', status=422)
     # store idea
     try:
         new_idea.store(request.environ['cursor'])
@@ -78,6 +86,10 @@ def update_idea(idea_id):
     data = request.environ['parsed_data']
     if 'tags' in data.keys(): idea.tags = data['tags']
     if 'description' in data.keys(): idea.description = data['description']
+    for tag in idea.tags:
+        if tag not in tags:
+            request.environ['logger'].message("POST_IDEA", f'tag {tag} does not exists')
+            return Response(u'Tag does not exists', mimetype= 'text/plain', status=422)
 
     try: 
         idea.update(request.environ['cursor'])

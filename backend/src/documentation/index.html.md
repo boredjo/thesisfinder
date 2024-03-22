@@ -226,6 +226,7 @@ curl --location --request GET 'https://api.thesisfinder.com/idea/featured' \
 	]
 }
 ```
+> To get more details send a request to `https://api.thesisfinder.com/idea/details`
 
 This endpoint gives a list 5 questions, meant to be displayed at the featured idea page
 
@@ -253,7 +254,7 @@ curl --location --request GET 'https://api.thesisfinder.com/idea/details/ideaid'
 }
 ```
 
-To get more details send a request to `https://api.thesisfinder.com/idea/details`
+This will increase the view counter
 
 ## Post an Idea
 
@@ -276,7 +277,7 @@ curl --location 'https://api.thesisfinder.com/idea/' \
 }
 ```
 
-This endpoint registers a new idea, which will be associated with the user authenticated. The return will be the idea id.
+This endpoint registers a new idea, which will be associated with the user authenticated. The return will be the idea id. An idea posted anonymously cannot be edited anymore.
 
 
 ## Update an Exsiting Idea
