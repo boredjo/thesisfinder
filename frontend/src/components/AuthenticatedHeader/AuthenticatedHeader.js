@@ -42,6 +42,10 @@ const AuthenticatedHeader = () => {
     navigate("/");
   };
 
+  const handleSubmitResearchIdea = () => {
+    navigate("/submit");
+  };
+
   return (
     <header className="main-header">
       <div className="left-section">
@@ -92,7 +96,7 @@ const AuthenticatedHeader = () => {
               <button onClick={closeSubmitModal} className="close-button">X</button>
             </div>
             <div className="modal-body">
-              <button onClick={() => {/* Handle "Submit Research Idea" button click */}}>Submit Research Idea</button>
+              <button onClick={handleSubmitResearchIdea}>Submit Research Idea</button>
               <button onClick={() => {/* Handle "Your Research Papers" button click */}}>Your Research Papers</button>
             </div>
           </div>

@@ -13,6 +13,7 @@ import AvatarUpload from './pages/AvatarUpload/AvatarUpload';
 import Home from './pages/Home/Home';
 import PostPage from './pages/PostPage/PostPage'; // Import PostPage component
 import Account from './pages/Account/Account.js';
+import Submit from './pages/Submit/Submit.js';
 
 import ideas from './data/ideasData.js'
 
@@ -36,6 +37,7 @@ const App = () => {
           {/* Route for individual post pages */}
           <Route path="/post-page/:id" element={<PostPage ideas={ideas} authToken={authToken} />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/submit" element={<Submit />} />
         </Routes>
         <Footer />
       </Router>
