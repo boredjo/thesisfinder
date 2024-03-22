@@ -16,7 +16,7 @@ class Idea:
         self.author = author
         self.description = description
         self.views = 0
-        self.date_posted = datetime.now()
+        self.date_posted = str(datetime.now())
         self.claimed_by = []
         self.sponsorships = []
         self.attachments = []
@@ -75,20 +75,28 @@ class Idea:
             "attachments": self.attachments,
             "views": self.views,
         })
+    def short_jsonify(self):
+        return jsonify({
+            "id" : self.id,
+            "title": self.title,
+            "author": self.author,
+            "date_posted": self.date_posted,
+            "tags": self.tags,
+        })
     
     def get_random(n, cursor):
         data = []
         cursor.execute(
             """
-            SELECT title, author, tag1, tag2, tag3, tag4, tag5, date_posted FROM Ideas ORDER BY RAND() LIMIT %s ;
+            SELECT title, author, tag1, tag2, tag3, tag4, tag5, date_posted, hash FROM Ideas ORDER BY RAND() LIMIT %s ;
             """
             , [n]
         )
         for _ in range(n):
             row = cursor.fetchone()
-            tags = list([row[2:6]])
-            idea = Idea(row[0], tags, row[1], "", id=id)
-            idea.date_posted = row[7]
+            tags = list(row[2:7])
+            idea = Idea(row[0], tags, row[1], "", id=row[8])
+            idea.date_posted = str(row[7])
             data.append(idea)
         return data
 
