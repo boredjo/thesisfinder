@@ -9,10 +9,12 @@ from routes.profilepicture import delete_picture
 
 idea_blueprint = Blueprint('idea', __name__)
 
-@idea_blueprint.route('/featured/<path:n>', methods=['GET'])
+
+
 @idea_blueprint.route('/featured/', methods=['GET'])
+@idea_blueprint.route('/featured/<path:n>', methods=['GET'])
 def get_featured_ideas(n=5):
-    data = Idea.get_random(5, request.environ['cursor'])
+    data = Idea.get_random(int(n), request.environ['cursor'])
     # print(data[0].short_jsonify())
     # json_array = [idea.short_jsonify() for idea in data]
     return jsonify(ideas=[
@@ -25,6 +27,7 @@ def get_featured_ideas(n=5):
         }
         for idea in data
     ])
+
 
 @idea_blueprint.route('/details/<path:idea_id>', methods=['GET'])
 def get_idea_details(idea_id):
