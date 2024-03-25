@@ -207,8 +207,7 @@ Ideas have a hash value as id. The title has to be unique and not longer than 20
 > you can send this anonmously
 
 ```shell
-curl --location --request GET 'https://api.thesisfinder.com/idea/featured' \
---header 'Token: tokentokentoken' \
+curl --location --request GET 'https://api.thesisfinder.com/idea/featured' 
 ```
 > The above command returns JSON that contains a list of five results structured like this:
 
@@ -236,8 +235,7 @@ This endpoint gives a list 5 questions, meant to be displayed at the featured id
 > This method requires the idea id to look up the details of the question
 
 ```shell
-curl --location --request GET 'https://api.thesisfinder.com/idea/details/ideaid' \
---header 'Token: tokentokentoken' \
+curl --location --request GET 'https://api.thesisfinder.com/idea/details/ideaid' 
 ```
 > The above command returns JSON that contains a list of five results structured like this:
 
@@ -309,3 +307,165 @@ curl --location --request DELETE 'https://api.thesisfinder.com/idea/ideaid' \
 
 
 This will not delete the idea, but only make it invisible
+
+# Claim 
+
+Claims are unique, every account can only claim an idea once.
+
+## Claim an idea
+
+To claim an idea, simply sent an authenticated `GET` request
+
+> You need to be authentiacted to perform this action
+
+```shell
+curl --location --request GET 'https://api.thesisfinder.com/claim/ideaid' \
+--header 'Token: tokentokentoken'
+```
+
+## Get claims
+
+### From user
+
+
+> You need to be authentiacted to perform this action
+
+```shell
+curl --location --request GET 'https://api.thesisfinder.com/claim/user/' \
+--header 'Token: tokentokentoken'
+```
+
+This endpoint will return all the ideas claimed by the authenticated user.
+
+### From question
+
+```shell
+curl --location --request GET 'https://api.thesisfinder.com/idea/claims/ideaid' 
+```
+> The above command returns JSON that contains a list of five results structured like this:
+
+```json
+{
+	"claims":[
+		{
+			"idea" : "somehash",
+			"author": "anonymous",
+			"date_posted": "2024-04-24",
+			"attachments":[]
+		},
+		...
+	]
+}
+```
+
+
+## Delete a claim
+
+To delete a claim, simply sent an authenticated `DELETE` request
+
+> You need to be authentiacted to perform this action
+
+```shell
+curl --location --request DELETE 'https://api.thesisfinder.com/claim/ideaid' \
+--header 'Token: tokentokentoken' 
+```
+
+
+# Sonsoring
+
+Sponsorships are not unique, one use can sponsor an idea multiple times
+
+## Sponsor an idea
+
+To sponsor an idea, you need to send a post request with the sponsor amount an optional description and deadline 
+
+> You need to be authentiacted  to perform this action
+
+```shell
+curl --location 'https://api.thesisfinder.com/sponsor/ideaid' \
+--header 'Content-Type: application/json' \
+--header 'Token: tokentokentoken' \
+--data-raw '{
+	"amount": 100.00,
+	"description": "please focuse more on the ... aspect of ..."
+	"deadline": "2026-02-24",
+}'
+```
+> The above command returns JSON that contains a list of five results structured like this:
+
+```json
+{
+	"id" : "sponsorship_id"
+}
+```
+
+## Get Sponsorhip details
+
+> This method requires the sponsorship id to look up the details of the question
+
+```shell
+curl --location --request GET 'https://api.thesisfinder.com/sponsor/details/ideaid' 
+```
+> The above command returns JSON that contains a list of five results structured like this:
+
+```json
+{
+	"id" : "sponosrhip_id,"
+	"idea": "somehash",
+	"author": "anonymous",
+	"date_posted": "2024-02-24",
+	"description": "some long text",
+	"attachments": [],
+	"views": 123124,
+	"amount": 100.00
+}
+```
+
+## Get Sponsorships from User
+
+> You need to be authentiacted to perform this action
+
+```shell
+curl --location --request GET 'https://api.thesisfinder.com/sponsor/user/' \
+--header 'Token: tokentokentoken'
+```
+
+This endpoint will return all the ideas claimed by the authenticated user.
+
+## Get Sponsorhips for ides
+
+```shell
+curl --location --request GET 'https://api.thesisfinder.com/idea/sponsor/ideaid' 
+```
+> The above command returns JSON that contains a list of five results structured like this:
+
+```json
+{
+	"sponorships":[
+		{
+			"id" : "sponosrhip_id",
+		"idea": "somehash",
+		"author": "anonymous",
+		"date_posted": "2024-02-24",
+		"description": "some long text",
+		"attachments": [],
+		"views": 123124,
+		"amount": 100.00
+		},
+		...
+	]
+}
+```
+
+
+## Delete Sponsoring
+
+To delete a sponsoring, simply sent an authenticated `DELETE` request
+
+> You need to be authentiacted as the author to perform this action
+
+```shell
+curl --location --request DELETE 'https://api.thesisfinder.com/sponsor/sponsorship_id' \
+--header 'Token: tokentokentoken' 
+```
+
