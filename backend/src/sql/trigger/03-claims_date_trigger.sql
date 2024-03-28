@@ -1,0 +1,6 @@
+CREATE DEFINER=`tf`@`%` TRIGGER claims_date_posted
+BEFORE INSERT
+ON Claims FOR EACH ROW
+BEGIN
+    SET NEW.date_posted = UTC_TIMESTAMP();
+END
