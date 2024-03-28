@@ -14,7 +14,7 @@ class Claim:
             """
             INSERT INTO Claims (user, idea) VALUES (%s, %s);
             """
-            ,[self.idea, self.author]
+            ,[self.author, self.idea]
         )
 
     

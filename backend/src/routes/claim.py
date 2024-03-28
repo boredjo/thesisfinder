@@ -15,7 +15,7 @@ def get_user_claims():
     try:
         data = Claim.find_claims_by_user(user.name, request.environ['cursor'])
     except mysql.connector.Error as err:
-        request.environ['logger'].error(e, 'routes/claim.py - get_user_claims() - find claims')
+        request.environ['logger'].error(err, 'routes/claim.py - get_user_claims() - find claims')
         data = []
 
     return jsonify(claims=[
@@ -57,7 +57,7 @@ def get_idea_claims(idea):
     try:
         data = Claim.find_claims_by_idea(idea, request.environ['cursor'])
     except mysql.connector.Error as err:
-        request.environ['logger'].error(e, 'routes/claim.py - get_user_claims() - find claims')
+        request.environ['logger'].error(err, 'routes/claim.py - get_user_claims() - find claims')
         data = []
 
     return jsonify(claims=[
@@ -89,11 +89,13 @@ def post_claim():
     # store claim
     try:
         new_claim.store(request.environ['cursor'])
-    except mysql.connector.errors.IntegrityError:
+    except mysql.connector.errors.IntegrityError as err:
+        request.environ['logger'].error(err, 'routes/claim.py - get_user_claims() - find claims')
+        
         request.environ['logger'].message("POST_CLAIM", 'claim already exists')
         return Response(u'The claim already exists', mimetype= 'text/plain', status=422)
     
-    request.environ['logger'].message("POST_IDEA", f'idea {new_claim.ida} was claimed by {new_claim.author}')
+    request.environ['logger'].message("POST_IDEA", f'idea {new_claim.idea} was claimed by {new_claim.author}')
     return Response(u'idea claimed', mimetype= 'text/plain', status=200)
 
     
