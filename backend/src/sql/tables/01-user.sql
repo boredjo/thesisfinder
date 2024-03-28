@@ -9,6 +9,7 @@ CREATE TABLE `Users` (
   `verified_email` tinyint(1) DEFAULT 0,
   `researcher` tinyint(1) DEFAULT 0,
   `sponsor` tinyint(1) DEFAULT 0,
+  `email_verfied` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`username`),
   UNIQUE KEY `Users_UNIQUE` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

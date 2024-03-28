@@ -1,4 +1,4 @@
-CREATE DEFINER=`tf`@`%` TRIGGER ideas_date_posted
+CREATE DEFINER=`tf`@`%` TRIGGER ideas_date_trigger
 BEFORE INSERT
 ON Ideas FOR EACH ROW
 BEGIN

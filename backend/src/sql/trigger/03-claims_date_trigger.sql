@@ -1,4 +1,4 @@
-CREATE DEFINER=`tf`@`%` TRIGGER claims_date_posted
+CREATE DEFINER=`tf`@`%` TRIGGER claims_date_trigger
 BEFORE INSERT
 ON Claims FOR EACH ROW
 BEGIN
