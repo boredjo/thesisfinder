@@ -8,6 +8,7 @@ CREATE TABLE `Sponsors` (
   `views` bigint(20) NOT NULL DEFAULT 0,
   `description` text DEFAULT NULL,
   `date_posted` timestamp NULL DEFAULT NULL,
+  `deadline` timestamp NULL DEFAULT utc_timestamp(),
   PRIMARY KEY (`id`),
   KEY `Sponsors_Ideas_FK` (`idea`),
   KEY `Sponsors_Users_FK` (`author`),
