@@ -1,7 +1,5 @@
 from flask import jsonify
 from datetime import datetime
-import mysql.connector
-from mysql.connector import errorcode
 import base64
 
 class Idea:
