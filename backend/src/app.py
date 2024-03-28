@@ -20,7 +20,7 @@ if os.environ['REBASE'] == 'True': rebase()
 
 app = Flask('ThesisFinder')
 cors = CORS(app)
-# app.config['CORS_HEADERS'] = 'Content-Type'
+
 
 @app.before_request
 def logging_before():
