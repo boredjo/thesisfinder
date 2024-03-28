@@ -33,13 +33,13 @@ def get_username_claims(username):
     try:
         user = User.find_user(username, request.environ['cursor'])
     except mysql.connector.Error as err:
-        request.environ['logger'].error(e, 'routes/claim.py - get_user_claims() - find user')
+        request.environ['logger'].error(err, 'routes/claim.py - get_user_claims() - find user')
         return Response(u'User not found', mimetype= 'text/plain', status=422)
     
     try:
-        data = Claim.find_claims_by_user(user.username, request.environ['cursor'])
+        data = Claim.find_claims_by_user(user.name, request.environ['cursor'])
     except mysql.connector.Error as err:
-        request.environ['logger'].error(e, 'routes/claim.py - get_user_claims() - find claims')
+        request.environ['logger'].error(err, 'routes/claim.py - get_user_claims() - find claims')
         data = []
 
     return jsonify(claims=[
@@ -52,7 +52,7 @@ def get_username_claims(username):
         for claim in data
     ])
 
-@claim_blueprint.route('/user/<path:idea>', methods=['GET'])
+@claim_blueprint.route('/idea/<path:idea>', methods=['GET'])
 def get_idea_claims(idea):
     try:
         data = Claim.find_claims_by_idea(idea, request.environ['cursor'])
@@ -99,24 +99,17 @@ def post_claim():
     return Response(u'idea claimed', mimetype= 'text/plain', status=200)
 
     
-@claim_blueprint.route('/', methods=['DELETE'])
-def delete_claim():
+@claim_blueprint.route('/<path:idea>', methods=['DELETE'])
+def delete_claim(idea):
     user = request.environ['user'] # get issuing user
 
-    # parse incoming data
-    try:
-        data = request.environ['parsed_data']
-        claim = Claim(user.name, data['idea'])
-    except Exception as e:
-        request.environ['logger'].error(e, 'routes/claim.py - delete_claim() - parse claim data')
-        return Response(u'Could process the request', mimetype= 'text/plain', status=422)
-
+    claim = Claim(user.name, idea)
 
     try: 
-        claim.delete()
+        claim.delete(request.environ['cursor'])
     except mysql.connector.Error as err:
         request.environ['logger'].message("DELETE_CLAIM", "claim doesn't exists")
         return Response(u"The claim doesn't exists", mimetype= 'text/plain', status=422)
 
-    request.environ['logger'].message("DELETE_IDEA", f'The claim onidea {claim.ida} by {claim.author} was removed')
+    request.environ['logger'].message("DELETE_IDEA", f'The claim onidea {claim.idea} by {claim.author} was removed')
     return Response(u'claim deleted', mimetype= 'text/plain', status=200)

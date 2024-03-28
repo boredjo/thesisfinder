@@ -21,22 +21,23 @@ class Claim:
     def find_claims_by_user(author, cursor):
         cursor.execute(
             """
-            SELECT (user, idea, date_posted) FROM Claims WHERE user = %s ;
+            SELECT user, idea, date_posted FROM Claims WHERE user = %s ;
             """
             , [author]
         )
 
         rows = cursor.fetchall()
+        print(rows)
         claims = []
         for row in rows:
-            new_claim = Claim(row)
+            new_claim = Claim(row[0], row[1], row[2])
             claims.append(new_claim)
         return claims
     
     def find_claims_by_idea(idea, cursor):
         cursor.execute(
             """
-            SELECT (user, idea, date_posted) FROM Claims WHERE idea = %s ;
+            SELECT user, idea, date_posted FROM Claims WHERE idea = %s ;
             """
             , [idea]
         )
@@ -44,7 +45,7 @@ class Claim:
         rows = cursor.fetchall()
         claims = []
         for row in rows:
-            new_claim = Claim(row)
+            new_claim = Claim(row[0], row[1], row[2])
             claims.append(new_claim)
         return claims
     
