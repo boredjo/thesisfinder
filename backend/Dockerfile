@@ -15,7 +15,7 @@ WORKDIR src
 ARG version
 ENV API_VERSION $version
 ENV PYTHONUNBUFFERED True
-ENV REBASE False
+ENV RESET_DB False
 
 RUN chown -R thesisfinder /thesisfinder
 USER thesisfinder

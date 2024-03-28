@@ -16,7 +16,7 @@ from routes.login import login_blueprint
 from routes.idea import idea_blueprint
 
 pre_check() # check folder structure
-if os.environ['REBASE'] == 'True': rebase()
+if os.environ['RESET_DB'] == 'True': rebase()
 
 app = Flask('ThesisFinder')
 cors = CORS(app)
