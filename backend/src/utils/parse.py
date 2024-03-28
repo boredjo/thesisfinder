@@ -44,6 +44,7 @@ class parse_middleware():
 
         if request.method in ['OPTIONS']:
             res = Response(u"sucess", mimetype= 'text/plain', status=200)
+            res.headers['Access-Control-Allow-Origin'] = '*'
             return res(environ, start_response)
         # do not parse GET or DELETE request
         if request.method in ['GET', 'DELETE']:
