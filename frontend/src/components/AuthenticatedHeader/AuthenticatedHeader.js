@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { clearAuthenticatedUser } from '../../utils/authService';
+import { getProfilePictureByUsername, getUser } from '../../utils/api'; // Import the API functions to fetch profile picture and user data
+
 import darkModeImage from '../../assets/AuthenticatedHeader/dark-mode.png';
 import notificationImage from '../../assets/AuthenticatedHeader/notification-bell.png';
 import defaultAvatar from '../../assets/avatar1.png';
@@ -13,13 +15,42 @@ const AuthenticatedHeader = () => {
   const [avatarImage, setAvatarImage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [username, setUsername] = useState('');
 
   useEffect(() => {
-    const savedAvatarImage = localStorage.getItem('avatarImage');
-    if (savedAvatarImage) {
-      setAvatarImage(savedAvatarImage);
-    }
+    const fetchUserData = async () => {
+      try {
+        // Make an API call to get the user data
+        const userData = await getUser();
+        const fetchedUsername = userData.username;
+
+        // Set the fetched username in state
+        setUsername(fetchedUsername);
+
+        // Fetch profile picture when the username is available
+        fetchProfilePicture(fetchedUsername);
+      } catch (error) {
+        console.error('Error fetching user data:', error.message);
+        // Handle error
+      }
+    };
+
+    fetchUserData();
   }, []);
+
+  const fetchProfilePicture = async (username) => {
+    try {
+      // Make an API call to fetch the profile picture URL using the username
+      const profilePictureUrl = await getProfilePictureByUsername(username);
+
+      // Update the avatar image state with the profile picture URL
+      setAvatarImage(profilePictureUrl);
+    } catch (error) {
+      console.error('Error fetching profile picture:', error.message);
+      // Handle error
+    }
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -40,34 +71,54 @@ const AuthenticatedHeader = () => {
   const handleLogout = () => {
     clearAuthenticatedUser();
     navigate("/");
+    closeModal(); // Close modal when logging out
   };
 
   const handleSubmitResearchIdea = () => {
     navigate("/submit");
+    closeModal(); // Close modal when submitting research idea
+  };
+
+  const handleYourResearchPapers = () => {
+    // Handle navigation to "Your Research Papers" page
+    closeModal(); // Close modal when accessing your research papers
+  };
+
+  const handleSearch = (event) => {
+    if (event.key === 'Enter') {
+      navigate(`/explore-guest-search/${searchQuery}`);
+    }
   };
 
   return (
     <header className="main-header">
       <div className="left-section">
-        <img className="thesisfinder-logo" src={require('../../assets/thesisfinderlogo.png')} alt="Thesis-Finder-Logo" />
-        <button className="left-section-button" onClick={() => navigate('/')}>Home</button>
-        <button className="left-section-button" onClick={() => navigate('/explore-guest-search/e')}>Ideas</button>
+        <Link id='header-title' to="/">ThesisFinder</Link>
+        <button className="left-section-button" onClick={() => navigate('/home')}>Home</button>
+        <button className="left-section-button" onClick={() => navigate('/explore-guest-search')}>Ideas</button>
       </div>
       <div>
-        <input className="main-header-search" type="text" placeholder="Search for research ideas, sponsorships, people, etc." />
+        <input
+          className="main-header-search"
+          type="text"
+          placeholder="Search for research ideas, sponsorships, people, etc."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyPress={handleSearch}
+        />
       </div>
       <div>
         <button onClick={() => {/* Handle dark mode button click */}}>
-          <img className="dark-mode-button" src={require('../../assets/darkmodeimage.png')} alt="Dark Mode" />
+          <img className="dark-mode-button" src={darkModeImage} alt="Dark Mode" />
         </button>
         <button onClick={() => {/* Handle notification button click */}}>
-          <img className="notification-button" src={require('../../assets/notificationimage.png')} alt="Notification" />
+          <img className="notification-button" src={notificationImage} alt="Notification" />
         </button>
         <button onClick={openModal}>
           {avatarImage ? (
             <img src={avatarImage} alt="User Account" />
           ) : (
-            <img className="account-button" src={require('../../assets/avatar1.png')} alt="User Account" />
+            <img className="account-button" src={defaultAvatar} alt="User Account" />
           )}
         </button>
         <button className="header-submit-button" onClick={openSubmitModal}>Submit</button>
@@ -81,8 +132,8 @@ const AuthenticatedHeader = () => {
               <button onClick={closeModal} className="close-button">X</button>
             </div>
             <div className="modal-body">
-              <button onClick={() => navigate('/account')}>Your Profile</button>
-              <button onClick={handleLogout}>Logout</button>
+              <button onClick={() => { navigate('/account'); closeModal(); }}>Your Profile</button>
+              <button onClick={() => { handleLogout(); }}>Logout</button>
             </div>
           </div>
         </div>
@@ -96,8 +147,8 @@ const AuthenticatedHeader = () => {
               <button onClick={closeSubmitModal} className="close-button">X</button>
             </div>
             <div className="modal-body">
-              <button onClick={handleSubmitResearchIdea}>Submit Research Idea</button>
-              <button onClick={() => {/* Handle "Your Research Papers" button click */}}>Your Research Papers</button>
+              <button onClick={() => {handleSubmitResearchIdea(); closeSubmitModal(); }}>Submit Research Idea</button>
+              <button onClick={() => { handleYourResearchPapers(); closeSubmitModal(); }}>Your Research Papers</button>
             </div>
           </div>
         </div>

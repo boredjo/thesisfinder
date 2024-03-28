@@ -1,8 +1,39 @@
-version: '3.8'
-
+version: '3'
 services:
-  frontend:
-    image: registry.boredjo.eu/frontend:0.1v
-    ports:
-      - "80:80"
-    restart: always
+  placeholder:
+    container_name: tf-frontend
+    image: registry.boredjo.eu/tf-frontend:0.0.2
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tf.rule=Host(`thesisfinder.com`)"
+      - "traefik.http.routers.tf.entrypoints=websecure"
+      - "traefik.http.services.tf.loadbalancer.server.port=80"
+    networks:
+      - web
+  api:
+    container_name: tf-api
+    image: registry.boredjo.eu/tf-api:0.4.4
+    restart: unless-stopped
+    environment:
+      - DB_HOST=db.boredjo.eu
+      - DB_PORT=4321
+      - DB_DATABASE=thesisfinder
+      - DB_USER=tf
+      - DB_PASSWORD=ae@wj3*fnt4u%7r9h8hen
+      - REBASE=False
+      - TOKENLIFESPAN=86400
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tf-api.rule=Host(`data.thesisfinder.com`)"
+      - "traefik.http.routers.tf-api.entrypoints=websecure"
+      - "traefik.http.routers.tf-api.tls=true"
+      - "traefik.http.services.tf-api.loadbalancer.server.port=3000"
+    networks:
+      - web
+    volumes:
+      - /root/thesisfinder/profile_pictures:/thesisfinder/database/profile_pics
+      
+networks:
+  web:
+    external: true

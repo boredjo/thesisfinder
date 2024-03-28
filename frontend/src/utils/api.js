@@ -112,10 +112,68 @@ const updateUser = (userData, token) => {
   );
 };
 
+// Get Featured Ideas API request
+const getFeaturedIdeas = (token) => {
+  return makeRequest(
+    '/idea/featured',
+    'GET',
+    { 'Content-Type': 'application/json', 'Token': token }
+  );
+};
+
+// Submit Idea API request
+const submitIdea = (ideaData, token) => {
+  return makeRequest(
+    '/idea/',
+    'POST',
+    { 'Content-Type': 'application/json', 'Token': token },
+    ideaData
+  );
+};
+
+// Get Idea Details API request
+const getIdeaDetails = (ideaId, token) => {
+  return makeRequest(
+    `/idea/details/${ideaId}`,
+    'GET',
+    { 'Content-Type': 'application/json', 'Token': token }
+  );
+};
+
+// Update Profile Picture API request
+const updateProfilePicture = (imageData, token) => {
+  const headers = {
+    'Token': token,
+    // Add Content-Type header specifying image/png
+    'Content-Type': 'image/png'
+  };
+
+  return makeRequest(
+    '/profilepicture',
+    'POST',
+    headers,
+    imageData // Pass image data directly
+  );
+};
+
+// Get Profile Picture by Username API request
+const getProfilePictureByUsername = (username) => {
+  return makeRequest(
+    `/profilepicture/${username}`,
+    'GET',
+    { 'Content-Type': 'application/json' }
+  );
+};
+
 export {
   getToken,
   registerUser,
   getUser,
   createUser,
-  updateUser
+  updateUser,
+  getFeaturedIdeas,
+  submitIdea,
+  getIdeaDetails,
+  updateProfilePicture,
+  getProfilePictureByUsername // Add this line to export the new function
 };

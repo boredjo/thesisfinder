@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './avatar-upload.css';
+import { registerUser, updateProfilePicture } from '../../utils/api'; // Import the registerUser and updateProfilePicture API functions
+import { getToken } from '../../utils/api';
+import { useEffect } from 'react';
+import { getUser } from '../../utils/api';
+
 import ConditionsModal from '../../components/ConditionsModal/ConditionsModal';
 import ProfilePreview from '../../components/ProfilePreview/ProfilePreview';
 import defaultAvatar from '../../assets/avatar1.png';
-import { registerUser } from '../../utils/api'; // Import the registerUser API function
 
-const AvatarUpload = () => {
+import './avatar-upload.css';
+
+
+const AvatarUpload = ({ authToken }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userData, setUserData] = useState(null); // State to store user data
   const navigate = useNavigate();
 
   const handleFileChange = (e) => {
@@ -17,6 +24,21 @@ const AvatarUpload = () => {
   };
 
   const avatarImage = selectedFile ? URL.createObjectURL(selectedFile) : defaultAvatar;
+
+  // Fetch user data when component mounts
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const user = await getUser(authToken);
+        setUserData(user);
+      } catch (error) {
+        console.error('Error fetching user data:', error.message);
+        // Handle error
+      }
+    };
+
+    fetchUserData();
+  }, [authToken]);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -27,29 +49,43 @@ const AvatarUpload = () => {
   };
 
   const handleSkipStep = async () => {
-    const signupFormData = JSON.parse(localStorage.getItem('signupFormData')) || {};
     const avatarImage = defaultAvatar; // Use default avatar image for skipping step
-
+  
     try {
-      // Call the registerUser API with the signup form data
-      console.log(signupFormData.username)
-
-      await registerUser({
-        user: signupFormData.email,
-        first_name: signupFormData.firstName,
-        last_name: signupFormData.lastName,
-        country: signupFormData.region, // Assuming region corresponds to country
-        email: signupFormData.email,
-        password: signupFormData.password,
-      });
-
-      // Navigate to the login page with signup data and default avatar
-      navigate('/login', { state: { signupFormData, avatarImage } });
+      // Navigate to the home page with default avatar
+      navigate('/', { state: { avatarImage } });
     } catch (error) {
       console.error('Error registering user:', error.message);
       // Handle error
     }
   };  
+
+  const handleCompleteSignUp = async () => {
+    try {
+      // Upload the selected picture with the updateProfilePicture API
+      const imageType = 'image/png'; // Specify the image type
+      const formData = new FormData();
+      formData.append('image', selectedFile, `image.${imageType.split('/')[1]}`);
+      
+      console.log(formData)
+
+      console.log(authToken)
+
+      await updateProfilePicture(formData, authToken);
+
+      // Proceed with completing sign up
+      handleSkipStep();
+    } catch (error) {
+      console.error('Error completing sign up:', error.message);
+      // Handle error
+    }
+  };
+
+  // Get user's name and country from signupFormData
+  const signupFormData = JSON.parse(localStorage.getItem('signupFormData')) || {};
+  const { firstName, lastName, region } = signupFormData;
+  const userName = `${firstName} ${lastName}`;
+  const userCountry = region; // Assuming region corresponds to country
 
   return (
     <div className="main-container">
@@ -67,10 +103,10 @@ const AvatarUpload = () => {
           <label htmlFor="file-input" className="upload-button">
             Upload a photo
           </label>
-          <input id="file-input" type="file" accept="image/*" onChange={handleFileChange} />
+          <input id="file-input" type="file" accept="image/png" onChange={handleFileChange} />
         </div>
         <div className='preview-container'>
-          <ProfilePreview avatarImage={avatarImage} name="John Doe" location="University of XYZ" />
+          {userData && <ProfilePreview avatarImage={avatarImage} name={`${userData.first_name} ${userData.last_name}`} location={userData.country} />}
         </div>
       </div>
       <div className="bottom-container">
@@ -80,6 +116,9 @@ const AvatarUpload = () => {
         </button>
         <button className="skip-button" onClick={handleSkipStep}>
           Skip this step
+        </button>
+        <button className="complete-signup-button" onClick={handleCompleteSignUp}>
+          Complete Sign Up
         </button>
       </div>
       {isModalOpen && <ConditionsModal closeModal={closeModal} />}

@@ -78,7 +78,7 @@ const LoginModal = ({ show, handleClose }) => {
         {error && <p className="error-message">{error}</p>}
         <button onClick={handleClose}>Close</button>
         <p>
-          Don't have an account? <Link to="/signup">Sign up here</Link>.
+          Don't have an account? <Link to="/signup" onClick={handleClose}>Sign up here</Link>.
         </p>
       </section>
     </div>

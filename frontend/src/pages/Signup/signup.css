@@ -6,16 +6,16 @@
   .header-container h2 {
     font-weight: bold;
     font-size: 30px;
-    margin-left: 250px;
-    margin-right: 250px;
+    margin-left: 5%;
+    margin-right: 5%;
     margin-top: 30px;
     margin-bottom: 30px;
   } 
 
   .header-container p {
     font-size: 18px;
-    margin-left: 200px;
-    margin-right: 200px;
+    margin-left: 5%;
+    margin-right: 5%;
     margin-bottom: 30px;
   }
 

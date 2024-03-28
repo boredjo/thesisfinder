@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-
 import FeaturesIdeas from '../../components/FeatureIdeas/FeatureIdeas';
-
-import ideas from '../../data/ideasData.js';
-
+import ideasData from '../../data/ideasData.js';
 import '../../styles/main.css';
 import './explore-guest-search.css';
 
@@ -13,37 +10,31 @@ const ExploreGuestSearch = () => {
   const [query, setQuery] = useState(initialQuery || '');
   const [sortBy, setSortBy] = useState('relevance'); // Default sort option
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentIdeas, setCurrentIdeas] = useState([]);
-  const navigate = useNavigate();
+  const [filteredIdeas, setFilteredIdeas] = useState(ideasData); // Updated state
 
   useEffect(() => {
     setCurrentPage(1); // Reset to the first page when query or sorting changes
   }, [query, sortBy]);
 
   useEffect(() => {
-    let sortedIdeas = [...ideas];
+    let sortedIdeas = [...filteredIdeas]; // Use the filteredIdeas instead of ideasData
 
     if (sortBy === 'newest') {
-      sortedIdeas.sort((a, b) => new Date(b.date) - new Date(a.date));
+      sortedIdeas.sort((a, b) => new Date(b.date_posted) - new Date(a.date_posted));
     } else if (sortBy === 'oldest') {
-      sortedIdeas.sort((a, b) => new Date(a.date) - new Date(b.date));
+      sortedIdeas.sort((a, b) => new Date(a.date_posted) - new Date(b.date_posted));
     }
 
-    setCurrentIdeas(sortedIdeas);
+    setFilteredIdeas(sortedIdeas); // Update filteredIdeas state
   }, [sortBy]);
 
-  const filteredIdeas = currentIdeas.filter(idea =>
-    idea.title.toLowerCase().includes(query.toLowerCase())
-  );
-
   useEffect(() => {
-    const numberOfPages = Math.ceil(filteredIdeas.length / itemsPerPage);
-
-    // Ensure that currentPage stays within valid bounds
-    if (currentPage > numberOfPages) {
-      setCurrentPage(numberOfPages);
-    }
-  }, [currentPage, filteredIdeas]);
+    const filteredResults = ideasData.filter(idea =>
+      idea.title.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredIdeas(filteredResults);
+    setCurrentPage(1); // Reset to the first page when query changes
+  }, [query]);  
 
   const itemsPerPage = 5;
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -71,15 +62,6 @@ const ExploreGuestSearch = () => {
     }
   };
 
-  const handleKeyPress = event => {
-    if (event.key === 'Enter') {
-      const newQuery = event.target.value;
-      setQuery(newQuery);
-      setCurrentPage(1); // Set currentPage to 1 when navigating
-      navigate(`/explore-guest-search/${newQuery}`);
-    }
-  };
-
   const handleSortChange = event => {
     setSortBy(event.target.value);
   };
@@ -104,7 +86,6 @@ const ExploreGuestSearch = () => {
           type="text"
           placeholder="Search Ideas"
           value={query}
-          onKeyPress={handleKeyPress}
           onChange={(e) => setQuery(e.target.value)}
         />
       </div>

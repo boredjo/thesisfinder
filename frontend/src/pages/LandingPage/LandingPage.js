@@ -1,39 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom'
-
+import { Link, useNavigate } from 'react-router-dom';
 import FeaturesIdeas from '../../components/FeatureIdeas/FeatureIdeas';
-import { getIdeasData } from '../../data/ideasData.js';
-
-import ideas from '../../data/ideasData.js'
-
+import { getFeaturedIdeas, getToken } from '../../utils/api'; // Import getToken and getFeaturedIdeas functions
 import '../../styles/main.css';
 import '../../styles/index.css';
 import './landing-page.css';
 
-const LandingPage = (props) => {
+const LandingPage = ({ authToken }) => {
   const [featuredIdeas, setFeaturedIdeas] = useState([]);
   const navigate = useNavigate();
-  const ideasData = getIdeasData(); // Load ideasData from localStorage
 
   useEffect(() => {
+    const fetchFeaturedIdeas = async () => {
+      try {
+        // Fetch token using the provided authToken
+        // const tokenResponse = await getToken('username', 'password');
+        // const token = tokenResponse.token; // Extract token from the response
 
-    // Sort ideas by date and show only first five
-    const sortedIdeas = ideasData.sort((a, b) => {
-      return new Date(b.date) - new Date(a.date);
-    });
-    const selectedIdeas = sortedIdeas.slice(0, 5);
-    console.log(selectedIdeas)
-    setFeaturedIdeas(selectedIdeas);
-  }, []);
-  
-  // useEffect(() => {
-  //   // Check if the authentication token exists
-  //   const authToken = localStorage.getItem('authToken');
-  //   if (authToken) {
-  //     // Redirect to Home.js if the token exists
-  //     navigate('/home');
-  //   }
-  // }, [navigate]);
+        // Fetch featured ideas using the API function with the obtained token
+        const response = await getFeaturedIdeas(authToken);
+        setFeaturedIdeas(response.ideas || []); // Update state with fetched ideas
+      } catch (error) {
+        console.error('Error fetching featured ideas:', error);
+      }
+    };
+
+    fetchFeaturedIdeas(); // Call the fetchFeaturedIdeas function
+  }, [authToken]);
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -71,9 +64,9 @@ const LandingPage = (props) => {
               placeholder="Search Ideas" 
               id="search-ideas"
               onKeyPress={handleKeyPress}
-            ></input>
+            />
           </div>
-          <hr id='section-divider'></hr>
+          <hr id='section-divider' />
           <h2>Featured Ideas</h2>
           <FeaturesIdeas ideas={featuredIdeas} />
         </div>

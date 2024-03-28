@@ -10,7 +10,7 @@ const Login = () => {
   const location = useLocation();
 
   const [formData, setFormData] = useState({
-    email: '',
+    username: '',
     password: '',
   });
 
@@ -26,25 +26,23 @@ const Login = () => {
 
     try {
       // Call the API to get the authentication token
-      const response = await getToken(formData.email, formData.password);
+      const response = await getToken(formData.username, formData.password);
 
       // Check if the response has a token
       if (response && response.token) {
         // Set the authenticated user in local storage
         setAuthenticatedUser({
-          email: formData.email,
+          username: formData.username,
           // Add any other user-related info you may need
         });
 
         // Set the authentication token in local storage
         setAuthToken(response.token);
 
-        console.log(response.token)
-
         // Redirect to the home page after successful login
         navigate('/');
       } else {
-        setError('Invalid email or password');
+        setError('Invalid username or password');
       }
     } catch (error) {
       setError('Error during login. Please try again.');
@@ -57,8 +55,8 @@ const Login = () => {
     const { state } = location;
     if (state && state.signupFormData) {
       setFormData({
-        email: state.signupFormData.email || '',
-        password: '', // Leave the password field empty for security reasons
+        username: state.signupFormData.username || '',
+        password: '',
       });
     }
   }, [location]);
@@ -66,14 +64,15 @@ const Login = () => {
   return (
     <div>
       <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
         <label>
-          Email:
+          Username:
           <input
-            type="email"
-            name="email"
-            value={formData.email}
+            type="username"
+            name="username"
+            value={formData.username}
             onChange={handleChange}
+            oninput="this.setCustomValidity('')" title="<your text>"
           />
         </label>
         <br />
@@ -87,7 +86,7 @@ const Login = () => {
           />
         </label>
         <br />
-        <button type="submit">Login</button>
+        <button type="submit" formNoValidate>Login</button>
       </form>
       {error && <p className="error-message">{error}</p>}
       <p>

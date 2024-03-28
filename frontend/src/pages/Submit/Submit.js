@@ -1,37 +1,31 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ideasData from '../../data/ideasData'; // Import the ideasData
+import { submitIdea } from '../../utils/api'; // Import the submitIdea function
+import { getAuthToken } from '../../utils/authService';
+
 import '../../styles/main.css';
 import '../../styles/mainheader.css';
 import './submit.css';
-import { getIdeasData } from '../../data/ideasData';
 
-const Submit = () => {
+
+const Submit = ({ }) => {
   const navigate = useNavigate();
+  const authToken = getAuthToken();
 
   const [formData, setFormData] = useState({
     title: '',
+    tags: [],
     description: '',
-    collaboration: {
-      feedback: false,
-      coResearcher: false,
-      contributions: false,
-      interdisciplinary: false,
-    },
-    documents: [],
-    visibility: 'public',
   });
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-
-    if (type === 'checkbox') {
+    const { name, value } = e.target;
+    if (name === 'tags') {
+      // Split the input value by commas to get individual tags
+      const tagsArray = value.split(',').map(tag => tag.trim());
       setFormData({
         ...formData,
-        collaboration: {
-          ...formData.collaboration,
-          [name]: checked,
-        },
+        [name]: tagsArray,
       });
     } else {
       setFormData({
@@ -41,47 +35,19 @@ const Submit = () => {
     }
   };
 
-  const handleDocumentChange = (e) => {
-    const files = Array.from(e.target.files);
-    const fileData = files.map((file) => ({
-      name: file.name,
-      type: file.type,
-      data: URL.createObjectURL(file),
-    }));
-    setFormData({
-      ...formData,
-      documents: [...formData.documents, ...fileData], // Append new documents to the existing list
-    });
-  };
-
-  const generateUniqueId = () => {
-    // Generate a unique ID
-    return Math.random().toString(36).substr(2, 9);
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newIdea = {
-      id: generateUniqueId(),
-      title: formData.title,
-      description: formData.description,
-      collaboration: formData.collaboration,
-      documents: formData.documents,
-      visibility: formData.visibility,
-      tags: [],
-      date: new Date().toLocaleDateString(),
-      author: 'Anonymous',
-      authorImage: '',
-    };
+    try {
+      // Call the submitIdea API function to submit the idea data
+      await submitIdea(formData, authToken); // Replace 'tokentokentoken' with the actual token
 
-    const ideasData = getIdeasData(); // Load ideasData from localStorage
-
-    ideasData.push(newIdea); // Append the new idea to the loaded ideasData
-
-    localStorage.setItem('ideasData', JSON.stringify(ideasData)); // Store the updated ideasData to localStorage
-
-    navigate('/');
+      // Redirect to the home page after successful submission
+      navigate('/');
+    } catch (error) {
+      console.error('Error submitting idea:', error);
+      alert('An error occurred while submitting the idea. Please try again.');
+    }
   };
 
   return (
@@ -89,43 +55,17 @@ const Submit = () => {
       <h1>Submit Research Idea</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-            <label htmlFor="title">Research Idea Title</label>
-            <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="description">Research Idea Description</label>
-            <textarea id="description" name="description" value={formData.description} onChange={handleChange} required />
-          </div>
-          <div className="form-group">
-            <label>Collaboration Preferences</label>
-            <div>
-              <input type="checkbox" id="feedback" name="feedback" checked={formData.collaboration.feedback} onChange={handleChange} />
-              <label htmlFor="feedback">Open to Feedback</label>
-            </div>
-            <div>
-              <input type="checkbox" id="coResearcher" name="coResearcher" checked={formData.collaboration.coResearcher} onChange={handleChange} />
-              <label htmlFor="coResearcher">Co-Researcher Wanted</label>
-            </div>
-            <div>
-              <input type="checkbox" id="contributions" name="contributions" checked={formData.collaboration.contributions} onChange={handleChange} />
-              <label htmlFor="contributions">Contributions Welcome</label>
-            </div>
-            <div>
-              <input type="checkbox" id="interdisciplinary" name="interdisciplinary" checked={formData.collaboration.interdisciplinary} onChange={handleChange} />
-              <label htmlFor="interdisciplinary">Interdisciplinary Collaboration</label>
-            </div>
-          </div>
-          <div className="form-group">
-            <label htmlFor="documents">Attach Supporting Documents (PDF)</label>
-            <input type="file" id="documents" name="documents" accept=".pdf" multiple onChange={handleDocumentChange} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="visibility">Visibility Settings</label>
-            <select id="visibility" name="visibility" value={formData.visibility} onChange={handleChange}>
-              <option value="public">Public</option>
-              <option value="private">Private</option>
-            </select>
-          </div>       
+          <label htmlFor="title">Research Idea Title</label>
+          <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} required />
+        </div>
+        <div className="form-group">
+          <label htmlFor="tags">Tags (comma-separated)</label>
+          <input type="text" id="tags" name="tags" value={formData.tags} onChange={handleChange} />
+        </div>
+        <div className="form-group">
+          <label htmlFor="description">Research Idea Description</label>
+          <textarea id="description" name="description" value={formData.description} onChange={handleChange} required />
+        </div>
         <button type="submit">Submit</button>
       </form>
     </div>
