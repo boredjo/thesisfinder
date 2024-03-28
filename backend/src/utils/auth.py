@@ -20,7 +20,7 @@ class auth_middleware():
         if request.path.startswith("/doc"): # pass trough for the documentation
             return self.app(environ, start_response)
 
-        if 'Token' in request.headers.keys():
+        if 'Token' in request.headers.keys() and request.headers['Token'] != 'null':
             token = request.headers['Token']
             print(token)
             try:
