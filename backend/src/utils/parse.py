@@ -1,6 +1,5 @@
 from werkzeug.wrappers import Request, Response
 from werkzeug.exceptions import BadRequest
-from flask import make_response
 import bcrypt
 
 from utils.logs import Logger
@@ -44,11 +43,11 @@ class parse_middleware():
         environ['logger'].message('HEADER', list(request.headers))
 
         if request.method in ['OPTIONS']:
-            response = make_response()
-            response.headers.add("Access-Control-Allow-Origin", "*")
-            response.headers.add('Access-Control-Allow-Headers', "*")
-            response.headers.add('Access-Control-Allow-Methods', "*")
-            return response
+            res = Response(u"sucess", mimetype= 'text/plain', status=200)
+            res.headers['Access-Control-Allow-Origin'] = '*'
+            res.headers['Access-Control-Allow-Headers'] = '*'
+            res.headers['Access-Control-Allow-Methods'] = '*'
+            return res(environ, start_response)
         # do not parse GET or DELETE request
         if request.method in ['GET', 'DELETE']:
             return self.app(environ, start_response)
