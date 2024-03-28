@@ -4,6 +4,7 @@ CREATE TABLE `Claims` (
   `user` varchar(100) NOT NULL,
   `idea` varchar(30) NOT NULL,
   `date_posted` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`user`,`idea`),
   KEY `NewTable_Ideas_FK` (`idea`),
   KEY `NewTable_Users_FK` (`user`),
   CONSTRAINT `NewTable_Ideas_FK` FOREIGN KEY (`idea`) REFERENCES `Ideas` (`hash`) ON DELETE CASCADE ON UPDATE CASCADE,
