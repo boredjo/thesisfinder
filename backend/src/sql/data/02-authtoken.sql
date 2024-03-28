@@ -1,0 +1,2 @@
+INSERT INTO AuthTokens (token, user) VALUES ("15a4c236a53c916a2d1ba9fce7c01bb7", "jo");
+UPDATE AuthTokens SET created_date = "2030-01-01 00:00:00.000", WHERE token = "15a4c236a53c916a2d1ba9fce7c01bb7";

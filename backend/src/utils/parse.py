@@ -8,6 +8,8 @@ from utils.logs import Logger
 JSON_PATHS = [
     "/use", # /user
     "/log", # /login
+    "/ide", # /idea
+    "/cla", # /claim
 ]
 
 IMAGE_PATHS = [
@@ -38,8 +40,16 @@ class parse_middleware():
         if not 'logger' in environ.keys():
             environ['logger'] = Logger()
 
+        environ['logger'].message('METHOD', request.method)
         environ['logger'].message('HEADER', list(request.headers))
-        # do not parse GET request
+
+        if request.method in ['OPTIONS']:
+            res = Response(u"sucess", mimetype= 'text/plain', status=200)
+            res.headers['Access-Control-Allow-Origin'] = '*'
+            res.headers['Access-Control-Allow-Headers'] = '*'
+            res.headers['Access-Control-Allow-Methods'] = '*'
+            return res(environ, start_response)
+        # do not parse GET or DELETE request
         if request.method in ['GET', 'DELETE']:
             return self.app(environ, start_response)
         

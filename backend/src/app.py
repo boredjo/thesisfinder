@@ -1,18 +1,27 @@
 from flask import Flask, send_from_directory, request, g as app_ctx
+from flask_cors import CORS, cross_origin
 from dotenv import load_dotenv
 import time
+import os
 
 load_dotenv('.env') # load env if possible
 
 from utils.auth import auth_middleware
-from utils.db import mysql_middleware
+from utils.db import mysql_middleware, rebase
 from utils.parse import parse_middleware
+from utils.check_permissions import pre_check
 from routes.profilepicture import profile_picture_blueprint
 from routes.user import user_blueprint
 from routes.login import login_blueprint
+from routes.idea import idea_blueprint
+from routes.claim import claim_blueprint
 
+pre_check() # check folder structure
+if os.environ['RESET_DB'] == 'True': rebase()
 
 app = Flask('ThesisFinder')
+cors = CORS(app)
+
 
 @app.before_request
 def logging_before():
@@ -37,6 +46,8 @@ app.wsgi_app = parse_middleware(app.wsgi_app)
 app.register_blueprint(profile_picture_blueprint, url_prefix='/profilepicture')
 app.register_blueprint(user_blueprint, url_prefix='/user')
 app.register_blueprint(login_blueprint, url_prefix='/login')
+app.register_blueprint(idea_blueprint, url_prefix='/idea')
+app.register_blueprint(claim_blueprint, url_prefix='/claim')
 
 
 # serve api documentation

@@ -6,7 +6,6 @@ RUN adduser --system --no-create-home thesisfinder
 WORKDIR /thesisfinder
 COPY . .
 RUN mkdir /thesisfinder/database
-RUN mkdir /thesisfinder/database/profile_pics
 # install pip packages
 RUN python3 -m pip install -r requirements.txt
 # set workdir
@@ -16,7 +15,8 @@ WORKDIR src
 ARG version
 ENV API_VERSION $version
 ENV PYTHONUNBUFFERED True
+ENV RESET_DB False
 
-RUN chown thesisfinder /thesisfinder
+RUN chown -R thesisfinder /thesisfinder
 USER thesisfinder
 CMD ["gunicorn", "--enable-stdio-inheritance", "--bind",  "0.0.0.0:3000", "app:app"]
