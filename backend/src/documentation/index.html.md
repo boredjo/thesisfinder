@@ -319,8 +319,11 @@ To claim an idea, simply sent an authenticated `GET` request
 > You need to be authentiacted to perform this action
 
 ```shell
-curl --location --request GET 'https://api.thesisfinder.com/claim/ideaid' \
---header 'Token: tokentokentoken'
+curl --location --request GET 'https://api.thesisfinder.com/claim/' \
+--header 'Token: tokentokentoken' \
+--data-raw '{
+		"idea": "some idea hash"
+}'
 ```
 
 ## Get claims
@@ -366,8 +369,11 @@ To delete a claim, simply sent an authenticated `DELETE` request
 > You need to be authentiacted to perform this action
 
 ```shell
-curl --location --request DELETE 'https://api.thesisfinder.com/claim/ideaid' \
---header 'Token: tokentokentoken' 
+curl --location --request DELETE 'https://api.thesisfinder.com/claim/' \
+--header 'Token: tokentokentoken' \
+--data-raw '{
+		"idea": "some idea hash"
+}'
 ```
 
 
