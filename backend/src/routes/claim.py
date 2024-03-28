@@ -9,11 +9,11 @@ from models.user import User
 
 claim_blueprint = Blueprint('claim', __name__)
 
-@claim_blueprint.route('/user/', methods=['GET'])
+@claim_blueprint.route('/', methods=['GET'])
 def get_user_claims():
     user = request.environ['user'] # get issuing user
     try:
-        data = Claim.find_claims_by_user(user.username, request.environ['cursor'])
+        data = Claim.find_claims_by_user(user.name, request.environ['cursor'])
     except mysql.connector.Error as err:
         request.environ['logger'].error(e, 'routes/claim.py - get_user_claims() - find claims')
         data = []
@@ -29,7 +29,7 @@ def get_user_claims():
     ])
 
 @claim_blueprint.route('/user/<path:username>', methods=['GET'])
-def get_user_claims(username):
+def get_username_claims(username):
     try:
         user = User.find_user(username, request.environ['cursor'])
     except mysql.connector.Error as err:
@@ -53,7 +53,7 @@ def get_user_claims(username):
     ])
 
 @claim_blueprint.route('/user/<path:idea>', methods=['GET'])
-def get_user_claims(idea):
+def get_idea_claims(idea):
     try:
         data = Claim.find_claims_by_idea(idea, request.environ['cursor'])
     except mysql.connector.Error as err:
