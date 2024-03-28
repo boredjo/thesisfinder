@@ -1,4 +1,5 @@
 from flask import Flask, send_from_directory, request, g as app_ctx
+from flask_cors import CORS, cross_origin
 from dotenv import load_dotenv
 import time
 import os
@@ -15,10 +16,11 @@ from routes.login import login_blueprint
 from routes.idea import idea_blueprint
 
 pre_check() # check folder structure
-if os.environ['REBASE']: rebase()
-
+if os.environ['REBASE'] == 'True': rebase()
 
 app = Flask('ThesisFinder')
+cors = CORS(app)
+# app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.before_request
 def logging_before():
