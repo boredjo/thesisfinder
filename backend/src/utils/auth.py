@@ -22,7 +22,6 @@ class auth_middleware():
 
         if 'Token' in request.headers.keys() and request.headers['Token'] != 'null':
             token = request.headers['Token']
-            print(token)
             try:
                 environ['cursor'].execute(
                     """
@@ -50,8 +49,4 @@ class auth_middleware():
         else: 
             environ['user'] = User.ANON()
             environ['logger'].message('AUTH', 'anonymous')
-            return self.app(environ, start_response)
-
-            
-        
-        
+            return self.app(environ, start_response)     
