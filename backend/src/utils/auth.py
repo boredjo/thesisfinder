@@ -22,6 +22,7 @@ class auth_middleware():
 
         if 'Token' in request.headers.keys():
             token = request.headers['Token']
+            print(token)
             try:
                 environ['cursor'].execute(
                     """
