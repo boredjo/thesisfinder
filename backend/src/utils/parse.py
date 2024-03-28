@@ -41,8 +41,12 @@ class parse_middleware():
 
         environ['logger'].message('METHOD', request.method)
         environ['logger'].message('HEADER', list(request.headers))
-        # do not parse GET request
-        if request.method in ['GET', 'DELETE', 'OPTIONS']:
+
+        if request.method in ['OPTIONS']:
+            res = Response(u"sucess", mimetype= 'text/plain', status=200)
+            return res(environ, start_response)
+        # do not parse GET or DELETE request
+        if request.method in ['GET', 'DELETE']:
             return self.app(environ, start_response)
         
         if request.path[:4] in JSON_PATHS: 
