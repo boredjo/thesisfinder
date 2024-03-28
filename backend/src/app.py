@@ -14,6 +14,7 @@ from routes.profilepicture import profile_picture_blueprint
 from routes.user import user_blueprint
 from routes.login import login_blueprint
 from routes.idea import idea_blueprint
+from routes.claim import claim_blueprint
 
 pre_check() # check folder structure
 if os.environ['RESET_DB'] == 'True': rebase()
@@ -46,6 +47,7 @@ app.register_blueprint(profile_picture_blueprint, url_prefix='/profilepicture')
 app.register_blueprint(user_blueprint, url_prefix='/user')
 app.register_blueprint(login_blueprint, url_prefix='/login')
 app.register_blueprint(idea_blueprint, url_prefix='/idea')
+app.register_blueprint(claim_blueprint, url_prefix='/claim')
 
 
 # serve api documentation
