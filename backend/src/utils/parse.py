@@ -10,6 +10,7 @@ JSON_PATHS = [
     "/log", # /login
     "/ide", # /idea
     "/cla", # /claim
+    "/spo", # /sponsor
 ]
 
 IMAGE_PATHS = [
