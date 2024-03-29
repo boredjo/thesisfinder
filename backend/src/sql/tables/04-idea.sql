@@ -1,6 +1,6 @@
 -- thesisfinder.Ideas definition
 CREATE TABLE `Ideas` (
-  `hash` varchar(30) NOT NULL,
+  `hash` varchar(50) NOT NULL,
   `title` varchar(200) NOT NULL,
   `date_posted` timestamp NULL DEFAULT NULL,
   `author` varchar(100) DEFAULT NULL,

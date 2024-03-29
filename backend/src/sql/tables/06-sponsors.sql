@@ -1,9 +1,9 @@
 -- tftest.Sponsorships definition
 
 CREATE TABLE `Sponsors` (
-  `id` varchar(30) NOT NULL,
+  `id` varchar(50) NOT NULL,
   `author` varchar(100) DEFAULT NULL,
-  `idea` varchar(30) DEFAULT NULL,
+  `idea` varchar(50) DEFAULT NULL,
   `amount` decimal(10,0) NOT NULL,
   `views` bigint(20) NOT NULL DEFAULT 0,
   `description` text DEFAULT NULL,

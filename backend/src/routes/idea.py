@@ -38,7 +38,7 @@ def get_idea_details(idea_id):
     try: 
         idea = Idea.find_idea(idea_id, request.environ['cursor'])
     except mysql.connector.Error as err:
-        request.environ['logger'].error(e, 'routes/idea.py - get_idea_details() - find idea')
+        request.environ['logger'].error(err, 'routes/idea.py - get_idea_details() - find idea')
     
     return idea.jsonify()
 
