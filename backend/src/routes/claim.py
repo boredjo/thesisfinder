@@ -9,7 +9,7 @@ from models.user import User
 
 claim_blueprint = Blueprint('claim', __name__)
 
-@claim_blueprint.route('/', methods=['GET'])
+@claim_blueprint.route('/user/ ', methods=['GET'])
 def get_user_claims():
     user = request.environ['user'] # get issuing user
     try:
