@@ -18,7 +18,7 @@ def get_user_sponsors():
         request.environ['logger'].error(err, 'routes/sponsor.py - get_user_sponsors() - find sponsors')
         data = []
 
-    return jsonify(sponsor=[
+    return jsonify(sponsors=[
         {
             "id" : sponsor.id,
             "idea": sponsor.idea,
@@ -44,7 +44,7 @@ def get_username_sponsors(username):
         request.environ['logger'].error(err, 'routes/sponsor.py - get_username_sponsors() - find sponsors')
         data = []
 
-    return jsonify(sponsor=[
+    return jsonify(sponsors=[
         {
             "id" : sponsor.id,
             "idea": sponsor.idea,
@@ -64,7 +64,7 @@ def get_idea_sponsor(idea):
         request.environ['logger'].error(err, 'routes/sponsor.py - get_idea_sponsor() - find claims')
         data = []
 
-    return jsonify(sponsor=[
+    return jsonify(sponsors=[
         {
             "id" : sponsor.id,
             "idea": sponsor.idea,
@@ -102,7 +102,7 @@ def post_sponsorship():
         return Response(u'The sponsorship already exists', mimetype= 'text/plain', status=422)
     
     request.environ['logger'].message("POST_SPONSOR", f'idea {new_sponsor.idea} was sponsored by {new_sponsor.author}')
-    return Response(u'idea sponsored', mimetype= 'text/plain', status=200)
+    return jsonify({"id": new_sponsor.id})
 
     
 @sponsor_blueprint.route('/<path:id>', methods=['DELETE'])
