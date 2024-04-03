@@ -117,7 +117,7 @@ const getFeaturedIdeas = (token) => {
   return makeRequest(
     '/idea/featured',
     'GET',
-    { 'Content-Type': 'application/json', 'Token': token }
+    { 'Content-Type': 'application/json'}
   );
 };
 

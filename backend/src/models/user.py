@@ -28,7 +28,7 @@ class User:
         try:
             cursor.execute(
                 """
-                SELECT username, first_name, last_name, country, email, password_hash FROM User WHERE username = %s ;
+                SELECT username, first_name, last_name, country, email, password_hash FROM Users WHERE username = %s ;
                 """
                 , [user_name]
             )
@@ -45,13 +45,12 @@ class User:
             try:
                 cursor.execute(
                     """
-                    INSERT INTO User (username, first_name, last_name, country, email, password_hash) VALUES (%s, %s, %s, %s, %s, %s);
+                    INSERT INTO Users (username, first_name, last_name, country, email, password_hash) VALUES (%s, %s, %s, %s, %s, %s);
                     """
                     ,[self.name, self.first_name, self.last_name, self.country, self.email, get_hashed_password(self.password_hash).decode('utf-8')]
                 )
             except mysql.connector.Error as err:
                 if err.errno == errorcode.ER_DUP_ENTRY:
-                    print(-1)
                     return -1
                 else:
                     print("MySQL Error: ", err.msg)
@@ -60,7 +59,7 @@ class User:
             try:
                 cursor.execute(
                     """
-                    UPDATE User SET first_name = %s, last_name = %s, country = %s, email = %s, password_hash = %s WHERE username = %s;
+                    UPDATE Users SET first_name = %s, last_name = %s, country = %s, email = %s, password_hash = %s WHERE username = %s;
                     """
                     ,[new_user.first_name, new_user.last_name, new_user.country, new_user.email, get_hashed_password(new_user.password_hash).decode('utf-8'), self.name]
                 )
@@ -79,7 +78,7 @@ class User:
     def nameTaken(self, cursor):
         cursor.execute(
             """
-            SELECT username  FROM User WHERE username = %s OR email = %s;
+            SELECT username  FROM Users WHERE username = %s OR email = %s;
             """
             , [self.name, self.email]
         )
@@ -88,9 +87,7 @@ class User:
     def newEmailTaken(self, cursor):
         cursor.execute(
             """
-            SELECT username FROM User 
-            WHERE email = %s
-            AND NOT(username = %s);
+            SELECT username FROM Users WHERE email = %s AND NOT(username = %s);
             """
             , [self.email, self.name]
         )             
@@ -99,8 +96,7 @@ class User:
     def delete(self, cursor):
         cursor.execute(
             """
-            DELETE FROM User WHERE username = %s;
-            DELETE FORM AuthTokens WHERE username = %s:
+            DELETE FROM Users WHERE username = %s;
             """
-            , [self.name, self.name]
+            , [self.name]
         )

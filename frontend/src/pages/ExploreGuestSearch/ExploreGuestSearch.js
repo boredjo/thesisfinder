@@ -1,115 +1,81 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import FeaturesIdeas from '../../components/FeatureIdeas/FeatureIdeas';
-import ideasData from '../../data/ideasData.js';
+import { getFeaturedIdeas } from '../../utils/api';
 import '../../styles/main.css';
 import './explore-guest-search.css';
 
 const ExploreGuestSearch = () => {
-  const { query: initialQuery } = useParams();
-  const [query, setQuery] = useState(initialQuery || '');
-  const [sortBy, setSortBy] = useState('relevance'); // Default sort option
+  const [query, setQuery] = useState('');
+  const [ideas, setIdeas] = useState([]);
+  const [filteredIdeas, setFilteredIdeas] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filteredIdeas, setFilteredIdeas] = useState(ideasData); // Updated state
+  const [itemsPerPage, setItemsPerPage] = useState(5); // Adjust the number of items per page
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setCurrentPage(1); // Reset to the first page when query or sorting changes
-  }, [query, sortBy]);
+    const fetchFeaturedIdeas = async () => {
+      try {
+        const response = await getFeaturedIdeas(); // Fetch all featured ideas
+        setIdeas(response.ideas || []); // Update state with fetched ideas
+      } catch (error) {
+        console.error('Error fetching featured ideas:', error);
+      }
+    };
+
+    fetchFeaturedIdeas(); // Call the fetchFeaturedIdeas function
+  }, []);
 
   useEffect(() => {
-    let sortedIdeas = [...filteredIdeas]; // Use the filteredIdeas instead of ideasData
-
-    if (sortBy === 'newest') {
-      sortedIdeas.sort((a, b) => new Date(b.date_posted) - new Date(a.date_posted));
-    } else if (sortBy === 'oldest') {
-      sortedIdeas.sort((a, b) => new Date(a.date_posted) - new Date(b.date_posted));
-    }
-
-    setFilteredIdeas(sortedIdeas); // Update filteredIdeas state
-  }, [sortBy]);
-
-  useEffect(() => {
-    const filteredResults = ideasData.filter(idea =>
+    // Filter ideas based on the search query
+    const filtered = ideas.filter(idea =>
       idea.title.toLowerCase().includes(query.toLowerCase())
     );
-    setFilteredIdeas(filteredResults);
-    setCurrentPage(1); // Reset to the first page when query changes
-  }, [query]);  
+    setFilteredIdeas(filtered);
+    setCurrentPage(1); // Reset to first page when filtering changes
+  }, [query, ideas]);
 
-  const itemsPerPage = 5;
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      const searchQuery = event.target.value;
+      navigate(`/explore-guest-search/${searchQuery}`);
+      setQuery(searchQuery);
+    }
+  };
+
+  // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentIdeasToShow = filteredIdeas.slice(indexOfFirstItem, indexOfLastItem);
 
-  const pageNumbers = Array.from(
-    { length: Math.ceil(filteredIdeas.length / itemsPerPage) },
-    (_, index) => index + 1
-  );
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(filteredIdeas.length / itemsPerPage); i++) {
+    pageNumbers.push(i);
+  }
 
-  const handlePageChange = pageNumber => {
+  const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < pageNumbers.length) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handleSortChange = event => {
-    setSortBy(event.target.value);
-  };
-
   return (
-    <div>
-      <div className='header-info'>
+    <div className="explore-container">
+      <div className="explore-header">
         <h2>Explore Research Ideas</h2>
         <p>
-          Explore Research Ideas With a repository boasting a multitude of 
-          scientific insights, our platform is your gateway to a plethora 
-          of research ideas. Uncover a diverse collection of topics, 
-          connecting you with a thriving community of researchers. Utilize 
-          advanced search functionalities employing AND, OR, NOT, "" and 
-          () to tailor your exploration. Join us in accessing the world of 
-          science and fostering collaboration.
+          Explore a curated collection of research concepts. Access diverse ideas 
+          and stay informed about the latest developments in your field.
         </p>
-      </div>
-      <div className="search-container">
-        <input
+        <input 
+          type="text" 
+          placeholder="Search Ideas" 
           id="search-bar"
-          type="text"
-          placeholder="Search Ideas"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onKeyPress={handleKeyPress}
         />
       </div>
-      <div className='filter-container'>
-        <div className="result-box">
-          <h2>Showing results for "{query}"</h2>
-          <div className="sort-container">
-            <label htmlFor="sort-dropdown">Sort By:</label>
-            <select
-              id="sort-dropdown"
-              value={sortBy}
-              onChange={handleSortChange}
-            >
-              {/* Current sorting options */}
-              <option value="relevance">Relevance</option>
-              <option value="newest">Newest</option>
-              <option value="oldest">Oldest</option>
-            </select>
-          </div>
-        </div>
-      </div>
+      <hr className="section-divider" />
+      <h2>Showing results for "{query}"</h2>
       <FeaturesIdeas ideas={currentIdeasToShow} />
       <div className="pagination">
-        <span onClick={handlePreviousPage}>&lt;</span>
         {pageNumbers.map((number) => (
           <span
             key={number}
@@ -119,7 +85,6 @@ const ExploreGuestSearch = () => {
             {number}
           </span>
         ))}
-        <span onClick={handleNextPage}>&gt;</span>
       </div>
     </div>
   );

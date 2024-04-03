@@ -1,4 +1,5 @@
-import React from 'react';
+// App.js
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header/Header';
 import AuthenticatedHeader from './components/AuthenticatedHeader/AuthenticatedHeader';
@@ -16,19 +17,45 @@ import ideas from './data/ideasData.js';
 import { getAuthToken } from './utils/authService';
 
 const App = () => {
-  const authToken = getAuthToken();
-  console.log(authToken)
+  const [authToken, setAuthToken] = useState(getAuthToken());
+
+  // Listen for changes in local storage
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setAuthToken(getAuthToken());
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  const handleLogin = (token) => {
+    setAuthToken(token);
+    localStorage.setItem('authToken', token);
+  };
+
+  const handleLogout = () => {
+    setAuthToken(null);
+    localStorage.removeItem('authToken');
+  };
 
   return (
     <div>
       <Router>
-        {authToken ? <AuthenticatedHeader /> : <Header />}
+        {authToken ? (
+          <AuthenticatedHeader onLogout={handleLogout} />
+        ) : (
+          <Header onLogin={handleLogin} />
+        )}
         <Routes>
           <Route path="/" element={<LandingPage authToken={authToken} />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login onLogin={handleLogin} />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signup/avatar-upload" element={<AvatarUpload authToken={authToken} />} />
-          <Route path="/explore-guest-search" element={<ExploreGuestSearch />} />
+          <Route path="/explore-guest-search/:query?" element={<ExploreGuestSearch />} />
           <Route path="/home" element={<Home />} />
           <Route path="/post-page/:id" element={<PostPage ideas={ideas} authToken={authToken} />} />
           <Route path="/account" element={<Account />} />

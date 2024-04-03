@@ -1,135 +1,67 @@
-/* This page is reserved for the header that will be used 
-on every page involving the site's main features, such as
-Home.js and Submit.js*/
-
-body {
-  padding: 70px 35px;
-}
-
-div {
-  font-family: Arial;
-}
-
-button {
-  cursor: pointer;
-}
-
-.main-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  flex-shrink: 0;
+/* Profile Options Modal */
+.modal-overlay {
   position: fixed;
-  z-index: 100;
   top: 0;
   left: 0;
   right: 0;
-  background-color: white;
-  border-bottom-color: rgb(182, 182, 182);
-  border-bottom-style: solid;
-  border-bottom-width: 1.2px;
-  height: 60px;
-}
-
-.left-section {
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  max-width: 1fr;
-  align-items: center;
-}
-
-.thesisfinder-logo {
-  height: 50px;
-  margin-right: 20px;
-}
-
-.left-section-button {
-  font-weight: bold;
-  background-color: white;
-  border: none;
-  height: 60px;
-  padding: 5px;
-  margin: 0px 20px;
-  transition:
-    border-color 0.1s;
-}
-.left-section-button:hover {
-  border-bottom: 5px solid rgb(236, 54, 14);
-  padding-bottom: 0;
-}
-
-.middle-section {
-  display: flex;
-  flex: 1;
   justify-content: center;
-  position: relative;
-  max-width: 1fr;
   align-items: center;
-  margin: 0 15px;
 }
 
-.main-header-search {
-  position: relative;
-  flex: 1;
-  border: 1.5px solid rgb(97, 96, 96);
-  border-radius: 4px;
-  height: 30px;
-  padding: 2px 10px 2px 10px;
-  margin: 5px 1fr;
-  box-shadow: inset 2px 2px 4px rgba(0,0,0,0.2);
-}
-.main-header-search::placeholder {
-  font-size: 13px;
-  background-image: url(../../assets/magnifyingglass.png);
-  background-size: 16px;
-  background-position: calc(100% - 6px)  center;
-  background-repeat: no-repeat;
+.profile-options-modal,
+.submit-modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 80%;
 }
 
-.right-section {
+.profile-options-modal .modal-header,
+.submit-modal .modal-header {
   display: flex;
-  flex-direction: row;
-  align-items: center;
   justify-content: space-between;
-  position: relative;
-  flex-shrink: 0;
-  max-width: 1fr;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
 }
 
-.dark-mode-button, 
-.notification-button,
-.account-button,
-.header-submit-button {
-  margin: 0 15px;
+.profile-options-modal .modal-header h2,
+.submit-modal .modal-header h2 {
+  margin: 0;
+}
+
+.profile-options-modal .modal-header .close-button,
+.submit-modal .modal-header .close-button {
+  background: none;
+  border: none;
   cursor: pointer;
 }
 
-.dark-mode-button {
-  position: relative;
-  border-radius: 12px;
-  height: 24px;
+.profile-options-modal .modal-body,
+.submit-modal .modal-body {
+  padding: 10px 0;
 }
 
-.notification-button {
-  position: relative;
-  border-radius: 6px;
-  height: 24px;
-}
-
-.account-button {
-  position: relative;
-  border-radius: 24px;
-  height: 48px;
-}
-
-.header-submit-button {
-  font-size: 12px;
-  font-weight: bold;
-  line-height: 10px;
-  background-color: rgb(236, 54, 14);
-  color: white;
+.profile-option-button,
+.submit-option-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #f5f5f5;
   border: none;
-  border-radius: 2px;
-  padding: 12px 24px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.profile-option-button:hover,
+.submit-option-button:hover {
+  background-color: #e0e0e0;
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { clearAuthenticatedUser } from '../../utils/authService';
-import { getProfilePictureByUsername, getUser } from '../../utils/api'; // Import the API functions to fetch profile picture and user data
+import { getProfilePictureByUsername, getUser } from '../../utils/api';
 
 import darkModeImage from '../../assets/AuthenticatedHeader/dark-mode.png';
 import notificationImage from '../../assets/AuthenticatedHeader/notification-bell.png';
@@ -21,18 +21,14 @@ const AuthenticatedHeader = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // Make an API call to get the user data
         const userData = await getUser();
         const fetchedUsername = userData.username;
 
-        // Set the fetched username in state
         setUsername(fetchedUsername);
 
-        // Fetch profile picture when the username is available
         fetchProfilePicture(fetchedUsername);
       } catch (error) {
         console.error('Error fetching user data:', error.message);
-        // Handle error
       }
     };
 
@@ -41,14 +37,10 @@ const AuthenticatedHeader = () => {
 
   const fetchProfilePicture = async (username) => {
     try {
-      // Make an API call to fetch the profile picture URL using the username
       const profilePictureUrl = await getProfilePictureByUsername(username);
-
-      // Update the avatar image state with the profile picture URL
       setAvatarImage(profilePictureUrl);
     } catch (error) {
       console.error('Error fetching profile picture:', error.message);
-      // Handle error
     }
   };
 
@@ -71,17 +63,16 @@ const AuthenticatedHeader = () => {
   const handleLogout = () => {
     clearAuthenticatedUser();
     navigate("/");
-    closeModal(); // Close modal when logging out
+    closeModal();
   };
 
   const handleSubmitResearchIdea = () => {
     navigate("/submit");
-    closeModal(); // Close modal when submitting research idea
+    closeModal();
   };
 
   const handleYourResearchPapers = () => {
-    // Handle navigation to "Your Research Papers" page
-    closeModal(); // Close modal when accessing your research papers
+    closeModal();
   };
 
   const handleSearch = (event) => {
@@ -123,32 +114,28 @@ const AuthenticatedHeader = () => {
         </button>
         <button className="header-submit-button" onClick={openSubmitModal}>Submit</button>
       </div>
-      {/* Render the ProfileOptionsModal if isModalOpen is true */}
       {isModalOpen && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content profile-options-modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2>Profile Options</h2>
-              <button onClick={closeModal} className="close-button">X</button>
             </div>
             <div className="modal-body">
-              <button onClick={() => { navigate('/account'); closeModal(); }}>Your Profile</button>
-              <button onClick={() => { handleLogout(); }}>Logout</button>
+              <button onClick={() => { navigate('/account'); closeModal(); }} className="profile-option-button">Your Profile</button>
+              <button onClick={() => { handleLogout(); }} className="profile-option-button">Logout</button>
             </div>
           </div>
         </div>
       )}
-      {/* Render the SubmitModal if isSubmitModalOpen is true */}
       {isSubmitModalOpen && (
         <div className="modal-overlay" onClick={closeSubmitModal}>
           <div className="modal-content submit-modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <h2>Submit Options</h2>
-              <button onClick={closeSubmitModal} className="close-button">X</button>
             </div>
             <div className="modal-body">
-              <button onClick={() => {handleSubmitResearchIdea(); closeSubmitModal(); }}>Submit Research Idea</button>
-              <button onClick={() => { handleYourResearchPapers(); closeSubmitModal(); }}>Your Research Papers</button>
+              <button onClick={() => {handleSubmitResearchIdea(); closeSubmitModal(); }} className="submit-option-button">Submit Research Idea</button>
+              <button onClick={() => { handleYourResearchPapers(); closeSubmitModal(); }} className="submit-option-button">Your Research Papers</button>
             </div>
           </div>
         </div>
