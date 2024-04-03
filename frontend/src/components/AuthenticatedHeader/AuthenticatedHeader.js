@@ -59,10 +59,10 @@ const AuthenticatedHeader = () => {
       {/* <div className="button-selector"></div> */}
       <button className="left-section-button" onClick={() => navigate('/explore-guest-search/e')}>Ideas</button>
     </div>
-    <div>
+    <div className="middle-section">
       <input className="main-header-search" type="text" placeholder="Search for research ideas, sponsorships, people, etc." />
     </div>
-    <div>
+    <div className="right-section">
       <button  onClick={() => {/* Handle dark mode button click */}}>
         <img className="dark-mode-button" src={require('../../assets/darkmodeimage.png')} alt="Dark Mode" />
       </button>
