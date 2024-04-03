@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../../utils/api';
 import { getToken } from '../../utils/api';
 import { setAuthenticatedUser, setAuthToken } from '../../utils/authService';
+import LoadingIndicator from '../../components/LoadingIndicator/LoadingIndicator'; // Import LoadingIndicator component
 
 import './signup.css';
 
@@ -17,6 +18,8 @@ const Signup = () => {
     email: '',
     password: '',
   });
+
+  const [loading, setLoading] = useState(false); // State for loading indicator
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,10 +37,14 @@ const Signup = () => {
   const handleContinue = async (e) => {
     e.preventDefault();
 
+    // Set loading to true to show loading indicator
+    setLoading(true);
+
     // Validation
     const isFormValid = Object.values(formData).every((value) => value.trim() !== '');
     if (!isFormValid) {
       alert('Please fill in all fields.');
+      setLoading(false); // Reset loading state
       return;
     }
 
@@ -45,6 +52,7 @@ const Signup = () => {
     const emailRegex = /^\S+@\S+\.\S+$/;
     if (!emailRegex.test(formData.email)) {
       alert('Please enter a valid email address.');
+      setLoading(false); // Reset loading state
       return;
     }
 
@@ -52,6 +60,7 @@ const Signup = () => {
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
     if (!passwordRegex.test(formData.password)) {
       alert('Password must be at least 8 characters long and contain at least one letter, one number, and one special character.');
+      setLoading(false); // Reset loading state
       return;
     }
 
@@ -90,6 +99,9 @@ const Signup = () => {
         // Display a generic error message for other types of errors
         alert('An error occurred while registering. Please try again.');
       }
+    } finally {
+      // Reset loading state after registration attempt is finished
+      setLoading(false);
     }
   };
 
@@ -172,7 +184,11 @@ const Signup = () => {
           </label>
           <br />
           <div className='continue-container'>
-            <button onClick={handleContinue}>Continue</button>
+            {loading ? (
+              <LoadingIndicator /> // Render loading indicator if loading is true
+            ) : (
+              <button onClick={handleContinue}>Continue</button> // Otherwise, render the button
+            )}
           </div>
         </form>
       </div>
