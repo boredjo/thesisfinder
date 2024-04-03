@@ -5,7 +5,7 @@ import './account.css';
 
 import { getUser, updateUser, getProfilePictureByUsername } from '../../utils/api'; // Import getUser, updateUser, and getProfilePictureByUsername functions
 
-const Account = () => {
+const Account = ({ authToken }) => { // Receive authToken from props
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false); // State to control modal visibility
@@ -19,9 +19,8 @@ const Account = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // Call the getUser function to fetch user data
-        const token = localStorage.getItem('authToken');
-        const response = await getUser(token);
+        // Call the getUser function to fetch user data using authToken
+        const response = await getUser(authToken); // Use authToken for API call
 
         if (response) {
           setUserData(response);
@@ -42,7 +41,7 @@ const Account = () => {
     };
 
     fetchUserData();
-  }, []);
+  }, [authToken]); // Include authToken in dependency array
 
   // Function to fetch profile picture
   const fetchProfilePicture = async (username) => {
@@ -71,7 +70,7 @@ const Account = () => {
   const handleSaveProfile = async (e) => {
     e.preventDefault();
     try {
-      // Call updateUser function with updated profile details
+      // Call updateUser function with updated profile details and authToken
       const updatedUserData = {
         user: username,
         first_name: firstName,
@@ -80,12 +79,11 @@ const Account = () => {
         email: userData.email,
         password: password
       };
-      const token = localStorage.getItem('authToken');
-      await updateUser(updatedUserData, token);
+      await updateUser(updatedUserData, authToken); // Use authToken for API call
       // Close the modal after saving changes
       setShowModal(false);
       // Refetch user data to update UI
-      const response = await getUser(token);
+      const response = await getUser(authToken); // Use authToken for API call
       if (response) {
         setUserData(response);
         // Update profile picture if it has changed
@@ -119,45 +117,43 @@ const Account = () => {
       )}
   
       {/* Toolbar */}
-      <nav className="profile-nav">
+      {/* <nav className="profile-nav">
         <ul>
           <li><a href="#profile" className="active">Profile</a></li>
           <li><a href="#research-papers">Research Papers</a></li>
         </ul>
-      </nav>
+      </nav> */}
   
       {/* About me div */}
-      <section className="about-me">
-        <h2>About Me</h2>
+      {/* <section className="about-me">
+        {/* <h2>About Me</h2> */}
   
-        <div className="input-group">
+        {/* <div className="input-group">
           <label htmlFor="introduction">Introduction</label>
           <textarea id="introduction" placeholder="Introduce yourself and your research"></textarea>
-        </div>
+        </div>  */}
   
-        <div className="input-group">
+        {/* <div className="input-group">
           <label htmlFor="disciplines">Disciplines</label>
           <select id="disciplines">
             <option value="">Enter or select disciplines</option>
-            {/* Options would go here */}
           </select>
-        </div>
+        </div> */}
   
-        <div className="input-group">
+        {/* <div className="input-group">
           <label htmlFor="skills">Skills and expertise</label>
           <input type="text" id="skills" placeholder="Enter or select skills and expertise" />
-        </div>
+        </div> */}
   
-        <div className="input-group">
+        {/* <div className="input-group">
           <label htmlFor="languages">Languages</label>
           <select id="languages">
             <option value="">Enter or select languages</option>
-            {/* Options would go here */}
           </select>
-        </div>
+        </div> */}
   
         {/* Render email input only if userData is not null */}
-        {userData && (
+        {/* {userData && (
           <div className="input-group">
             <label htmlFor="email">Email</label>
             <input type="email" id="email" value={userData.email} readOnly />
@@ -168,10 +164,10 @@ const Account = () => {
           <button className="cancel-btn">Cancel</button>
           <button className="save-btn">Save</button>
         </div>
-      </section>
+      </section> */}
   
       {/* Modal for editing profile details */}
-      {showModal && (
+      {/* {showModal && (
         <div className="modal display-block">
           <section className="modal-main">
             <h2>Edit Profile Details</h2>
@@ -203,7 +199,7 @@ const Account = () => {
             </form>
           </section>
         </div>
-      )}
+      )} */}
     </div>
   );  
 };

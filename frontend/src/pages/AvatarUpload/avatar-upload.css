@@ -83,11 +83,13 @@
   border: none;
   cursor: pointer;
   margin-bottom: 20px;
+  color: red; /* Set text color */
+  text-decoration: underline; /* Add underline */
+  cursor: pointer; /* Change cursor to pointer */
 }
 
 .conditions-button:hover {
-  color: red; /* Change text color on hover (you can adjust the color) */
-  text-decoration: underline; /* Underline text */
+  color: darkred; /* Darken text color on hover */
 }
 
 .preview-container {
@@ -95,11 +97,35 @@
   max-width: 300px; /* Adjust the max-width as needed */
   margin-top: 0px; /* Adjust the margin-top as needed */
   margin-right: 10%;
-
 }
 
 .preview-container img {
   width: 100%;
   height: auto;
   border-radius: 8px;
+}
+
+.skip-button,
+.complete-signup-button {
+  width: 150px; /* Adjusted width */
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  text-align: center;
+  background-color: red;
+  color: #ffffff;
+  margin-bottom: 15px; /* Increase bottom margin */
+}
+
+.action-buttons {
+  margin-left: auto; /* Move buttons to the right */
+  display: flex; /* Ensure buttons are in a row */
+  justify-content: flex-end; /* Push buttons to the right */
+  margin-top: 10px; /* Add top margin to separate from the content above */
+}
+
+.skip-button {
+  margin-right: 10px; /* Add margin between buttons */
 }

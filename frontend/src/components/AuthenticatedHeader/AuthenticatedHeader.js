@@ -37,6 +37,7 @@ const AuthenticatedHeader = () => {
 
   const fetchProfilePicture = async (username) => {
     try {
+      console.log(username)
       const profilePictureUrl = await getProfilePictureByUsername(username);
       setAvatarImage(profilePictureUrl);
     } catch (error) {

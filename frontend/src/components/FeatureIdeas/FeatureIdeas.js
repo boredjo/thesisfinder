@@ -6,9 +6,7 @@ const FeaturesIdeas = ({ ideas }) => {
   return (
     <div className="features-ideas">
       {ideas.map((idea) => {
-        console.log('Tags before filtering:', idea.tags); // Log tags before filtering
         const filteredTags = idea.tags.filter(tag => tag !== null);
-        console.log('Tags after filtering:', filteredTags); // Log tags after filtering
         return (
           <div key={idea.id} className="idea-container">
             {/* Link each idea title to the post page */}

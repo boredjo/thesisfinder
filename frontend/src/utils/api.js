@@ -11,13 +11,6 @@ const makeRequest = async (url, method, headers, data) => {
       },
     };
 
-    // Disabling SSL certificate validation (not recommended for production)
-    if (process.env.NODE_ENV === 'development') {
-      requestConfig.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000';
-      requestConfig.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE';
-      requestConfig.headers['Access-Control-Allow-Headers'] = 'Content-Type, Token';
-    }
-
     // Add a body for non-GET requests
     if (method !== 'GET') {
       requestConfig.body = JSON.stringify(data);
@@ -117,7 +110,7 @@ const getFeaturedIdeas = (token) => {
   return makeRequest(
     '/idea/featured',
     'GET',
-    { 'Content-Type': 'application/json'}
+    { 'Content-Type': 'application/json', 'Token': token }
   );
 };
 
@@ -141,10 +134,9 @@ const getIdeaDetails = (ideaId, token) => {
 };
 
 // Update Profile Picture API request
-const updateProfilePicture = (imageData, token) => {
+const updateProfilePicture = (formData, token) => {
   const headers = {
     'Token': token,
-    // Add Content-Type header specifying image/png
     'Content-Type': 'image/png'
   };
 
@@ -152,7 +144,7 @@ const updateProfilePicture = (imageData, token) => {
     '/profilepicture',
     'POST',
     headers,
-    imageData // Pass image data directly
+    formData // Pass FormData object
   );
 };
 
@@ -161,7 +153,108 @@ const getProfilePictureByUsername = (username) => {
   return makeRequest(
     `/profilepicture/${username}`,
     'GET',
+    // { 'Content-Type': 'application/json' }
+  );
+};
+
+// Claim Idea API request
+const claimIdea = (ideaId, token) => {
+  return makeRequest(
+    '/claim/',
+    'GET',
+    { 'Token': token },
+    { 'idea': ideaId }
+  );
+};
+
+// Get Claim from User API request
+const getClaimFromUser = (token) => {
+  return makeRequest(
+    '/claim/user/',
+    'GET',
+    { 'Token': token }
+  );
+};
+
+// Get Claim from Any User API request
+const getClaimFromAnyUser = (username) => {
+  return makeRequest(
+    `/claim/user/${username}`,
+    'GET',
     { 'Content-Type': 'application/json' }
+  );
+};
+
+// Get Claim from Question API request
+const getClaimFromQuestion = (ideaId) => {
+  return makeRequest(
+    `/idea/claims/${ideaId}`,
+    'GET',
+    { 'Content-Type': 'application/json' }
+  );
+};
+
+// Delete a Claim API request
+const deleteClaim = (claimId, token) => {
+  return makeRequest(
+    `/claim/${claimId}`,
+    'DELETE',
+    { 'Token': token }
+  );
+};
+
+// Sponsor an Idea API request
+const sponsorIdea = (sponsorData, token) => {
+  return makeRequest(
+    '/sponsor/',
+    'POST',
+    { 'Content-Type': 'application/json', 'Token': token },
+    sponsorData
+  );
+};
+
+// Get Sponsorship Details API request
+const getSponsorshipDetails = (ideaId, token) => {
+  return makeRequest(
+    `/sponsor/${ideaId}`,
+    'GET',
+    { 'Content-Type': 'application/json', 'Token': token }
+  );
+};
+
+// Get Sponsorships from User API request
+const getSponsorshipsFromUser = (token) => {
+  return makeRequest(
+    '/sponsor/user/',
+    'GET',
+    { 'Token': token }
+  );
+};
+
+// Get Sponsorships from Any User API request
+const getSponsorshipsFromAnyUser = (username) => {
+  return makeRequest(
+    `/sponsor/user/${username}`,
+    'GET',
+    { 'Content-Type': 'application/json' }
+  );
+};
+
+// Get Sponsorships for Ideas API request
+const getSponsorshipsForIdeas = (ideaId) => {
+  return makeRequest(
+    `/sponsor/idea/${ideaId}`,
+    'GET',
+    { 'Content-Type': 'application/json' }
+  );
+};
+
+// Delete Sponsoring API request
+const deleteSponsoring = (sponsorshipId, token) => {
+  return makeRequest(
+    `/sponsor/${sponsorshipId}`,
+    'DELETE',
+    { 'Token': token }
   );
 };
 
@@ -175,5 +268,16 @@ export {
   submitIdea,
   getIdeaDetails,
   updateProfilePicture,
-  getProfilePictureByUsername // Add this line to export the new function
+  getProfilePictureByUsername,
+  claimIdea,
+  getClaimFromUser,
+  getClaimFromAnyUser,
+  getClaimFromQuestion,
+  deleteClaim,
+  sponsorIdea,
+  getSponsorshipDetails,
+  getSponsorshipsFromUser,
+  getSponsorshipsFromAnyUser,
+  getSponsorshipsForIdeas,
+  deleteSponsoring
 };

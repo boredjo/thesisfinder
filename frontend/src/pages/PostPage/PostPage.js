@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getUser, getIdeaDetails } from '../../utils/api';
+import { claimIdea } from '../../utils/api';
 import '../../styles/main.css';
 import '../../styles/mainheader.css';
 import './post-page.css';
@@ -35,7 +36,7 @@ const PostPage = ({ authToken }) => {
         console.error('Error fetching idea details:', error);
       }
     };
-  
+
     fetchIdeaDetails();
   }, [id, authToken]);
 
@@ -89,28 +90,45 @@ const PostPage = ({ authToken }) => {
       documents: fileData,
     });
   };
+  
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  localStorage.setItem('claimFormData', JSON.stringify(formData));
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    localStorage.setItem('claimFormData', JSON.stringify(formData));
 
-    try {
+  console.log(authToken)
+  console.log(id)
+  
+  try {
+    // Make API call to claim the idea
+    const response = await claimIdea(id, authToken);
+
+    // Handle response
+    if (response.success) {
       const userData = await getUser(authToken);
       setClaimedBy(userData.username);
       localStorage.setItem(`claimedBy_${id}`, JSON.stringify({ username: userData.user }));
-    } catch (error) {
-      console.error('Error fetching user data:', error);
+
+      setFormData({
+        title: '',
+        description: '',
+        documents: [],
+        visibility: 'public',
+      });
+
+      setShowModal(false);
+    } else {
+      // Handle failure
+      console.error('Failed to claim idea:', response.error);
+      // Optionally display an error message to the user
     }
+  } catch (error) {
+    console.error('Error claiming idea:', error);
+    // Handle error
+    // Optionally display an error message to the user
+  }
+};
 
-    setFormData({
-      title: '',
-      description: '',
-      documents: [],
-      visibility: 'public',
-    });
-
-    setShowModal(false);
-  };
 
   const handleSponsorSubmit = async (e) => {
     e.preventDefault();
@@ -153,62 +171,62 @@ const PostPage = ({ authToken }) => {
           )}
         </div>
         <div id="content">
-        <article>
-          {idea && (
-            <>
-              <h1>{idea.title}</h1>
-              <div className="metadata">
-                <span className="author">Author(s): {idea.author}</span>
-                <span className="date">Date Posted: {idea.date}</span>
-              </div>
-              <nav className="article-nav">
-                <ul>
-                  <li><a href="#">Overview</a></li>
-                  <li><a href="#">Stats</a></li>
-                  <li><a href="#">Comments</a></li>
-                  <li><a href="#">More Info</a></li>
-                  <li><a href="#">Suggested Ideas</a></li>
-                  <li><a href="#">Research Papers</a></li>
+          <article>
+            {idea && (
+              <>
+                <h1>{idea.title}</h1>
+                <div className="metadata">
+                  <span className="author">Author(s): {idea.author}</span>
+                  <span className="date">Date Posted: {idea.date}</span>
+                </div>
+                <nav className="article-nav">
+                  <ul>
+                    <li><a href="#">Overview</a></li>
+                    <li><a href="#">Stats</a></li>
+                    <li><a href="#">Comments</a></li>
+                    <li><a href="#">More Info</a></li>
+                    <li><a href="#">Suggested Ideas</a></li>
+                    <li><a href="#">Research Papers</a></li>
+                    {authToken && (
+                      <>
+                        <li><a href="#">Sponsors</a></li>
+                        <li><a href="#" onClick={handleClaim}>Claim</a></li>
+                      </>
+                    )}
+                  </ul>
+                </nav>
+                <section id="description">
+                  <h2>Description</h2>
+                  <p>{idea.description}</p>
+                </section>
+                <section id="attachments">
+                  <h2>Attachments</h2>
+                  <div className="attachment-item">
+                    <img className="attachment-icon" src={require('../../assets/researchdocimage.png')} id="Attachment Icon" alt="Attachment Icon" />
+                    <div className="attachment-info">
+                      <span className="attachment-name">attachment-name.pdf</span>
+                      <span className="attachment-size">attachment-size</span>
+                    </div>
+                    <a href="#" className="attachment-download">Download</a>
+                  </div>
+                </section>
+                <section id="collaboration">
+                  <h2>Collaboration Preferences</h2>
+                  <ul className="collaboration-list">
+                    <li>Placeholder Collaborations</li>
+                  </ul>
+                </section>
+                <div id="action-buttons">
                   {authToken && (
                     <>
-                      <li><a href="#">Sponsors</a></li>
-                      <li><a href="#" onClick={handleClaim}>Claim</a></li>
+                      <button type="button" id="claim-button" onClick={handleClaim}>Claim</button>
+                      <button type="button" id="sponsor-button" onClick={handleSponsorModalOpen}>Sponsor</button>
                     </>
                   )}
-                </ul>
-              </nav>
-              <section id="description">
-                <h2>Description</h2>
-                <p>{idea.description}</p>
-              </section>
-              <section id="attachments">
-                <h2>Attachments</h2>
-                <div className="attachment-item">
-                  <img className="attachment-icon" src={require('../../assets/researchdocimage.png')} id="Attachment Icon" alt="Attachment Icon" />
-                  <div className="attachment-info">
-                    <span className="attachment-name">attachment-name.pdf</span>
-                    <span className="attachment-size">attachment-size</span>
-                  </div>
-                  <a href="#" className="attachment-download">Download</a>
                 </div>
-              </section>
-              <section id="collaboration">
-                <h2>Collaboration Preferences</h2>
-                <ul className="collaboration-list">
-                  <li>Placeholder Collaborations</li>
-                </ul>
-              </section>
-              <div id="action-buttons">
-                {authToken && (
-                  <>
-                    <button type="button" id="claim-button" onClick={handleClaim}>Claim</button>
-                    <button type="button" id="sponsor-button" onClick={handleSponsorModalOpen}>Sponsor</button>
-                  </>
-                )}
-              </div>
-            </>
-          )}
-        </article>
+              </>
+            )}
+          </article>
           <aside>
             <div id="claimed-by">
               <h3>Claimed by:</h3>
@@ -227,7 +245,7 @@ const PostPage = ({ authToken }) => {
           </aside>
         </div>
       </main>
-  
+
       {/* Modal for uploading papers */}
       {showModal && (
         <div className="modal display-block">
@@ -261,7 +279,7 @@ const PostPage = ({ authToken }) => {
           </section>
         </div>
       )}
-  
+
       {/* Modal for sponsoring */}
       {showSponsorModal && (
         <div className="modal display-block">
@@ -302,5 +320,5 @@ const PostPage = ({ authToken }) => {
     </div>
   );
 };
-  
-  export default PostPage;
+
+export default PostPage;
