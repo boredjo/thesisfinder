@@ -44,6 +44,7 @@ class log_middleware:
             logger = Logger()
             environ['logger'] = logger
 
-        environ['logger'].message('METHOD', request.method)
-        environ['logger'].message('HEADER', list(request.headers))
+        environ['logger'].message(request.method, request.path)
+        if 'Content-Type' in request.headers.keys():
+            environ['logger'].message('CONTENT-TYPE', request.headers['Content-Type'])
         return self.app(environ, start_response)

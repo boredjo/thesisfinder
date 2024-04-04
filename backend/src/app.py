@@ -47,6 +47,7 @@ def logging_after(response):
     time_in_ms = int(total_time * 1000)
     # Log the time taken for the endpoint 
     request.environ['logger'].message("DONE", f'time: {time_in_ms}')
+    print()
     return response
 
 # calling our middleware
