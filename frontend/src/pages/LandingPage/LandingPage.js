@@ -31,9 +31,9 @@ const LandingPage = ({ authToken }) => {
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       const query = event.target.value;
-      navigate(`/explore-guest-search/${query}`);
+      navigate(`/explore-guest-search?query=${query}`);
     }
-  };
+  };  
 
   return (
     <div className="content-container">

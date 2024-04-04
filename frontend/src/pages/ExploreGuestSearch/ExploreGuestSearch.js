@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import FeaturesIdeas from '../../components/FeatureIdeas/FeatureIdeas';
 import { getFeaturedIdeas } from '../../utils/api';
 import '../../styles/main.css';
 import './explore-guest-search.css';
 
 const ExploreGuestSearch = () => {
-  const [query, setQuery] = useState('');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const queryParams = new URLSearchParams(location.search);
+  const initialQuery = queryParams.get('query') || '';
+
+  const [query, setQuery] = useState(initialQuery);
   const [ideas, setIdeas] = useState([]);
   const [filteredIdeas, setFilteredIdeas] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5); // Adjust the number of items per page
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFeaturedIdeas = async () => {
@@ -38,7 +42,7 @@ const ExploreGuestSearch = () => {
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       const searchQuery = event.target.value;
-      navigate(`/explore-guest-search/${searchQuery}`);
+      navigate(`/explore-guest-search?query=${searchQuery}`);
       setQuery(searchQuery);
     }
   };
@@ -70,6 +74,7 @@ const ExploreGuestSearch = () => {
           placeholder="Search Ideas" 
           id="search-bar"
           onKeyPress={handleKeyPress}
+          defaultValue={query}
         />
       </div>
       <hr className="section-divider" />
