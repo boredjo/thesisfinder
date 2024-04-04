@@ -19,11 +19,25 @@ const App = () => {
   const [authToken, setAuthToken] = useState(getAuthToken());
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setAuthToken(getAuthToken());
-    }, 1000); // Poll every 5 seconds
+    // Function to get authToken from localStorage
+    const getStoredAuthToken = () => {
+      const storedToken = localStorage.getItem('authToken');
+      return storedToken ? storedToken : null;
+    };
 
-    return () => clearInterval(intervalId); // Cleanup interval on component unmount
+    // Set initial authToken from localStorage
+    setAuthToken(getStoredAuthToken());
+
+    // Set up an interval to check for changes in localStorage
+    const intervalId = setInterval(() => {
+      const storedToken = getStoredAuthToken();
+      if (storedToken !== authToken) {
+        setAuthToken(storedToken);
+      }
+    }, 1000); // Poll every 1 second
+
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleLogin = (token) => {

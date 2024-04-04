@@ -18,6 +18,7 @@ const Account = ({ authToken }) => { // Receive authToken from props
 
   useEffect(() => {
     const fetchUserData = async () => {
+      console.log(authToken);
       try {
         // Call the getUser function to fetch user data using authToken
         const response = await getUser(authToken); // Use authToken for API call
@@ -117,43 +118,45 @@ const Account = ({ authToken }) => { // Receive authToken from props
       )}
   
       {/* Toolbar */}
-      {/* <nav className="profile-nav">
+      <nav className="profile-nav">
         <ul>
           <li><a href="#profile" className="active">Profile</a></li>
           <li><a href="#research-papers">Research Papers</a></li>
         </ul>
-      </nav> */}
+      </nav>
   
       {/* About me div */}
-      {/* <section className="about-me">
-        {/* <h2>About Me</h2> */}
+      <section className="about-me">
+        <h2>About Me</h2>
   
-        {/* <div className="input-group">
+        <div className="input-group">
           <label htmlFor="introduction">Introduction</label>
           <textarea id="introduction" placeholder="Introduce yourself and your research"></textarea>
-        </div>  */}
+        </div>
   
-        {/* <div className="input-group">
+        <div className="input-group">
           <label htmlFor="disciplines">Disciplines</label>
           <select id="disciplines">
             <option value="">Enter or select disciplines</option>
+            {/* Options would go here */}
           </select>
-        </div> */}
+        </div>
   
-        {/* <div className="input-group">
+        <div className="input-group">
           <label htmlFor="skills">Skills and expertise</label>
           <input type="text" id="skills" placeholder="Enter or select skills and expertise" />
-        </div> */}
+        </div>
   
-        {/* <div className="input-group">
+        <div className="input-group">
           <label htmlFor="languages">Languages</label>
           <select id="languages">
             <option value="">Enter or select languages</option>
+            {/* Options would go here */}
           </select>
-        </div> */}
+        </div>
   
         {/* Render email input only if userData is not null */}
-        {/* {userData && (
+        {userData && (
           <div className="input-group">
             <label htmlFor="email">Email</label>
             <input type="email" id="email" value={userData.email} readOnly />
@@ -164,10 +167,10 @@ const Account = ({ authToken }) => { // Receive authToken from props
           <button className="cancel-btn">Cancel</button>
           <button className="save-btn">Save</button>
         </div>
-      </section> */}
+      </section>
   
       {/* Modal for editing profile details */}
-      {/* {showModal && (
+      {showModal && (
         <div className="modal display-block">
           <section className="modal-main">
             <h2>Edit Profile Details</h2>
@@ -199,7 +202,7 @@ const Account = ({ authToken }) => { // Receive authToken from props
             </form>
           </section>
         </div>
-      )} */}
+      )}
     </div>
   );  
 };
