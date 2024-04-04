@@ -77,7 +77,7 @@ const AuthenticatedHeader = ({ authToken }) => {
 
   const handleSearch = (event) => {
     if (event.key === 'Enter') {
-      navigate(`/explore-guest-search/${searchQuery}`);
+      navigate(`/explore-guest-search?query=${searchQuery}`);
     }
   };
 
