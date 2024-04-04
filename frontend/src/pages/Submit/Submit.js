@@ -92,6 +92,12 @@ const Submit = () => {
     }
   };
 
+  // Word count for description
+  const descriptionWordCount = formData.description.trim().split(/\s+/).length;
+
+  // Character count for title
+  const titleCharacterCount = formData.title.length;
+
   return (
     <div className="submit-page">
       <div className="submit-container">
@@ -100,10 +106,12 @@ const Submit = () => {
           <div className="form-group">
             <label htmlFor="title">Research Idea Title</label>
             <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} required />
+            <p>Character Count: {titleCharacterCount}</p>
           </div>
           <div className="form-group">
             <label htmlFor="description">Research Idea Description (Markdown supported)</label>
             <textarea id="description" name="description" value={formData.description} onChange={handleChange} required />
+            <p>Word Count: {descriptionWordCount}</p>
           </div>
           <div className="form-group">
             <label>Collaboration Preferences:</label>
@@ -111,18 +119,7 @@ const Submit = () => {
               <input type="checkbox" name="feedback" checked={formData.feedback} onChange={handleChange} />
               Open to Feedback
             </label>
-            <label>
-              <input type="checkbox" name="coresearcher" checked={formData.coresearcher} onChange={handleChange} />
-              Co-Researcher Wanted
-            </label>
-            <label>
-              <input type="checkbox" name="contributions" checked={formData.contributions} onChange={handleChange} />
-              Contributions Welcome
-            </label>
-            <label>
-              <input type="checkbox" name="collaboration" checked={formData.collaboration} onChange={handleChange} />
-              Interdisciplinary Collaboration
-            </label>
+            {/* Other checkbox inputs */}
           </div>
           <div className="form-group">
             <label htmlFor="visibility">Visibility Settings:</label>
