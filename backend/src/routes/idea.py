@@ -92,13 +92,14 @@ def post_idea(data, cursor:cursor, user:User):
 @idea_blueprint.route('/<path:idea_id>', methods=['POST'])
 @util_db()
 @util_auth()
+@parse_json(['tags', 'description'])
 def update_idea(cursor:cursor, user:User, idea_id):
     logger:Logger = request.environ['logger']
 
     # parse incoming data
     try: 
         idea = Idea.find_idea(idea_id, cursor)
-    except mysql.connector.Error as err:
+    except Exception as err:
         logger.message("UPDATE_IDEA", "idea doesn't exists")
         return Response(u"The idea doesn't exists", mimetype= 'text/plain', status=422)
 
