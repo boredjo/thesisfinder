@@ -1,5 +1,5 @@
 from datetime import datetime
-from werkzeug.wrappers import Request, Response
+from werkzeug.wrappers import Request
 
 # define colors
 ENDC = '\033[0m'
