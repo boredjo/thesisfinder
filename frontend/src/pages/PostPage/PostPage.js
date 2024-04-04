@@ -190,7 +190,6 @@ const handleSubmit = async (e) => {
                     {authToken && (
                       <>
                         <li><a href="#">Sponsors</a></li>
-                        <li><a href="#" onClick={handleClaim}>Claim</a></li>
                       </>
                     )}
                   </ul>
