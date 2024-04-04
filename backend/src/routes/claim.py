@@ -40,13 +40,13 @@ def get_username_claims(cursor:cursor, username):
     logger:Logger = request.environ['logger']
     try:
         user = User.find_user(username, cursor)
-    except mysql.connector.Error as err:
+    except Exception as err:
         logger.error(err, 'routes/claim.py - get_user_claims() - find user')
         return Response(u'User not found', mimetype= 'text/plain', status=422)
     
     try:
         data = Claim.find_claims_by_user(user.name, cursor)
-    except mysql.connector.Error as err:
+    except Exception as err:
         logger.error(err, 'routes/claim.py - get_user_claims() - find claims')
         data = []
 
