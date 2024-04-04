@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { submitIdea } from '../../utils/api'; // Import the submitIdea function
 import { getAuthToken } from '../../utils/authService';
+import LoadingIndicator from '../../components/LoadingIndicator/LoadingIndicator';
 
 import '../../styles/main.css';
 import '../../styles/mainheader.css';
@@ -125,6 +126,8 @@ const Submit = () => {
     attachment: null, // Store attachment file object
   });
 
+  const [loading, setLoading] = useState(false); // State variable to track loading state
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -190,6 +193,9 @@ const Submit = () => {
     }
 
     try {
+      // Set loading state to true before making the API call
+      setLoading(true);
+
       // Call the submitIdea API function to submit the idea data
       const response = await submitIdea(formData, authToken);
 
@@ -201,6 +207,9 @@ const Submit = () => {
     } catch (error) {
       console.error('Error submitting idea:', error);
       alert('An error occurred while submitting the idea. Please try again.');
+    } finally {
+      // Reset loading state to false after API call is complete
+      setLoading(false);
     }
   };
 
@@ -254,6 +263,8 @@ const Submit = () => {
             <label htmlFor="attachment">Attach Supporting Documents (optional):</label>
             <input type="file" id="attachment" name="attachment" onChange={handleAttachmentChange} accept=".pdf,.jpg,.jpeg,.png" />
           </div>
+          {/* Conditional rendering of loading indicator */}
+          {loading && <LoadingIndicator />}
           <button type="submit">Submit</button>
         </form>
       </div>
