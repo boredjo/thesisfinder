@@ -93,7 +93,7 @@ def post_idea(data, cursor:cursor, user:User):
 @util_db()
 @util_auth()
 @parse_json(['tags', 'description'])
-def update_idea(cursor:cursor, user:User, idea_id):
+def update_idea(data, cursor:cursor, user:User, idea_id):
     logger:Logger = request.environ['logger']
 
     # parse incoming data
@@ -107,7 +107,6 @@ def update_idea(cursor:cursor, user:User, idea_id):
         logger.message("UPDATE_IDEA", "not the author")
         return Response(u'You are not authorized to do this action', mimetype= 'text/plain', status=401)
 
-    data = request.environ['parsed_data']
     if 'tags' in data.keys(): idea.tags = data['tags']
     if 'description' in data.keys(): idea.description = data['description']
     for tag in idea.tags:
