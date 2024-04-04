@@ -9,7 +9,7 @@ import defaultAvatar from '../../assets/avatar1.png';
 
 import './authenticated-header.css';
 
-const AuthenticatedHeader = () => {
+const AuthenticatedHeader = ({ authToken }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [avatarImage, setAvatarImage] = useState(null);
@@ -21,7 +21,7 @@ const AuthenticatedHeader = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const userData = await getUser();
+        const userData = await getUser(authToken);
         const fetchedUsername = userData.username;
 
         setUsername(fetchedUsername);
@@ -37,7 +37,6 @@ const AuthenticatedHeader = () => {
 
   const fetchProfilePicture = async (username) => {
     try {
-      console.log(username)
       const profilePictureUrl = await getProfilePictureByUsername(username);
       setAvatarImage(profilePictureUrl);
     } catch (error) {

@@ -18,7 +18,6 @@ const Account = ({ authToken }) => { // Receive authToken from props
 
   useEffect(() => {
     const fetchUserData = async () => {
-      console.log(authToken);
       try {
         // Call the getUser function to fetch user data using authToken
         const response = await getUser(authToken); // Use authToken for API call
@@ -50,12 +49,15 @@ const Account = ({ authToken }) => { // Receive authToken from props
       // Make an API call to fetch the profile picture URL using the username
       const profilePictureUrl = await getProfilePictureByUsername(username);
 
+      console.log('Profile Picture URL:', profilePictureUrl); // Log profile picture URL
+
       // Update the avatar image state with the profile picture URL
       setAvatarImage(profilePictureUrl);
     } catch (error) {
-      console.error('Error fetching profile picture:', error.message);
+      console.error('Error fetching profile picture:', error); // Log any errors
     }
   };
+
 
   // Function to handle opening the modal
   const handleEditProfile = () => {

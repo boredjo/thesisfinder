@@ -54,7 +54,7 @@ const App = () => {
     <div>
       <Router>
         {authToken ? (
-          <AuthenticatedHeader onLogout={handleLogout} />
+          <AuthenticatedHeader onLogout={handleLogout} authToken={authToken} />
         ) : (
           <Header onLogin={handleLogin} />
         )}
@@ -66,7 +66,7 @@ const App = () => {
           <Route path="/explore-guest-search/:query?" element={<ExploreGuestSearch />} />
           <Route path="/home" element={<Home />} />
           <Route path="/post-page/:id" element={<PostPage ideas={ideas} authToken={authToken} />} />
-          <Route path="/account" element={<Account />} />
+          <Route path="/account" element={<Account authToken={authToken} />} />
           <Route path="/submit" element={<Submit authToken={authToken} />} />
         </Routes>
         <Footer />

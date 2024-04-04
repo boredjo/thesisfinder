@@ -106,11 +106,11 @@ const updateUser = (userData, token) => {
 };
 
 // Get Featured Ideas API request
-const getFeaturedIdeas = (token) => {
+const getFeaturedIdeas = () => {
   return makeRequest(
     '/idea/featured',
     'GET',
-    { 'Content-Type': 'application/json', 'Token': token }
+    { 'Content-Type': 'application/json'}
   );
 };
 
@@ -153,7 +153,6 @@ const getProfilePictureByUsername = (username) => {
   return makeRequest(
     `/profilepicture/${username}`,
     'GET',
-    // { 'Content-Type': 'application/json' }
   );
 };
 
