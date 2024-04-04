@@ -187,7 +187,7 @@ const getClaimFromAnyUser = (username) => {
 // Get Claim from Question API request
 const getClaimFromQuestion = (ideaId) => {
   return makeRequest(
-    `/idea/claims/${ideaId}`,
+    `/claim/idea/${ideaId}`,
     'GET',
     { 'Content-Type': 'application/json' }
   );

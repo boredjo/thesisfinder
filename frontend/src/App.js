@@ -31,6 +31,7 @@ const App = () => {
     // Set up an interval to check for changes in localStorage
     const intervalId = setInterval(() => {
       const storedToken = getStoredAuthToken();
+      console.log(storedToken)
       if (storedToken !== authToken) {
         setAuthToken(storedToken);
       }
@@ -60,7 +61,7 @@ const App = () => {
         )}
         <Routes>
           <Route path="/" element={<LandingPage authToken={authToken} />} />
-          <Route path="/login" element={<Login onLogin={handleLogin} />} />
+          {/* <Route path="/login" element={<Login onLogin={handleLogin} />} /> */}
           <Route path="/signup" element={<Signup />} />
           <Route path="/signup/avatar-upload" element={<AvatarUpload authToken={authToken} />} />
           <Route path="/explore-guest-search/:query?" element={<ExploreGuestSearch />} />

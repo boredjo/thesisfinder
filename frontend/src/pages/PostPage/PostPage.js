@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getUser, getIdeaDetails } from '../../utils/api';
+import { getUser, getIdeaDetails, getClaimFromQuestion } from '../../utils/api'; // Import getClaimFromQuestion function
 import { claimIdea } from '../../utils/api';
 import '../../styles/main.css';
 import '../../styles/mainheader.css';
@@ -40,20 +40,28 @@ const PostPage = ({ authToken }) => {
   }, [id, authToken]);
 
   useEffect(() => {
-    const claimedByData = localStorage.getItem(`claimedBy_${id}`);
-    if (claimedByData) {
-      setClaimedBy(JSON.parse(claimedByData));
-    }
+    const fetchClaims = async () => {
+      try {
+        const response = await getClaimFromQuestion(id);
+        setClaimedBy(response);
+      } catch (error) {
+        console.error('Error fetching claims:', error);
+      }
+    };
+
+    fetchClaims();
   }, [id]);
 
   const handleClaim = async () => {
-    setShowModal(true);
-    try {
-      const userData = await getUser(authToken);
-      setClaimedBy(userData.username);
-      localStorage.setItem(`claimedBy_${id}`, JSON.stringify({ username: userData.username }));
-    } catch (error) {
-      console.error('Error fetching user data:', error);
+    // Only open the modal if it's not already open
+    if (!showModal) {
+      setShowModal(true);
+      try {
+        const userData = await getUser(authToken);
+        setClaimedBy(userData.username);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
     }
   };
 
