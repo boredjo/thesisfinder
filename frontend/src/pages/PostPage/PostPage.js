@@ -30,7 +30,6 @@ const PostPage = ({ authToken }) => {
     const fetchIdeaDetails = async () => {
       try {
         const response = await getIdeaDetails(id, authToken);
-        console.log('Attachments:', response.attachments);
         setIdea(response);
       } catch (error) {
         console.error('Error fetching idea details:', error);
@@ -91,45 +90,41 @@ const PostPage = ({ authToken }) => {
     });
   };
   
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  localStorage.setItem('claimFormData', JSON.stringify(formData));
-
-
-  console.log(authToken)
-  console.log(id)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    localStorage.setItem('claimFormData', JSON.stringify(formData));
   
-  try {
-    // Make API call to claim the idea
-    const response = await claimIdea(id, authToken);
-
-    // Handle response
-    if (response.success) {
-      const userData = await getUser(authToken);
-      setClaimedBy(userData.username);
-      localStorage.setItem(`claimedBy_${id}`, JSON.stringify({ username: userData.user }));
-
-      setFormData({
-        title: '',
-        description: '',
-        documents: [],
-        visibility: 'public',
-      });
-
-      setShowModal(false);
-    } else {
-      // Handle failure
-      console.error('Failed to claim idea:', response.error);
+    try {
+      // Make API call to claim the idea
+      const response = await claimIdea(id, authToken);
+  
+      // Handle response
+      if (response.success) {
+        const userData = await getUser(authToken);
+        setClaimedBy(userData.username);
+        localStorage.setItem(`claimedBy_${id}`, JSON.stringify({ username: userData.user }));
+  
+        setFormData({
+          title: '',
+          description: '',
+          documents: [],
+          visibility: 'public',
+        });
+      } else {
+        // Handle failure
+        console.error('Failed to claim idea:', response.error);
+        // Optionally display an error message to the user
+      }
+    } catch (error) {
+      // Handle errors
+      console.error('Error claiming idea:', error);
       // Optionally display an error message to the user
+    } finally {
+      // Close the modal regardless of whether there was an error or not
+      setShowModal(false);
     }
-  } catch (error) {
-    console.error('Error claiming idea:', error);
-    // Handle error
-    // Optionally display an error message to the user
-  }
-};
-
-
+  };  
+  
   const handleSponsorSubmit = async (e) => {
     e.preventDefault();
     // Implement handling for sponsoring submit
@@ -182,10 +177,7 @@ const handleSubmit = async (e) => {
                 <nav className="article-nav">
                   <ul>
                     <li><a href="#">Overview</a></li>
-                    <li><a href="#">Stats</a></li>
                     <li><a href="#">Comments</a></li>
-                    <li><a href="#">More Info</a></li>
-                    <li><a href="#">Suggested Ideas</a></li>
                     <li><a href="#">Research Papers</a></li>
                     {authToken && (
                       <>
@@ -218,7 +210,7 @@ const handleSubmit = async (e) => {
                 <div id="action-buttons">
                   {authToken && (
                     <>
-                      <button type="button" id="claim-button" onClick={handleClaim}>Claim</button>
+                      <button type="button" id="claim-button" onClick={handleClaim}>Upload Paper</button>
                       <button type="button" id="sponsor-button" onClick={handleSponsorModalOpen}>Sponsor</button>
                     </>
                   )}

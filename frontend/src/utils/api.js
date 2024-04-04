@@ -160,7 +160,7 @@ const getProfilePictureByUsername = (username) => {
 const claimIdea = (ideaId, token) => {
   return makeRequest(
     '/claim/',
-    'GET',
+    'POST',
     { 'Token': token },
     { 'idea': ideaId }
   );

@@ -27,17 +27,8 @@ const Header = () => {
     <header>
       <Link id='header-title' to="/">ThesisFinder</Link>
       <nav>
-        {authenticatedUser ? (
-          <>
-            <p>Welcome, {authenticatedUser.username}!</p>
-            <button onClick={handleLogoutClick}>Logout</button>
-          </>
-        ) : (
-          <>
-            <button id='login-button' onClick={handleLoginClick}>Log in</button>
-            <Link id='signup-link' to="/signup">Join for free</Link>
-          </>
-        )}
+          <button id='login-button' onClick={handleLoginClick}>Log in</button>
+          <Link id='signup-link' to="/signup">Join for free</Link>
       </nav>
       <LoginModal show={showLoginModal} handleClose={handleLoginModalClose} />
     </header>
