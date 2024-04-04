@@ -354,7 +354,7 @@ This endpoint will return all the ideas claimed by the authenticated user.
 ### From question
 
 ```shell
-curl --location --request GET 'https://api.thesisfinder.com/claims/ideaid' 
+curl --location --request GET 'https://api.thesisfinder.com/claims/idea/ideaid' 
 ```
 > The above command returns JSON that contains a list of five results structured like this:
 
