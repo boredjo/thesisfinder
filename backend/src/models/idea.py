@@ -103,4 +103,20 @@ class Idea:
             idea.date_posted = str(row[7])
             data.append(idea)
         return data
+    
+    def get_serach(n, cursor):
+        data = []
+        cursor.execute(
+            """
+            SELECT title, author, tag1, tag2, tag3, tag4, tag5, date_posted, hash FROM Ideas ORDER BY date_posted DESC LIMIT %s ;
+            """
+            , [n]
+        )
+        for _ in range(n):
+            row = cursor.fetchone()
+            tags = list(row[2:7])
+            idea = Idea(row[0], tags, row[1], "", id=row[8])
+            idea.date_posted = str(row[7])
+            data.append(idea)
+        return data
 

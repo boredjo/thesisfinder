@@ -1,14 +1,16 @@
 from flask import Flask, send_from_directory, request, g as app_ctx
 from flask_cors import CORS, cross_origin
 from dotenv import load_dotenv
+from werkzeug.wrappers import Request, Response
 import time
 import os
 
 load_dotenv('.env') # load env if possible
 
-from utils.auth import auth_middleware
-from utils.db import mysql_middleware, rebase
+# from utils.auth import auth_middleware
+from utils.db import rebase
 from utils.parse import parse_middleware
+from utils.logs import log_middleware
 from utils.check_permissions import pre_check
 from routes.profilepicture import profile_picture_blueprint
 from routes.user import user_blueprint
@@ -29,6 +31,17 @@ def logging_before():
     # Store the start time for the request
     app_ctx.start_time = time.perf_counter()
 
+@app.before_request
+def cors_before():
+    if request.method in ['OPTIONS']:
+        res = Response(u"sucess", mimetype= 'text/plain', status=200)
+        res.headers['Access-Control-Allow-Origin'] = '*'
+        res.headers['Access-Control-Allow-Headers'] = '*'
+        res.headers['Access-Control-Allow-Methods'] = '*'
+        return res
+       
+
+
 @app.after_request
 def logging_after(response):
     # Get total time in milliseconds
@@ -39,9 +52,10 @@ def logging_after(response):
     return response
 
 # calling our middleware
-app.wsgi_app = auth_middleware(app.wsgi_app)
-app.wsgi_app = mysql_middleware(app.wsgi_app)
-app.wsgi_app = parse_middleware(app.wsgi_app)
+# app.wsgi_app = auth_middleware(app.wsgi_app)
+# app.wsgi_app = mysql_middleware(app.wsgi_app)
+# app.wsgi_app = parse_middleware(app.wsgi_app)
+app.wsgi_app = log_middleware(app.wsgi_app)
 
 # import routes
 app.register_blueprint(profile_picture_blueprint, url_prefix='/profilepicture')

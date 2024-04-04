@@ -1,8 +1,12 @@
 from werkzeug.wrappers import Response
 from flask import Blueprint, request, jsonify
 import mysql.connector
+from mysql.connector import cursor
 
-
+from utils.db import util_db
+from utils.auth import util_auth
+from utils.parse import parse_json
+from utils.logs import Logger
 from models.claim import Claim
 from models.user import User
 
@@ -10,12 +14,14 @@ from models.user import User
 claim_blueprint = Blueprint('claim', __name__)
 
 @claim_blueprint.route('/user/ ', methods=['GET'])
-def get_user_claims():
-    user = request.environ['user'] # get issuing user
+@util_db()
+@util_auth()
+def get_user_claims(cursor:cursor, user:User):
+    logger:Logger = request.environ['logger']
     try:
-        data = Claim.find_claims_by_user(user.name, request.environ['cursor'])
-    except mysql.connector.Error as err:
-        request.environ['logger'].error(err, 'routes/claim.py - get_user_claims() - find claims')
+        data = Claim.find_claims_by_user(user.name, cursor)
+    except Exception as err:
+        logger.error(err, 'routes/claim.py - get_user_claims() - find claims')
         data = []
 
     return jsonify(claims=[
@@ -29,17 +35,19 @@ def get_user_claims():
     ])
 
 @claim_blueprint.route('/user/<path:username>', methods=['GET'])
-def get_username_claims(username):
+@util_db()
+def get_username_claims(cursor:cursor, username):
+    logger:Logger = request.environ['logger']
     try:
-        user = User.find_user(username, request.environ['cursor'])
+        user = User.find_user(username, cursor)
     except mysql.connector.Error as err:
-        request.environ['logger'].error(err, 'routes/claim.py - get_user_claims() - find user')
+        logger.error(err, 'routes/claim.py - get_user_claims() - find user')
         return Response(u'User not found', mimetype= 'text/plain', status=422)
     
     try:
-        data = Claim.find_claims_by_user(user.name, request.environ['cursor'])
+        data = Claim.find_claims_by_user(user.name, cursor)
     except mysql.connector.Error as err:
-        request.environ['logger'].error(err, 'routes/claim.py - get_user_claims() - find claims')
+        logger.error(err, 'routes/claim.py - get_user_claims() - find claims')
         data = []
 
     return jsonify(claims=[
@@ -53,11 +61,13 @@ def get_username_claims(username):
     ])
 
 @claim_blueprint.route('/idea/<path:idea>', methods=['GET'])
-def get_idea_claims(idea):
+@util_db()
+def get_idea_claims(cursor:cursor, idea):
+    logger:Logger = request.environ['logger']
     try:
-        data = Claim.find_claims_by_idea(idea, request.environ['cursor'])
+        data = Claim.find_claims_by_idea(idea, cursor)
     except mysql.connector.Error as err:
-        request.environ['logger'].error(err, 'routes/claim.py - get_user_claims() - find claims')
+        logger.error(err, 'routes/claim.py - get_user_claims() - find claims')
         data = []
 
     return jsonify(claims=[
@@ -72,44 +82,42 @@ def get_idea_claims(idea):
 
 
 @claim_blueprint.route('/', methods=['POST'])
-def post_claim():
-    user = request.environ['user'] # get issuing user
+@util_db()
+@util_auth()
+@parse_json(['idea'])
+def post_claim(data, cursor:cursor, user:User):
+    logger:Logger = request.environ['logger']
     if user.isAnon():
-        request.environ['logger'].message("POST_Claim", "not authenticated")
+        logger.message("POST_Claim", "not authenticated")
         return Response(u'You need to be authenticated', mimetype= 'text/plain', status=401)
     
-    # parse incoming data
-    try:
-        data = request.environ['parsed_data']
-        new_claim = Claim(user.name, data['idea'])
-    except Exception as e:
-        request.environ['logger'].error(e, 'routes/claim.py - post_claim() - parse new claim data')
-        return Response(u'Could process the request', mimetype= 'text/plain', status=422)
+    new_claim = Claim(user.name, data['idea'])
 
     # store claim
     try:
-        new_claim.store(request.environ['cursor'])
+        new_claim.store(cursor)
     except mysql.connector.errors.IntegrityError as err:
-        request.environ['logger'].error(err, 'routes/claim.py - get_user_claims() - find claims')
+        logger.error(err, 'routes/claim.py - get_user_claims() - find claims')
         
-        request.environ['logger'].message("POST_CLAIM", 'claim already exists')
+        logger.message("POST_CLAIM", 'claim already exists')
         return Response(u'The claim already exists', mimetype= 'text/plain', status=422)
     
-    request.environ['logger'].message("POST_IDEA", f'idea {new_claim.idea} was claimed by {new_claim.author}')
+    logger.message("POST_IDEA", f'idea {new_claim.idea} was claimed by {new_claim.author}')
     return Response(u'idea claimed', mimetype= 'text/plain', status=200)
 
     
 @claim_blueprint.route('/<path:idea>', methods=['DELETE'])
-def delete_claim(idea):
-    user = request.environ['user'] # get issuing user
-
+@util_db()
+@util_auth()
+def delete_claim(cursor:cursor, user:User, idea:str):
+    logger:Logger = request.environ['logger']
     claim = Claim(user.name, idea)
 
     try: 
-        claim.delete(request.environ['cursor'])
+        claim.delete(cursor)
     except mysql.connector.Error as err:
-        request.environ['logger'].message("DELETE_CLAIM", "claim doesn't exists")
+        logger.message("DELETE_CLAIM", "claim doesn't exists")
         return Response(u"The claim doesn't exists", mimetype= 'text/plain', status=422)
 
-    request.environ['logger'].message("DELETE_IDEA", f'The claim onidea {claim.idea} by {claim.author} was removed')
+    logger.message("DELETE_IDEA", f'The claim onidea {claim.idea} by {claim.author} was removed')
     return Response(u'claim deleted', mimetype= 'text/plain', status=200)

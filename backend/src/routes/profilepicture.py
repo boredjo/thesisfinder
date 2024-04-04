@@ -1,5 +1,10 @@
 from werkzeug.wrappers import Response
 from flask import Blueprint, request
+from models.user import User
+from utils.db import util_db
+from utils.auth import util_auth
+from utils.parse import parse_png
+from utils.logs import Logger
 from PIL import Image
 import os
 
@@ -37,29 +42,34 @@ def get_profile_picture(username):
     return Response(file, mimetype= 'image/png', status=200)
 
 @profile_picture_blueprint.route('/', methods=['POST'])
-def post_profile_picture():
-    user = request.environ['user']
+@util_db()
+@util_auth()
+@parse_png()
+def post_profile_picture(image, cursor, user:User):
+    logger:Logger = request.environ['logger']
     if user.isAnon():
-        request.environ['logger'].message("POST_PROFILEPIC", "Can't upload picture as anonymous user.")
+        logger.message("POST_PROFILEPIC", "Can't upload picture as anonymous user.")
         return Response(u'You need to be authenticated for this action', mimetype= 'text/plain', status=401)
     else:
-        store_binary(PICTURE_PATH + user.name + ".png", request.environ['parsed_data'])
+        store_binary(PICTURE_PATH + user.name + ".png", image)
         resize_image(user.name)
-        request.environ['logger'].message("PROFILEPIC", f"Updated file {PICTURE_PATH + user.name}.png")
+        logger.message("PROFILEPIC", f"Updated file {PICTURE_PATH + user.name}.png")
         return Response(u'Image updated', mimetype= 'text/plain', status=200)
     
 @profile_picture_blueprint.route('/', methods=['DELETE'])
-def delete_profilepicture():
-    user = request.environ['user'] # get issuing user
+@util_db()
+@util_auth()
+def delete_profilepicture(cursor, user:User):
+    logger:Logger = request.environ['logger']
     if user.isAnon():
-        request.environ['logger'].message("DELETE_PROFILEPIC", 'auth fail')
+        logger.message("DELETE_PROFILEPIC", 'auth fail')
         return Response(u'You are not authorized to do this action', mimetype= 'text/plain', status=401)
     
     else:
         try:
             delete_picture(user.name)
         except FileNotFoundError:
-            request.environ['logger'].message("PROFILEPIC", "image not found")
+            logger.message("PROFILEPIC", "image not found")
             return Response(u'Image already deleted', mimetype= 'text/plain', status=401)
-        request.environ['logger'].message("PROFILEPIC", f"Updated file {PICTURE_PATH + user.name}.png")
+        logger.message("PROFILEPIC", f"Updated file {PICTURE_PATH + user.name}.png")
         return Response(u'Image deleted', mimetype= 'text/plain', status=200)

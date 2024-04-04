@@ -1,30 +1,32 @@
-from werkzeug.wrappers import Response, Request
+from utils.logs import Logger
+from flask import  request
+from functools import wraps
 import mysql.connector
 import sys
 import os
-import time
+
 
 from utils.logs import log_error, log_info
 
-def rebase():
-    log_info("Rebase set to TRUE", 'db.py')
-    try:
-        log_info(f"Connecting to MYSQL at {os.environ['DB_USER']}@{os.environ['DB_HOST']}:{os.environ['DB_PORT']}", 'db.py')
-        # Connect to MySQL
-        connection = mysql.connector.connect(
-            user=os.environ['DB_USER'],
-            password=os.environ['DB_PASSWORD'],
-            host=os.environ['DB_HOST'],
-            port=int(os.environ['DB_PORT']),
-            database=os.environ['DB_DATABASE'],
-            autocommit=True
-        )
-        log_info(f'Successfully Connected to MYSQL for Rebase', 'db.py')
-        
-    except mysql.connector.Error as e:
-        log_error(e, 'db.py - establish connection')
-        sys.exit(1)
+try:
+    log_info(f"Connecting to MYSQL at {os.environ['DB_USER']}@{os.environ['DB_HOST']}:{os.environ['DB_PORT']}", 'db.py')
+    # Connect to MySQL
+    connection = mysql.connector.connect(
+        user=os.environ['DB_USER'],
+        password=os.environ['DB_PASSWORD'],
+        host=os.environ['DB_HOST'],
+        port=int(os.environ['DB_PORT']),
+        database=os.environ['DB_DATABASE'],
+        autocommit=True
+    )
+    log_info(f'Successfully Connected to MYSQL', 'db.py')
+    
+except mysql.connector.Error as e:
+    log_error(e, 'db.py - establish connection')
+    sys.exit(1)
+    
 
+def rebase():
     # wipe database
     cursor = connection.cursor(buffered=True)
     with open('sql/delete.sql', 'r') as file:
@@ -70,40 +72,22 @@ def rebase():
     connection.close()
     log_info("Rebase succesful", 'db.py')
 
-class mysql_middleware():
-    def __init__(self, app):
-        try:
-            log_info(f"Connecting to MYSQL at {os.environ['DB_USER']}@{os.environ['DB_HOST']}:{os.environ['DB_PORT']}", 'db.py')
-            # Connect to MySQL
-            self.connection = mysql.connector.connect(
-                user=os.environ['DB_USER'],
-                password=os.environ['DB_PASSWORD'],
-                host=os.environ['DB_HOST'],
-                port=int(os.environ['DB_PORT']),
-                database=os.environ['DB_DATABASE'],
-                autocommit=True
-            )
-            log_info(f'Successfully Connected to MYSQL', 'db.py')
+
+def util_db():
+    def _db_decorator(f):
+        @wraps(f)
+        def __db_decorator(*args, **kwargs):
+            logger:Logger = request.environ['logger']
+
+            if not connection.is_connected():
+                logger.info('Reconecting to DB', 'db.py')
+                connection.reconnect(3)
             
-        except mysql.connector.Error as e:
-            log_error(e, 'db.py - establish connection')
-            sys.exit(1)
-        self.app = app
+            cursor = connection.cursor(buffered=True)
+            logger.message('MYSQL', 'created cursor')
 
-    def __call__(self, environ, start_response):
-        request = Request(environ)
-        if request.path.startswith("/doc"): # pass trough for the documentation
-            return self.app(environ, start_response)
-
-        if not self.connection.is_connected():
-            environ['logger'].info('Reconecting to DB', 'db.py')
-            self.connection.reconnect(3)
-        
-        if not self.connection.is_connected():
-            environ['logger'].error('Cannot connect to DB', 'db.py')
-            res = Response(u'Internal Server Error', mimetype= 'text/plain', status=500)
-            return res(environ, start_response)
-
-        environ['cursor'] = self.connection.cursor(buffered=True)
-        environ['logger'].message('MYSQL', 'attached cursor')
-        return self.app(environ, start_response)
+            result = f(cursor, *args, **kwargs)
+            cursor.close()
+            return result
+        return __db_decorator
+    return _db_decorator

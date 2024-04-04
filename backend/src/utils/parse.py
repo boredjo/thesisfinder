@@ -1,6 +1,9 @@
 from werkzeug.wrappers import Request, Response
 from werkzeug.exceptions import BadRequest
+from flask import request
 import bcrypt
+from functools import wraps
+
 
 from utils.logs import Logger
 
@@ -19,10 +22,6 @@ IMAGE_PATHS = [
 
 ALLOWED_EXTENSIONS = set(['png'])
 
-def get_hashed_password(plain_text_password):
-    # Hash a password for the first time
-    #   (Using bcrypt, the salt is saved into the hash itself)
-    return bcrypt.hashpw(plain_text_password, bcrypt.gensalt())
 
 def allowed_file(filename):
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -34,22 +33,7 @@ class parse_middleware():
 
     def __call__(self, environ, start_response):
         request = Request(environ)
-        # if request.path.startswith("/doc"): # pass trough for the documentation
-        #     return self.app(environ, start_response)
 
-        # establish logger
-        if not 'logger' in environ.keys():
-            environ['logger'] = Logger()
-
-        environ['logger'].message('METHOD', request.method)
-        environ['logger'].message('HEADER', list(request.headers))
-
-        if request.method in ['OPTIONS']:
-            res = Response(u"sucess", mimetype= 'text/plain', status=200)
-            res.headers['Access-Control-Allow-Origin'] = '*'
-            res.headers['Access-Control-Allow-Headers'] = '*'
-            res.headers['Access-Control-Allow-Methods'] = '*'
-            return res(environ, start_response)
         # do not parse GET or DELETE request
         if request.method in ['GET', 'DELETE']:
             return self.app(environ, start_response)
@@ -94,3 +78,59 @@ class parse_middleware():
         environ['logger'].message('NOT PNG')
         res = Response(u'This endpoint only processes image/png content', mimetype= 'text/plain', status=422)
         return res(environ, start_response)
+    
+def parse_json(keys):
+    def _json_decorator(f):
+        @wraps(f)
+        def __json_decorator(*args, **kwargs):
+            logger:Logger = request.environ['logger']
+
+            if 'Content-Type' in request.headers.keys() and request.headers['Content-Type'] == 'application/json':
+                try:
+                    data = request.get_json()
+                except BadRequest as e:
+                    logger.error(e, 'parse.py - parse_json() - converting request to json')
+                    return Response(u"Couldn't process the request", mimetype= 'text/plain', status=422)
+
+                parsed_data = {}
+                for key in keys:
+                    if key in data.keys():
+                        parsed_data[key]=data[key]
+                    else:
+                        logger.message('JSON', f"key {key} not found")
+                        return Response(u"Key" + key + u"is missing", mimetype= 'text/plain', status=422)
+                    
+                if 'password' in keys and len(parsed_data['password']) > 64:
+                    logger.message('BODY', 'Password too long')
+                    return Response(u"Password is too long (64 max)", mimetype= 'text/plain', status=422)
+
+                logger.message('BODY', parsed_data)
+                
+            else:     
+                # block non json calls
+                logger.message('NOT JSON')
+                return Response(u'This endpoint only processes application/json content', mimetype= 'text/plain', status=422)
+            
+            result = f(parsed_data, *args, **kwargs)
+            return result
+        return __json_decorator
+    return _json_decorator
+
+def parse_png():
+    def _png_decorator(f):
+        @wraps(f)
+        def __png_decorator(*args, **kwargs):
+            logger:Logger = request.environ['logger']
+
+            if 'Content-Type' in request.headers.keys() and request.headers['Content-Type'] == 'image/png':
+                    image = request.get_data()
+                    logger.message('BODY', 'parsed binary')
+
+            else:     
+                logger.message('NOT PNG')
+                return Response(u'This endpoint only processes image/png content', mimetype= 'text/plain', status=422)
+            
+            result = f(image, *args, **kwargs)
+            return result
+        return __png_decorator
+    return _png_decorator

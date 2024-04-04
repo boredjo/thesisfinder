@@ -1,4 +1,5 @@
 from datetime import datetime
+from werkzeug.wrappers import Request, Response
 
 # define colors
 ENDC = '\033[0m'
@@ -32,3 +33,17 @@ class Logger:
 
     def message(self, type, message=''):
         print(f'{GRAY}[{datetime.now().strftime("%H:%M:%S")}] {LIGHTBLUE}REQUEST{self.request_id :06d}{GRAY}-{YELLOW}{type}{ENDC}{"" if len(message) == 0 else ": "}{message}{ENDC}')
+
+class log_middleware:
+    def __init__(self, app):
+        self.app = app
+
+    def __call__(self, environ, start_response):
+        request = Request(environ)
+        if not 'logger' in environ.keys():
+            logger = Logger()
+            environ['logger'] = logger
+
+        environ['logger'].message('METHOD', request.method)
+        environ['logger'].message('HEADER', list(request.headers))
+        return self.app(environ, start_response)
