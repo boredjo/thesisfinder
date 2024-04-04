@@ -32,7 +32,7 @@ def parse_json(keys):
                         parsed_data[key]=data[key]
                     else:
                         logger.message('JSON', f"key {key} not found")
-                        return Response(u"Key '" + key + u"' is missing", mimetype= 'text/plain', status=422)
+                        return Response(u"Key '" + key + u"' is missing from json", mimetype= 'text/plain', status=422)
                     
                 if 'password' in keys and len(parsed_data['password']) > 64:
                     logger.message('BODY', 'Password too long')
