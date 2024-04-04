@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getUser, getIdeaDetails, getClaimFromQuestion } from '../../utils/api'; // Import getClaimFromQuestion function
+import { getUser, getIdeaDetails, getClaimFromQuestion } from '../../utils/api';
 import { claimIdea } from '../../utils/api';
 import '../../styles/main.css';
 import '../../styles/mainheader.css';
@@ -25,6 +25,8 @@ const PostPage = ({ authToken }) => {
     documents: [],
     visibility: 'public',
   });
+  const [selectedTab, setSelectedTab] = useState('overview');
+  const [researchPapers, setResearchPapers] = useState([]);
 
   useEffect(() => {
     const fetchIdeaDetails = async () => {
@@ -52,8 +54,22 @@ const PostPage = ({ authToken }) => {
     fetchClaims();
   }, [id]);
 
+  useEffect(() => {
+    const fetchResearchPapers = async () => {
+      try {
+        const response = await getClaimFromQuestion(id);
+        setResearchPapers(response.claims);
+      } catch (error) {
+        console.error('Error fetching research papers:', error);
+      }
+    };
+
+    if (selectedTab === 'research-papers') {
+      fetchResearchPapers();
+    }
+  }, [id, selectedTab]);
+
   const handleClaim = async () => {
-    // Only open the modal if it's not already open
     if (!showModal) {
       setShowModal(true);
       try {
@@ -97,21 +113,19 @@ const PostPage = ({ authToken }) => {
       documents: fileData,
     });
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     localStorage.setItem('claimFormData', JSON.stringify(formData));
-  
+
     try {
-      // Make API call to claim the idea
       const response = await claimIdea(id, authToken);
-  
-      // Handle response
+
       if (response.success) {
         const userData = await getUser(authToken);
         setClaimedBy(userData.username);
         localStorage.setItem(`claimedBy_${id}`, JSON.stringify({ username: userData.user }));
-  
+
         setFormData({
           title: '',
           description: '',
@@ -119,20 +133,15 @@ const PostPage = ({ authToken }) => {
           visibility: 'public',
         });
       } else {
-        // Handle failure
         console.error('Failed to claim idea:', response.error);
-        // Optionally display an error message to the user
       }
     } catch (error) {
-      // Handle errors
       console.error('Error claiming idea:', error);
-      // Optionally display an error message to the user
     } finally {
-      // Close the modal regardless of whether there was an error or not
       setShowModal(false);
     }
-  };  
-  
+  };
+
   const handleSponsorSubmit = async (e) => {
     e.preventDefault();
     // Implement handling for sponsoring submit
@@ -184,9 +193,9 @@ const PostPage = ({ authToken }) => {
                 </div>
                 <nav className="article-nav">
                   <ul>
-                    <li><a href="#">Overview</a></li>
-                    <li><a href="#">Comments</a></li>
-                    <li><a href="#">Research Papers</a></li>
+                    <li><a href="#" onClick={() => setSelectedTab('overview')}>Overview</a></li>
+                    <li><a href="#" onClick={() => setSelectedTab('comments')}>Comments</a></li>
+                    <li><a href="#" onClick={() => setSelectedTab('research-papers')}>Research Papers</a></li>
                     {authToken && (
                       <>
                         <li><a href="#">Sponsors</a></li>
@@ -194,54 +203,79 @@ const PostPage = ({ authToken }) => {
                     )}
                   </ul>
                 </nav>
-                <section id="description">
-                  <h2>Description</h2>
-                  <p>{idea.description}</p>
-                </section>
-                <section id="attachments">
-                  <h2>Attachments</h2>
-                  <div className="attachment-item">
-                    <img className="attachment-icon" src={require('../../assets/researchdocimage.png')} id="Attachment Icon" alt="Attachment Icon" />
-                    <div className="attachment-info">
-                      <span className="attachment-name">attachment-name.pdf</span>
-                      <span className="attachment-size">attachment-size</span>
+                {selectedTab === 'overview' && (
+                  <>
+                    <section id="description">
+                      <h2>Description</h2>
+                      <p>{idea.description}</p>
+                    </section>
+                    <section id="attachments">
+                      <h2>Attachments</h2>
+                      <div className="attachment-item">
+                        <img className="attachment-icon" src={require('../../assets/researchdocimage.png')} id="Attachment Icon" alt="Attachment Icon" />
+                        <div className="attachment-info">
+                          <span className="attachment-name">attachment-name.pdf</span>
+                          <span className="attachment-size">attachment-size</span>
+                        </div>
+                        <a href="#" className="attachment-download">Download</a>
+                      </div>
+                    </section>
+                    <section id="collaboration">
+                      <h2>Collaboration Preferences</h2>
+                      <ul className="collaboration-list">
+                        <li>Placeholder Collaborations</li>
+                      </ul>
+                    </section>
+                    <div id="action-buttons">
+                      {authToken && (
+                        <>
+                          <button type="button" id="claim-button" onClick={handleClaim}>Upload Paper</button>
+                          <button type="button" id="sponsor-button" onClick={handleSponsorModalOpen}>Sponsor</button>
+                        </>
+                      )}
                     </div>
-                    <a href="#" className="attachment-download">Download</a>
-                  </div>
-                </section>
-                <section id="collaboration">
-                  <h2>Collaboration Preferences</h2>
-                  <ul className="collaboration-list">
-                    <li>Placeholder Collaborations</li>
-                  </ul>
-                </section>
-                <div id="action-buttons">
-                  {authToken && (
-                    <>
-                      <button type="button" id="claim-button" onClick={handleClaim}>Upload Paper</button>
-                      <button type="button" id="sponsor-button" onClick={handleSponsorModalOpen}>Sponsor</button>
-                    </>
-                  )}
-                </div>
+                  </>
+                )}
+                {selectedTab === 'comments' && (
+                  // Render comments section
+                  <section id="comments">
+                    <h2>Comments</h2>
+                    {/* Render comments */}
+                  </section>
+                )}
+                {selectedTab === 'research-papers' && (
+                  // Render research papers section
+                  <section id="research-papers">
+                    <h2>Research Papers</h2>
+                    {researchPapers.length > 0 ? (
+                      <ul>
+                        {researchPapers.map((paper, index) => (
+                          <li key={index}>
+                            <h3>Author: {paper.author}</h3>
+                            <p>Date Posted: {paper.date_posted}</p>
+                            {/* Render attachments */}
+                            {paper.attachments.length > 0 && (
+                              <div className="attachment-item">
+                                <img className="attachment-icon" src={require('../../assets/researchdocimage.png')} id="Attachment Icon" alt="Attachment Icon" />
+                                <div className="attachment-info">
+                                  <span className="attachment-name">{paper.attachments[0].name}</span>
+                                  <span className="attachment-size">{paper.attachments[0].size}</span>
+                                </div>
+                                <a href="#" className="attachment-download">Download</a>
+                              </div>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>No research papers available</p>
+                    )}
+                  </section>
+                )}
               </>
             )}
           </article>
-          <aside>
-            <div id="claimed-by">
-              <h3>Claimed by:</h3>
-              <ul>
-                {/* Display the claimed by information */}
-                {claimedBy ? (
-                  <li>
-                    <img src={require('../../assets/avatar1.png')} id="Claimant Name" alt="Claimant Name" />
-                    <span>{claimedBy.username}</span>
-                  </li>
-                ) : (
-                  <li>Not claimed</li>
-                )}
-              </ul>
-            </div>
-          </aside>
+          
         </div>
       </main>
 
