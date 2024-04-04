@@ -1,4 +1,3 @@
-// App.js
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header/Header';
@@ -19,17 +18,12 @@ import { getAuthToken } from './utils/authService';
 const App = () => {
   const [authToken, setAuthToken] = useState(getAuthToken());
 
-  // Listen for changes in local storage
   useEffect(() => {
-    const handleStorageChange = () => {
+    const intervalId = setInterval(() => {
       setAuthToken(getAuthToken());
-    };
+    }, 1000); // Poll every 5 seconds
 
-    window.addEventListener('storage', handleStorageChange);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, []);
 
   const handleLogin = (token) => {

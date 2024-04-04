@@ -1,220 +1,48 @@
-.submission-type-header {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 90;
-  top: -8px;
-  left: 0;
-  right: 0;
-  border: 1.2px solid rgb(182, 182, 182);
-  height: 80px;
-  box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.2);
-  
-  img {
-    height: 60px;
-    margin-right: 10px;
-  }
+/* submit.css */
 
-  p {
-    font-size: 24px;
-    font-weight: bold;
-  }
+.submit-page .submit-container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
 }
 
-.submission-prompt {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  top: 0;
-  left: 0; 
-  right: 0;
-  bottom: 50%;
-  border: 1.2px solid rgb(182, 182, 182);
-  height: 1fr;
-  width: 500px;
-  margin: 10px;
-  padding: 15px 20px;
-  box-shadow: 2px 5px 10px rgba(0, 0, 0, 0.2);
+.submit-page .submit-container h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
 }
 
-.submission-option {
-  padding: 5px 0;
-  p { 
-    font-size: 15px;
-    font-weight: bold;
-    margin: 0 0 5px 0;
-  }
-  
-  input {
-    width: 480px;
-    padding: 5px;
-    border: 1.5px solid rgb(185, 185, 185);
-    border-radius: 4px;
-    word-wrap: break-word;
-    word-break: break-all;
-  }
+.submit-page .form-group {
+  margin-bottom: 20px;
 }
 
-.collab-pref-info {
-  font-size: 12px;
-  font-weight: normal;
-  color: rgb(236, 54, 14);
-  margin-left: 20px;
-  transition: 0.2s;
-}
-.collab-pref-info:hover {
-  text-decoration: underline;
-}
-
-.checkbox-list {
-  max-width: 300px;
-  margin: 10px 0 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.checkbox-item {
-  list-style: none;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: none;
-  position: relative;
-  padding-left: 35px;
-  margin: 12px 0;
-  cursor: pointer;
-  font-size: 14px;
-  user-select: none;
-}
-
-.checkbox-item:hover {
-  color: rgb(236, 54, 14);
-}
-
-.checkbox-item input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
-
-.checkbox-label:before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 2px;
-  height: 20px;
-  width: 20px;
-  background-color: white;
-  border: 1px solid #ddd;
-}
-
-.checkbox-item input:checked ~ .checkbox-label:before {
-  background-color: rgb(236, 54, 14);
-}
-
-.checkbox-label:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
-
-.checkbox-item input:checked ~ .checkbox-label:after {
+.submit-page label {
   display: block;
-}
-
-.checkbox-label:after {
-  left: 8px;
-  top: 4px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  transform: rotate(45deg);
-}
-
-.attachment-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: normal;
-  border: 1px solid rgb(182, 182, 182);
-  padding: 10px;
-  margin: 8px 0;
-}
-
-.submission-prompt, .attachment-item {
-  margin-bottom: 4px;
-}
-
-.attachment-icon {
-  height: 48px;
-  background-size: cover;
-  margin-right: 9px;
-}
-
-.attachment-info {
-  flex-grow: 1;
-}
-
-.attachment-name, .attachment-size {
-  display: block;
-}
-
-.attachment-name {
   font-weight: bold;
-}
-.attachment-name:hover {
-  text-decoration: underline;
-}
-
-.attachment-size {
-  color: grey;
-}
-
-.attachment-remove {
-  text-decoration: none;
-  color: rgb(236, 54, 14);
-}
-
-.attachment-remove:hover {
-  text-decoration: underline;
-}
-
-.add-attachment {
-  display: flex;
-  justify-content: center;
-  font-size: 12px;
-  line-height: 10px;
-  background-color: white;
-  color:rgb(236, 54, 14);
-  border: 1px solid rgb(236, 54, 14);
-  border-radius: 2px;
-  padding: 10px;
   margin-bottom: 5px;
-  transition: 0.2s;
-}
-.add-attachment:hover {
-  background-color: rgb(236, 54, 14);
-  color: white;
 }
 
-.submit-idea {
-  font-size: 12px;
-  font-weight: bold;
-  line-height: 10px;
-  text-align: center;
-  background-color: rgb(236, 54, 14);
-  color: white;
-  border: none;
-  border-radius: 2px;
-  padding: 10px;
-  transition: 0.15s;
+.submit-page input[type="text"],
+.submit-page textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
-.submit-idea:hover {
-  background-color: rgb(198, 47, 13);
+
+.submit-page button {
+  background-color: red;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.submit-page button:hover {
+  background-color: #0056b3;
 }
