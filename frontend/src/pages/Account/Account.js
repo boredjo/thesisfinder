@@ -49,10 +49,10 @@ const Account = ({ authToken }) => { // Receive authToken from props
       // Make an API call to fetch the profile picture URL using the username
       const profilePictureUrl = await getProfilePictureByUsername(username);
 
-      console.log('Profile Picture URL:', profilePictureUrl); // Log profile picture URL
+      // console.log('Profile Picture URL:', profilePictureUrl); // Log profile picture URL
 
       // Update the avatar image state with the profile picture URL
-      setAvatarImage(profilePictureUrl);
+      setAvatarImage("https://data.thesisfinder.com/profilepicture/" + username);
     } catch (error) {
       console.error('Error fetching profile picture:', error); // Log any errors
     }

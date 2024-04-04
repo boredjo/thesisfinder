@@ -21,7 +21,7 @@ const FeaturesIdeas = ({ ideas }) => {
             <p className="date">{idea.date_posted}</p> {/* Use date_posted instead of date */}
             <div className="author-container">
               <img
-                src={idea.authorImage}
+                src={"https://data.thesisfinder.com/profilepicture/" + idea.author}
                 alt={`${idea.author}'s profile`}
                 className="author-image"
               />

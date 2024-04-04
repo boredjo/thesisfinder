@@ -116,7 +116,7 @@ const PostPage = ({ authToken }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    localStorage.setItem('claimFormData', JSON.stringify(formData));
+    // Removed localStorage usage
 
     try {
       const response = await claimIdea(id, authToken);
@@ -124,7 +124,6 @@ const PostPage = ({ authToken }) => {
       if (response.success) {
         const userData = await getUser(authToken);
         setClaimedBy(userData.username);
-        localStorage.setItem(`claimedBy_${id}`, JSON.stringify({ username: userData.user }));
 
         setFormData({
           title: '',
@@ -167,6 +166,7 @@ const PostPage = ({ authToken }) => {
       documents: fileData,
     });
   };
+
 
   return (
     <div>

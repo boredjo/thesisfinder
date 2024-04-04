@@ -107,9 +107,9 @@ const AuthenticatedHeader = ({ authToken }) => {
         </button>
         <button onClick={openModal}>
           {avatarImage ? (
-            <img src={avatarImage} alt="User Account" />
+            <img src={"https://data.thesisfinder.com/profilepicture/" + username} alt="User Account" />
           ) : (
-            <img className="account-button" src={defaultAvatar} alt="User Account" />
+            <img className="account-button" src={"https://data.thesisfinder.com/profilepicture/" + username} alt="User Account" />
           )}
         </button>
         <button className="header-submit-button" onClick={openSubmitModal}>Submit</button>
