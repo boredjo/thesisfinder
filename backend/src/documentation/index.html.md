@@ -6,9 +6,12 @@ language_tabs: # must be one of https://github.com/rouge-ruby/rouge/wiki/List-of
 
 toc_footers:
   - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
+  - <a href='https://thesisfinder.com> Open Thesisfinder </a>
+  - <a href='/doc/qrcode.html> Open QR-Code </a>
 
-# includes:
-#   - errors
+includes:
+  - auth
+  - middleware
 
 search: true
 
@@ -23,48 +26,6 @@ meta:
 
 Thesisfinder API! Work in progress. V0.6.5
 
-# Authentication
-
-> To authorize you need an API token that you can obtain from the `/login/` node
-
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here" \
-  -H "Token: tokentokentoken"
-```
-> Make sure to replace `tokentokentoken` with your API token.
-
-Thesisfinder API expects token in the format
-`Token: tokentokentoken`
-The API token also identifies the user. To use the API anonymously, just emit the Authetification completly. Tokens have a life span of 24 hours.
-
-<aside class="notice">
-You must replace <code>tokentokentoken</code> with your personal API token obtained from <code>/login/</code>.
-</aside>
-
-# API-Wide Errors
-
-There are middlewares in place, that can cause errors on all routes.
-
-### Parsing Errors
-Code | Message | Explaination
-422 | parse fail | Parsing the JSON failed. The JSON object isn't vaild.
-422 | not application/json  | This endpoint requires the content-type to be `application/json`.
-422 | not image/png  | This endpoint requires the content-type to be `image/png`.
-422 | password too long  | The password attribute can be maximum 64 characters long.
-422 | 'tag' missing | The required key `tag` is missing from the JSON object.
-
-### Authentication Errors
-Code | Message | Explaination
-403 | auth fail | The token is not valid.
-
-### DB Errors
-Code | Message | Explaination
-500 | db fail | The MySQL cursor could not be generated. The Database is down.
-
-<aside class="success">
-The container logs give more insight on errors
-</aside>
 
 # Login
 
@@ -128,7 +89,9 @@ Code | Message | Explaination
 
 ## Get User Information
 
-> you can send this anonmously
+<aside class="notice">
+This endpoint uses the auth middleware. Request can be send anonmously
+</aside>
 
 ```shell
 curl --location --request GET 'https://api.thesisfinder.com/user/' \
@@ -214,6 +177,22 @@ curl --location 'https://api.thesisfinder.com/user/' \
 ```
 > this has to be sent authenticated
 
+### Parameters
+Parameter | Datatype | Description
+--------- | ------- | -----------
+user | str | The user name of account
+first_name | str | The first name of the user
+last_name | str | The Last name of the user
+country | str | The country code of the Account, typically 2 capital letters.
+email | str | The email associated with the account
+password | str| The password used for `/login`. Not longer than 64 characters.
+
+### Errors
+Code | Message | Explaination
+--------- | ------- | -----------
+422 | not unique | The user name or email are already taken.
+401 | no auth | The authorized user does not have the permisson for this action.
+
 
 This endpoint updates an existing user in the data base. The username and emails are checked for uniqueness agian to avoid conflicts. 
 
@@ -230,6 +209,10 @@ curl --location --request DELETE 'https://api.thesisfinder.com/user/' \
 
 This endpoint deletes an existing user in the data base. The user authenticated by the toekn will be deleted 
 
+### Errors
+Code | Message | Explaination
+--------- | ------- | -----------
+401 | no auth | The authorized user does not have the permisson for this action.
 
 
 # Profile Picture

@@ -54,8 +54,8 @@ def delete_user(cursor:cursor, user:User):
 
     if user.isAnon():
         logger.message("DELETE_USER", 'auth fail')
-        return Response(u'You are not authorized to do this action', mimetype= 'text/plain', status=401)
-    
+        return Response(u'no auth', mimetype= 'text/plain', status=401) 
+
     user.delete(cursor)
     try:
         delete_picture(user.name)
