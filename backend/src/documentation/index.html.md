@@ -1,5 +1,5 @@
 ---
-title: ThesisFinder API Reference v0.4.0
+title: ThesisFinder API Reference v0.6.5
 
 language_tabs: # must be one of https://github.com/rouge-ruby/rouge/wiki/List-of-supported-languages-and-lexers
   - shell
@@ -21,7 +21,7 @@ meta:
 
 # Introduction
 
-Thesisfinder API! Work in progress. V0.4.0
+Thesisfinder API! Work in progress. V0.6.5
 
 # Authentication
 
@@ -66,6 +66,18 @@ curl --location 'https://api.thesisfinder.com/login/' \
 ```
 
 This endpoint is used to retrive the authentication token. This request should be sent anoymouly, that is without authentification in the header.
+
+Parameter | Datatype | Description
+--------- | ------- | -----------
+user | str | The user name of account
+password | str | The password of the account
+
+### Errors
+Code | Message | Explaination
+--------- | ------- | -----------
+422 | Couldn't find user | There is no user with this user name
+403 | Authorization failed | The password is wrong or there is an error with the database
+
 
 # User
 
