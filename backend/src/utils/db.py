@@ -1,4 +1,4 @@
-from utils.logs import Logger
+from werkzeug.wrappers import Response
 from flask import  request
 from functools import wraps
 import mysql.connector
@@ -6,7 +6,7 @@ import sys
 import os
 
 
-from utils.logs import log_error, log_info
+from utils.logs import Logger, log_error, log_info
 
 try:
     log_info(f"Connecting to MYSQL at {os.environ['DB_USER']}@{os.environ['DB_HOST']}:{os.environ['DB_PORT']}", 'db.py')
@@ -79,11 +79,15 @@ def util_db():
         def __db_decorator(*args, **kwargs):
             logger:Logger = request.environ['logger']
 
-            if not connection.is_connected():
-                logger.info('Reconecting to DB', 'db.py')
-                connection.reconnect(3)
+            try:
+                if not connection.is_connected():
+                    logger.info('Reconecting to DB', 'db.py')
+                    connection.reconnect(3)
             
-            cursor = connection.cursor(buffered=True)
+                cursor = connection.cursor(buffered=True)
+            except Exception as e:
+                logger.error(e, 'db.py - util_db - generating cursor')
+                return Response(u'auth fail', mimetype= 'text/plain', status=500)
             logger.message('MYSQL', 'created cursor')
 
             result = f(cursor, *args, **kwargs)

@@ -38,7 +38,7 @@ def util_auth():
 
                 user = find_user_by_token(cursor, token, logger)
                 if user is None:
-                    return Response(u'Authorization failed', mimetype= 'text/plain', status=403)
+                    return Response(u'auth fail', mimetype= 'text/plain', status=403)
                 else:
                     logger.message('AUTH', user.name)
                     request.environ['user'] = user

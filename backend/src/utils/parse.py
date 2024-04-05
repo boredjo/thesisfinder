@@ -24,7 +24,7 @@ def parse_json(keys):
                     data = request.get_json()
                 except BadRequest as e:
                     logger.error(e, 'parse.py - parse_json() - converting request to json')
-                    return Response(u"Couldn't process the request", mimetype= 'text/plain', status=422)
+                    return Response(u"parse fail", mimetype= 'text/plain', status=422)
 
                 parsed_data = {}
                 for key in keys:
@@ -32,18 +32,18 @@ def parse_json(keys):
                         parsed_data[key]=data[key]
                     else:
                         logger.message('JSON', f"key {key} not found")
-                        return Response(u"Key '" + key + u"' is missing from json", mimetype= 'text/plain', status=422)
+                        return Response(u"'" + key + u"' missing", mimetype= 'text/plain', status=422)
                     
                 if 'password' in keys and len(parsed_data['password']) > 64:
                     logger.message('BODY', 'Password too long')
-                    return Response(u"Password is too long (64 max)", mimetype= 'text/plain', status=422)
+                    return Response(u"password too long", mimetype= 'text/plain', status=422)
 
                 logger.message('BODY', parsed_data)
                 
             else:     
                 # block non json calls
                 logger.message('NOT JSON')
-                return Response(u'This endpoint only processes application/json content', mimetype= 'text/plain', status=422)
+                return Response(u'not application/json', mimetype= 'text/plain', status=422)
             
             result = f(parsed_data, *args, **kwargs)
             return result
@@ -62,7 +62,7 @@ def parse_png():
 
             else:     
                 logger.message('NOT PNG')
-                return Response(u'This endpoint only processes image/png content', mimetype= 'text/plain', status=422)
+                return Response(u'not image/png', mimetype= 'text/plain', status=422)
             
             result = f(image, *args, **kwargs)
             return result
