@@ -27,7 +27,7 @@ def delete_picture(username):
 
 def resize_image(username):
     im = Image.open(PICTURE_PATH + username + ".png")
-    im = im.resize((256, 256))
+    im = im.resize((86, 86))
     im.save(PICTURE_PATH + username + ".png")
 
 @profile_picture_blueprint.route('/<path:username>', methods=['GET'])
