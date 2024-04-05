@@ -77,6 +77,26 @@ curl --location 'https://api.thesisfinder.com/login/' \
 	"password": "password"
 }'
 ```
+
+```javascript
+var request = require('request');
+var options = {
+  'method': 'POST',
+  'url': 'https://data.thesisfinder.com/login/',
+  'headers': {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    "user": "testuser",
+    "password": "test123"
+  })
+
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
 > Make sure to send `Content-Type: application/json`
 
 > The above command returns JSON structured like this:
@@ -97,8 +117,8 @@ password | str | The password of the account
 ### Errors
 Code | Message | Explaination
 --------- | ------- | -----------
-422 | Couldn't find user | There is no user with this user name
-403 | Authorization failed | The password is wrong or there is an error with the database
+422 | no user | The API could not find a user with that user name.
+403 | auth fail | The password is wrong or there is an error with the database.
 
 
 # User

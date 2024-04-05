@@ -31,7 +31,7 @@ def get_token(data, cursor:cursor ):
         user = User.find_user(data['user'], cursor)
     except Exception as e:
         logger.error(e, "login.py - get_token() - find user in DB")
-        return Response(u"Couldn't find user", mimetype= 'text/plain', status=422)
+        return Response(u"no user", mimetype= 'text/plain', status=422)
     
     if check_password(data['password'], user.password_hash):
         token = f'{user.name} {datetime.now().strftime("%m%d%Y%H%M%S%f")}'
@@ -48,4 +48,4 @@ def get_token(data, cursor:cursor ):
         logger.message('CREATED TOKEN', token)
         return jsonify(token = token)
     else:
-        return Response(u'Authorization failed', mimetype= 'text/plain', status=403)
+        return Response(u'auth fail', mimetype= 'text/plain', status=403)
