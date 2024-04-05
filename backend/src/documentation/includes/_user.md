@@ -38,6 +38,11 @@ email | str | The email associated with the account
 
 ## Post a New User
 
+<aside class="notice">
+This endpoint uses the auth middleware. Request have to send anonmously
+This endpoint parses for `application/json`
+</aside>
+
 > this has to be sent anonymously
 
 ```shell
@@ -72,6 +77,11 @@ Code | Message | Explaination
 401 | no auth | The authorized user does not have the permisson for this action.
 
 ## Update an Exsiting User
+
+<aside class="notice">
+This endpoint uses the auth middleware. Request can not be send anonymously.
+This endpoint parses for `application/json`.
+</aside>
 
 > this also uses the POST-method
 
@@ -110,6 +120,10 @@ Code | Message | Explaination
 This endpoint updates an existing user in the data base. The username and emails are checked for uniqueness agian to avoid conflicts. 
 
 ## Delete an Exsiting User
+
+<aside class="notice">
+This endpoint uses the auth middleware. Request can not be send anonymously.
+</aside>
 
 > this has to be sent authenticated
 

@@ -2,6 +2,11 @@
 
 ## Get Token
 
+<aside class="notice">
+This endpoint parses for `application/json`
+</aside>
+
+
 ```shell
 curl --location 'https://api.thesisfinder.com/login/' \
 --header 'Content-Type: application/json' \
@@ -30,7 +35,6 @@ request(options, function (error, response) {
   console.log(response.body);
 });
 ```
-> Make sure to send `Content-Type: application/json`
 
 > The above command returns JSON structured like this:
 
