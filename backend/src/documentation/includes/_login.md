@@ -1,0 +1,56 @@
+# Login
+
+## Get Token
+
+```shell
+curl --location 'https://api.thesisfinder.com/login/' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"user": "username",
+	"password": "password"
+}'
+```
+
+```javascript
+var request = require('request');
+var options = {
+  'method': 'POST',
+  'url': 'https://data.thesisfinder.com/login/',
+  'headers': {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    "user": "testuser",
+    "password": "test123"
+  })
+
+};
+request(options, function (error, response) {
+  if (error) throw new Error(error);
+  console.log(response.body);
+});
+```
+> Make sure to send `Content-Type: application/json`
+
+> The above command returns JSON structured like this:
+
+```json
+{
+    "token": "tokentokentoken"
+}
+```
+
+This endpoint is used to retrive the authentication token. This request should be sent anoymouly, that is without authentification in the header.
+
+### Parameters
+Parameter | Datatype | Description
+--------- | ------- | -----------
+user | str | The user name of account
+password | str | The password of the account
+token | str | Use the token returned by this route to authenticate all other routes. This token is valid for 24h
+
+### Errors
+Code | Message | Explaination
+--------- | ------- | -----------
+422 | no user | The API could not find a user with that user name.
+403 | auth fail | The password is wrong or there is an error with the database.
