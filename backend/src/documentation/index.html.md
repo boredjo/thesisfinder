@@ -47,7 +47,6 @@ You must replace <code>tokentokentoken</code> with your personal API token obtai
 There are middlewares in place, that can cause errors on all routes.
 
 ### Parsing Errors
-
 Code | Message | Explaination
 422 | parse fail | Parsing the JSON failed. The JSON object isn't vaild.
 422 | not application/json  | This endpoint requires the content-type to be `application/json`.
@@ -56,14 +55,16 @@ Code | Message | Explaination
 422 | 'tag' missing | The required key `tag` is missing from the JSON object.
 
 ### Authentication Errors
-
 Code | Message | Explaination
 403 | auth fail | The token is not valid.
 
 ### DB Errors
-
 Code | Message | Explaination
 500 | db fail | The MySQL cursor could not be generated. The Database is down.
+
+<aside class="success">
+The container logs give more insight on errors
+</aside>
 
 # Login
 
@@ -109,10 +110,12 @@ request(options, function (error, response) {
 
 This endpoint is used to retrive the authentication token. This request should be sent anoymouly, that is without authentification in the header.
 
+### Parameters
 Parameter | Datatype | Description
 --------- | ------- | -----------
 user | str | The user name of account
 password | str | The password of the account
+token | str | Use the token returned by this route to authenticate all other routes. This token is valid for 24h
 
 ### Errors
 Code | Message | Explaination
@@ -136,16 +139,26 @@ curl --location --request GET 'https://api.thesisfinder.com/user/' \
 
 ```json
 {
-    "country": "US",
-    "email": "",
+    "user": "anonymous",
     "first_name": "Anonymous",
     "last_name": "User",
-    "user": "anonymous"
+    "country": "US",
+    "email": "",
 }
 ```
 > This is the anonymous result
 
 This endpoint gives the information about the user identified by the auth token. An endpoint to obtain other useres information (without being logged in as that user) is not planned.
+
+### Parameters
+Parameter | Datatype | Description
+--------- | ------- | -----------
+user | str | The user name of account
+first_name | str | The first name of the user
+last_name | str | The Last name of the user
+country | str | The country code of the Account, typically 2 capital letters.
+email | str | The email associated with the account
+
 
 ## Post a New User
 
@@ -165,6 +178,22 @@ curl --location 'https://api.thesisfinder.com/user/' \
 ```
 
 This endpoint registers a new user with the data base. The username and emails are checked for uniqueness. 
+
+### Parameters
+Parameter | Datatype | Description
+--------- | ------- | -----------
+user | str | The user name of account
+first_name | str | The first name of the user
+last_name | str | The Last name of the user
+country | str | The country code of the Account, typically 2 capital letters.
+email | str | The email associated with the account
+password | str| The password used for `/login`. Not longer than 64 characters.
+
+### Errors
+Code | Message | Explaination
+--------- | ------- | -----------
+422 | not unique | The user name or email are already taken.
+401 | no auth | The authorized user does not have the permisson for this action.
 
 ## Update an Exsiting User
 

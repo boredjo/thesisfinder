@@ -30,7 +30,7 @@ def post_user(data, cursor:cursor, user:User):
     if user.name == new_user.name: # updateing user info
         if new_user.newEmailTaken(cursor):
             logger.message("POST_USER", f'{new_user.email} is already taken')
-            return Response(u'Username or Email is already taken', mimetype= 'text/plain', status=422)
+            return Response(u'not unique', mimetype= 'text/plain', status=422)
         user.update(new_user, cursor)
         logger.message("POST_USER", f'{new_user.name} updated')
         return Response(u'updating user info', mimetype= 'text/plain', status=200)
@@ -38,13 +38,13 @@ def post_user(data, cursor:cursor, user:User):
     elif user.isAnon(): # create new user
         if new_user.nameTaken(cursor):
             logger.message("POST_USER", f'{new_user.name} or {new_user.email} is already taken')
-            return Response(u'Username or Email is already taken', mimetype= 'text/plain', status=422)
+            return Response(u'not unique', mimetype= 'text/plain', status=422)
         new_user.store(cursor)
         logger.message("POST_USER", f'{new_user.name} created')
         return Response(u'created new user', mimetype= 'text/plain', status=200)
     else:
         logger.message("POST_USER", 'auth fail')
-        return Response(u'You are not authorized to do this action', mimetype= 'text/plain', status=401)
+        return Response(u'no auth', mimetype= 'text/plain', status=401)
     
 @user_blueprint.route('/', methods=['DELETE'])
 @util_db()
