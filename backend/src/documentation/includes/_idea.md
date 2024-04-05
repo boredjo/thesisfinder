@@ -206,6 +206,10 @@ Code | Message | Explaination
 
 ## Delete an Exsiting Idea
 
+<aside class="notice">
+This endpoint uses the auth middleware. Request can not be send anonymously.
+</aside>
+
 > You need to be authentiacted as the author to perform this action
 
 ```shell
