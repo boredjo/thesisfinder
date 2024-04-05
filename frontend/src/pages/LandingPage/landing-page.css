@@ -6,6 +6,7 @@
 
 .content-container #image-1 {
   width: 100%;
+  max-width: 100%;
   height: auto;
   margin: 0;
 }
@@ -13,53 +14,71 @@
 .header-section {
   background-color: #ececec;
   text-align: center;
-  padding: 20px;
+  padding: 2em;
+}
+
+.header-text {
+  margin-bottom: 1em;
 }
 
 .header-section h2 {
   font-family: 'Noto Sans';
-  font-size: 20px;
+  font-size: 2em;
   font-weight: bold;
-  margin: 0;
-  padding: 10px;
+  padding: 1em;
   text-align: center;
 }
 
 .header-section button {
-  background-color: red;
-  color: #ffffff;
-  padding: 0.8rem 1.6rem;
+  background-color: rgb(236, 54, 14);
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+  padding: 0.8em 1.6em;
   border: none;
   border-radius: 3px;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-  margin: 10px 0;
+  transition: background-color 0.2s;
+  margin: 1em auto;
+  display: block;
+}
+.header-section button:hover {
+  background-color: rgb(198, 47, 13);
+  text-decoration: none;
+}
+
+.main-section {
+  text-align: center;
 }
 
 .main-section #image-2 {
   width: 80%;
-  margin: 20px auto;
+  max-width: 300px;
+  margin: 1em auto;
 }
 
 .main-section h2 {
-  font-size: 18px;
+  font-size: 1.5em;
+  margin: 0;
 }
 
 .main-section .explore-header p {
   font-family: "Noto Sans";
-  font-size: 16px;
+  font-size: 1.2em;
   text-align: center;
-  padding: 10px;
+  margin: 0;
+  padding: 1em;
 }
 
 .main-section #search-ideas {
   width: 80%;
-  padding: 8px;
+  max-width: 500px;
+  margin: 1em auto;
+  padding: 1em;
 }
 
 .main-section #section-divider {
   width: 80%;
-  margin: 20px auto;
+  margin: 2em auto;
 }
 
 @media (min-width: 768px) {
@@ -70,6 +89,11 @@
   .header-section {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+  }
+
+  .header-text {
+    text-align: center;
   }
 
   .content-container {
@@ -85,7 +109,10 @@
   .main-section #search-ideas,
   .main-section #section-divider {
     width: auto;
-    margin: auto;
+    margin: 0.5em auto;
     padding: auto;
+  }
+  .main-section #search-ideas {
+    width: 500px;
   }
 }
