@@ -1,95 +1,91 @@
-  .content-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-  }
+.content-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+.content-container #image-1 {
+  width: 100%;
+  height: auto;
+  margin: 0;
+}
+
+.header-section {
+  background-color: #ececec;
+  text-align: center;
+  padding: 20px;
+}
+
+.header-section h2 {
+  font-family: 'Noto Sans';
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+  padding: 10px;
+  text-align: center;
+}
+
+.header-section button {
+  background-color: red;
+  color: #ffffff;
+  padding: 0.8rem 1.6rem;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  margin: 10px 0;
+}
+
+.main-section #image-2 {
+  width: 80%;
+  margin: 20px auto;
+}
+
+.main-section h2 {
+  font-size: 18px;
+}
+
+.main-section .explore-header p {
+  font-family: "Noto Sans";
+  font-size: 16px;
+  text-align: center;
+  padding: 10px;
+}
+
+.main-section #search-ideas {
+  width: 80%;
+  padding: 8px;
+}
+
+.main-section #section-divider {
+  width: 80%;
+  margin: 20px auto;
+}
+
+@media (min-width: 768px) {
   .content-container #image-1 {
-    width: 100%;
-    height: auto;
-    margin-left: auto;
-    margin-right: 0;
+    width: 50%;
   }
 
   .header-section {
-    background-color: #ececec;
-    text-align: center;
-    padding: 20px;
+    display: flex;
+    justify-content: center;
   }
 
-  .header-section h2 {
-    font-family: 'Noto Sans';
-    font-size: 30px;
-    font-weight: bold;
-    margin-left: 175px;
-    margin-right: 175px;
-    padding: 20px;
-    text-align: left;
+  .content-container {
+    display: flex;
   }
 
-  .header-section button {
-    background-color: red;
-    color: #ffffff;
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-    width: 200px;
-    margin: 10px;
-  }
-
-  .main-section #image-2 {
-    width: 33%;
-    display: block;
-    height: auto;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .main-section h2 {
-    text-align: center;
-    font-weight: bold;
-    padding: 10px;
-  }
-
-  .main-section .explore-header p {
-    font-family: "Noto Sans";
-    text-align: center;
-    margin-left: 175px;
-    margin-right: 175px;
-    font-size: 30px;
-    padding: 20px;
-  }
-  
-  .main-section #search-ideas {
-    display: block;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 10px;
-  }
-
+  .content-container #image-1,
+  .header-section h2,
+  .header-section button,
+  .main-section #image-2,
+  .main-section h2,
+  .main-section .explore-header p,
+  .main-section #search-ideas,
   .main-section #section-divider {
-    width: 66%;
-    height: 2px;
-    background-color: #ececec;
-    margin: 20px auto;
-    margin-top: 50px;
-    margin-bottom: 30px;
+    width: auto;
+    margin: auto;
+    padding: auto;
   }
-
-  /* Responsive Design portion */
-  @media (min-width: 1080px) {
-    .content-container #image-1 {
-      width: 50%;
-    }
-
-    .header-section {
-      display:flex;
-    }
-
-    .content-container {
-      display:flex;
-    }
-  }
+}
