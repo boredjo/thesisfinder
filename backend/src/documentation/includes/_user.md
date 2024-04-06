@@ -40,6 +40,7 @@ email | str | The email associated with the account
 
 <aside class="notice">
 This endpoint uses the auth middleware. Request have to send anonmously
+
 This endpoint parses for `application/json`
 </aside>
 
@@ -80,6 +81,7 @@ Code | Message | Explaination
 
 <aside class="notice">
 This endpoint uses the auth middleware. Request can not be send anonymously.
+
 This endpoint parses for `application/json`.
 </aside>
 

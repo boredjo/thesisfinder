@@ -62,6 +62,7 @@ def get_idea_details(cursor:cursor, idea_id):
         idea = Idea.find_idea(idea_id, cursor)
     except mysql.connector.Error as err:
         logger.error(err, 'routes/idea.py - get_idea_details() - find idea')
+        return Response(u'no idea', mimetype= 'text/plain', status=422)
     
     return idea.jsonify()
 
@@ -78,13 +79,13 @@ def post_idea(data, cursor:cursor, user:User):
     for tag in new_idea.tags:
         if tag not in tags:
             logger.message("POST_IDEA", f'tag {tag} does not exists')
-            return Response(u'Tag does not exists', mimetype= 'text/plain', status=422)
+            return Response(u'invalid tag', mimetype= 'text/plain', status=422)
     # store idea
     try:
         new_idea.store(cursor)
     except mysql.connector.errors.IntegrityError:
         logger.message("POST_IDEA", 'idea already exists')
-        return Response(u'The title already exists', mimetype= 'text/plain', status=422)
+        return Response(u'not unique', mimetype= 'text/plain', status=422)
     
     logger.message("POST_IDEA", f'idea {new_idea.id} posted')
     return jsonify(id=new_idea.id)
@@ -101,24 +102,24 @@ def update_idea(data, cursor:cursor, user:User, idea_id):
         idea = Idea.find_idea(idea_id, cursor)
     except Exception as err:
         logger.message("UPDATE_IDEA", "idea doesn't exists")
-        return Response(u"The idea doesn't exists", mimetype= 'text/plain', status=422)
+        return Response(u"no idea", mimetype= 'text/plain', status=422)
 
     if not idea.author == user.name or user.isAnon():
         logger.message("UPDATE_IDEA", "not the author")
-        return Response(u'You are not authorized to do this action', mimetype= 'text/plain', status=401)
+        return Response(u'no auth', mimetype= 'text/plain', status=401)
 
     if 'tags' in data.keys(): idea.tags = data['tags']
     if 'description' in data.keys(): idea.description = data['description']
     for tag in idea.tags:
         if tag not in tags:
             logger.message("POST_IDEA", f'tag {tag} does not exists')
-            return Response(u'Tag does not exists', mimetype= 'text/plain', status=422)
+            return Response(u'invalid tag', mimetype= 'text/plain', status=422)
 
     try: 
         idea.update(cursor)
     except mysql.connector.errors.IntegrityError:
         logger.message("UPDATE_IDEA", 'idea already exists')
-        return Response(u'The title already exists', mimetype= 'text/plain', status=422)
+        return Response(u'not unique', mimetype= 'text/plain', status=422)
     
     logger.message("UPDATE_IDEA", f'idea {idea.id} update')
     return Response(u'idea updated', mimetype= 'text/plain', status=200)
@@ -132,14 +133,15 @@ def delete_idea(cursor:cursor, user:User, idea_id):
         idea = Idea.find_idea(idea_id, cursor)
     except mysql.connector.Error as err:
         logger.message("DELETE_IDEA", "idea doesn't exists")
-        return Response(u"The idea doesn't exists", mimetype= 'text/plain', status=422)
+        return Response(u"no idea", mimetype= 'text/plain', status=422)
     
     if not idea.author == user.name or user.isAnon():
         logger.message("DELETE_IDEA", "not the author")
-        return Response(u'You are not authorized to do this action', mimetype= 'text/plain', status=401)
+        return Response(u'no auth', mimetype= 'text/plain', status=401)
 
 
     idea.delete(cursor)
 
     logger.message("DELETE_IDEA", f'idea {idea.id} deleted')
     return Response(u'idea deleted', mimetype= 'text/plain', status=200)
+

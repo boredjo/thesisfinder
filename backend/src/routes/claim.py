@@ -42,7 +42,7 @@ def get_username_claims(cursor:cursor, username):
         user = User.find_user(username, cursor)
     except Exception as err:
         logger.error(err, 'routes/claim.py - get_user_claims() - find user')
-        return Response(u'User not found', mimetype= 'text/plain', status=422)
+        return Response(u'no user', mimetype= 'text/plain', status=422)
     
     try:
         data = Claim.find_claims_by_user(user.name, cursor)
@@ -89,7 +89,7 @@ def post_claim(data, cursor:cursor, user:User):
     logger:Logger = request.environ['logger']
     if user.isAnon():
         logger.message("POST_Claim", "not authenticated")
-        return Response(u'You need to be authenticated', mimetype= 'text/plain', status=401)
+        return Response(u'no auth', mimetype= 'text/plain', status=401)
     
     new_claim = Claim(user.name, data['idea'])
 
@@ -98,9 +98,12 @@ def post_claim(data, cursor:cursor, user:User):
         new_claim.store(cursor)
     except mysql.connector.errors.IntegrityError as err:
         logger.error(err, 'routes/claim.py - get_user_claims() - find claims')
-        
         logger.message("POST_CLAIM", 'claim already exists')
-        return Response(u'The claim already exists', mimetype= 'text/plain', status=422)
+        return Response(u'not unique', mimetype= 'text/plain', status=422)
+    
+    except Exception as e:
+        logger.error(e, 'routes/claim.py - get_user_claims() - find claims')
+        return Response(u'no idea', mimetype= 'text/plain', status=422)
     
     logger.message("POST_IDEA", f'idea {new_claim.idea} was claimed by {new_claim.author}')
     return Response(u'idea claimed', mimetype= 'text/plain', status=200)
@@ -117,7 +120,7 @@ def delete_claim(cursor:cursor, user:User, idea:str):
         claim.delete(cursor)
     except mysql.connector.Error as err:
         logger.message("DELETE_CLAIM", "claim doesn't exists")
-        return Response(u"The claim doesn't exists", mimetype= 'text/plain', status=422)
+        return Response(u"no claim", mimetype= 'text/plain', status=422)
 
     logger.message("DELETE_IDEA", f'The claim onidea {claim.idea} by {claim.author} was removed')
     return Response(u'claim deleted', mimetype= 'text/plain', status=200)

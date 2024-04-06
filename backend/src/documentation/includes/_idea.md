@@ -118,7 +118,7 @@ author | str | The user name of the author of the idea. This can be `anonymous`
 date_posted | str | UTC Timestamp of when the idea was posted.
 tags | str[] | Tags accociated with the idea. There can be no more than 5 tags.
 description | str | Long text that descrbes the idea in detail.
-attachments | str[] | File names of attachments that can be obtained using `/attachments/idea/filename`
+attachments | str[] | File names of attachments that can be obtained using `/attachments/idea/`
 views | int | This shows the number of detail request sent for this idea
 
 ### Errors

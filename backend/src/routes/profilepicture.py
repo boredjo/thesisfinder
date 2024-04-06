@@ -49,7 +49,7 @@ def post_profile_picture(image, cursor, user:User):
     logger:Logger = request.environ['logger']
     if user.isAnon():
         logger.message("POST_PROFILEPIC", "Can't upload picture as anonymous user.")
-        return Response(u'You need to be authenticated for this action', mimetype= 'text/plain', status=401)
+        return Response(u'no auth', mimetype= 'text/plain', status=401)
     else:
         store_binary(PICTURE_PATH + user.name + ".png", image)
         resize_image(user.name)
@@ -63,13 +63,13 @@ def delete_profilepicture(cursor, user:User):
     logger:Logger = request.environ['logger']
     if user.isAnon():
         logger.message("DELETE_PROFILEPIC", 'auth fail')
-        return Response(u'You are not authorized to do this action', mimetype= 'text/plain', status=401)
+        return Response(u'no auth', mimetype= 'text/plain', status=401)
     
     else:
         try:
             delete_picture(user.name)
         except FileNotFoundError:
             logger.message("PROFILEPIC", "image not found")
-            return Response(u'Image already deleted', mimetype= 'text/plain', status=401)
+            return Response(u'no image', mimetype= 'text/plain', status=422)
         logger.message("PROFILEPIC", f"Updated file {PICTURE_PATH + user.name}.png")
         return Response(u'Image deleted', mimetype= 'text/plain', status=200)

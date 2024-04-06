@@ -44,13 +44,13 @@ request(options, function (error, response) {
 }
 ```
 
-This endpoint is used to retrive the authentication token. This request should be sent anoymouly, that is without authentification in the header.
+This endpoint is used to obtain authentication tokens. This request should be sent anoymouly, that is without authentification in the header. Then the token can be used for all further requests.
 
 ### Parameters
 Parameter | Datatype | Description
 --------- | ------- | -----------
-user | str | The user name of account
-password | str | The password of the account
+user | str | The user name of account.
+password | str | The password of the account.
 token | str | Use the token returned by this route to authenticate all other routes. This token is valid for 24h
 
 ### Errors
