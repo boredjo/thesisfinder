@@ -69,7 +69,7 @@
   color: rgb(198, 47, 13);
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (max-width: 768px) {
   .login-container h2 {
     font-size: 2em;
   }

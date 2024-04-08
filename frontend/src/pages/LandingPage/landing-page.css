@@ -81,7 +81,7 @@
   margin: 2em auto;
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (max-width: 768px) {
   .content-container #image-1 {
     width: 50%;
   }
@@ -114,5 +114,8 @@
   }
   .main-section #search-ideas {
     width: 500px;
+  }
+  .header-section h2 {
+    font-size: 1.5em;
   }
 }
