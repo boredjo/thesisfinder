@@ -76,10 +76,10 @@ const AvatarUpload = () => {
       <div className="bottom-container">
         <hr />
         <button className="conditions-button" onClick={openModal}>
-          View conditions for sharing content
+          View conditions for sharing content &#160;
         </button>
         <button className="skip-button" onClick={handleSkipStep}>
-          Skip this step
+           Skip this step
         </button>
       </div>
       {isModalOpen && <ConditionsModal closeModal={closeModal} />}

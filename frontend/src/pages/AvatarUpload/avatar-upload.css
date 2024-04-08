@@ -9,34 +9,27 @@
   text-align: center;
   margin-top: 30px;
   margin-bottom: 5px;
-  margin-left: 0%;
-  margin-right: 33%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%
 }
 
 .upload-container {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
   flex-direction: row;
-  margin-top: 20px;
-}
-
-.avatar-preview {
-  margin-right: 20px;
 }
 
 .avatar-preview img {
   width: 200px;
   height: auto;
   border-radius: 50%;
-  margin-left: 10%;
 }
 
 .button-container {
   display: flex;
   flex-direction: column;
-  margin-left: 0;
-  margin-top: 30px;
-  margin-bottom: 100px;
 }
 
 .upload-button,
@@ -46,24 +39,32 @@
   border: none;
   border-radius: 3px;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  transition: 
+    background-color 0.2s ease-in-out, 
+    color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out;
   text-align: center;
 }
 
 .upload-button {
-  background-color: red;
+  background-color: rgb(236, 54, 14);
   color: #ffffff;
+}
+
+.upload-button:hover {
+  background-color:rgb(198, 47, 13);
 }
 
 .webcam-button {
   background-color: white;
-  color: red;
-  border: 2px solid red;
+  color: rgb(236, 54, 14);
+  border: 2px solid rgb(236, 54, 14);
 }
 
-.webcam-button:hover {
+.website-button:hover {
   background-color: #e0e0e0;
-  border-color: #e0e0e0;
+  color: rgb(198, 47, 13);
+  border-color: rgb(198, 47, 13);
 }
 
 #file-input {
@@ -83,18 +84,27 @@
   border: none;
   cursor: pointer;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .conditions-button:hover {
-  color: red; /* Change text color on hover (you can adjust the color) */
-  text-decoration: underline; /* Underline text */
+  color: rgb(236, 54, 14); 
+  text-decoration: underline; 
+}
+
+.skip-button {
+  color: rgb(236, 54, 14);
+  transition: 0.2s;
+}
+
+.skip-button:hover {
+  color:rgb(198, 47, 13);
+  text-decoration: underline;
 }
 
 .preview-container {
   margin-left: auto;
-  max-width: 300px; /* Adjust the max-width as needed */
-  margin-top: 0px; /* Adjust the margin-top as needed */
-  margin-right: 10%;
+  max-width: 300px; 
 
 }
 
@@ -102,4 +112,24 @@
   width: 100%;
   height: auto;
   border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .upload-container,
+  .button-container,
+  .preview-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .avatar-preview,
+  .preview-container {
+    margin: 0 auto;
+  }
+
+  .upload-button,
+  .webcam-button {
+    width: 100%;
+    margin: 0 auto 0.75em auto;
+  }
 }

@@ -64,7 +64,7 @@ const Login = () => {
   }, [location]);
 
   return (
-    <div>
+    <div className="login-container">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <label>
@@ -72,6 +72,7 @@ const Login = () => {
           <input
             type="email"
             name="email"
+            placeholder="Email"
             value={formData.email}
             onChange={handleChange}
           />
@@ -82,6 +83,7 @@ const Login = () => {
           <input
             type="password"
             name="password"
+            placeholder="Password"
             value={formData.password}
             onChange={handleChange}
           />
