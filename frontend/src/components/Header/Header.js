@@ -30,6 +30,7 @@ const Header = () => {
           <button id='login-button' onClick={handleLoginClick}>Log in</button>
           <Link id='signup-link' to="/signup">Join for free</Link>
       </nav>
+      
       <LoginModal show={showLoginModal} handleClose={handleLoginModalClose} />
     </header>
   );

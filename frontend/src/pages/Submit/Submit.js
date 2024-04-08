@@ -171,16 +171,16 @@ const Submit = () => {
 
     // Validate description word count
     const descriptionWordCount = formData.description.trim().split(/\s+/).length;
-    if (descriptionWordCount < 200 || descriptionWordCount > 300) {
+    // if (descriptionWordCount < 200 || descriptionWordCount > 300) {
       alert('Description must be between 200 and 300 words.');
-      return;
-    }
+    //   return;
+    // }
 
     // Validate title and description character count
-    if (formData.title.length < 75 || formData.description.length < 75) {
+    // if (formData.title.length < 75 || formData.description.length < 75) {
       alert('Title and Description must be at least 75 characters long.');
-      return;
-    }
+    //   return;
+    // }
 
     // Validate attachment format
     if (formData.attachment) {
@@ -259,10 +259,10 @@ const Submit = () => {
               <option value="private">Private</option>
             </select>
           </div>
-          <div className="form-group">
+          {/* <div className="form-group">
             <label htmlFor="attachment">Attach Supporting Documents (optional):</label>
             <input type="file" id="attachment" name="attachment" onChange={handleAttachmentChange} accept=".pdf,.jpg,.jpeg,.png" />
-          </div>
+          </div> */}
           {/* Conditional rendering of loading indicator */}
           {loading && <LoadingIndicator />}
           <button type="submit">Submit</button>

@@ -14,6 +14,7 @@ import Account from './pages/Account/Account';
 import Submit from './pages/Submit/Submit';
 import ideas from './data/ideasData.js';
 import { getAuthToken } from './utils/authService';
+import { Button, Flex } from 'antd';
 
 const App = () => {
   const [authToken, setAuthToken] = useState(getAuthToken());

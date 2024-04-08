@@ -209,7 +209,7 @@ const PostPage = ({ authToken }) => {
                       <h2>Description</h2>
                       <p>{idea.description}</p>
                     </section>
-                    <section id="attachments">
+                    {/* <section id="attachments">
                       <h2>Attachments</h2>
                       <div className="attachment-item">
                         <img className="attachment-icon" src={require('../../assets/researchdocimage.png')} id="Attachment Icon" alt="Attachment Icon" />
@@ -219,7 +219,7 @@ const PostPage = ({ authToken }) => {
                         </div>
                         <a href="#" className="attachment-download">Download</a>
                       </div>
-                    </section>
+                    </section> */}
                     <section id="collaboration">
                       <h2>Collaboration Preferences</h2>
                       <ul className="collaboration-list">
@@ -229,7 +229,7 @@ const PostPage = ({ authToken }) => {
                     <div id="action-buttons">
                       {authToken && (
                         <>
-                          <button type="button" id="claim-button" onClick={handleClaim}>Upload Paper</button>
+                          <button type="button" id="claim-button" onClick={handleClaim}>I Am Researching This</button>
                           <button type="button" id="sponsor-button" onClick={handleSponsorModalOpen}>Sponsor</button>
                         </>
                       )}
@@ -283,7 +283,7 @@ const PostPage = ({ authToken }) => {
       {showModal && (
         <div className="modal display-block">
           <section className="modal-main">
-            <h2>Upload Paper</h2>
+            <h2></h2>
             <form onSubmit={handleSubmit}>
               <div className="input-group">
                 <label htmlFor="title">Title</label>
@@ -293,10 +293,10 @@ const PostPage = ({ authToken }) => {
                 <label htmlFor="description">Description</label>
                 <textarea id="description" name="description" value={formData.description} onChange={handleChange}></textarea>
               </div>
-              <div className="input-group">
+              {/* <div className="input-group">
                 <label htmlFor="documents">Attach Supporting Documents (PDF)</label>
                 <input type="file" id="documents" name="documents" accept=".pdf" multiple onChange={handleDocumentChange} />
-              </div>
+              </div> */}
               <div className="input-group">
                 <label htmlFor="visibility">Visibility Settings</label>
                 <select id="visibility" name="visibility" value={formData.visibility} onChange={handleChange}>
