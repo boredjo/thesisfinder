@@ -5,9 +5,9 @@ main {
 }
 
 #tags {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 30px; 
+  width: auto;
+  text-align: left;
+  margin: 10px 0; 
 }
 
 #tags ul {
@@ -18,8 +18,8 @@ main {
 
 #tags ul li {
   display: inline-block;
-  margin: 0 10px;
-  padding: 5px 15px;
+  margin: 0 10px 10px 0;
+  padding: 5px 10px;
   background-color: rgb(236, 54, 14); 
   border-radius: 3px; 
   font-size: 0.9em;
@@ -90,6 +90,7 @@ article {
 }
 
 article h1 {
+  font-size: 2em;
   margin: 0;
 }
 
@@ -159,6 +160,7 @@ article h1 {
 
 .attachment-download:hover {
   text-decoration: underline;
+  color:rgb(198, 47, 13);
 }
 
 #action-buttons {
@@ -183,7 +185,7 @@ article h1 {
 }
 
 aside {
-  width: 300px; /* Adjust width according to the design */
+  width: 28%; 
   padding: 20px;
   background-color: rgb(249, 249, 249); 
   border-left: 1px solid rgb(221, 221, 221);
@@ -220,4 +222,75 @@ aside {
 #claimed-by ul li span {
   color: rgb(51, 51, 51);
   font-size: 0.9em;
+}
+
+@media only screen and (max-width: 768px) {
+  #tags ul li {
+    font-size: 0.8em;
+    margin: 0 5px 5px 0;
+    padding: 3px 10px;
+  }
+
+  .article-nav {
+    margin: 10px 0;
+    padding: 4px;
+    overflow-x: auto;
+  }
+
+  .article-nav a {
+    font-size: 11px;
+    height: 36px;
+    padding: 5px;
+  }
+
+  article {
+    padding: 15px;
+  }
+
+  article h1 {
+    font-size: 1.25em;
+  }
+
+  .metadata .date,
+  .metadata .author {
+    font-size: 0.75em;
+    margin: 3px 0;
+  }
+
+  #description h2,
+  #attachments h2,
+  #collaboration h2 {
+    font-size: 0.9em;
+    margin-bottom: 8px;
+  }
+
+  .collaboration-list {
+    font-size: 0.75em;
+  }
+
+  .attachment-item {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .attachment-icon {
+    height: 24px;
+  }
+
+  .attachment-name, .attachment-size {
+    font-size: 0.8em;
+  }
+
+  #action-buttons {
+    margin-top: 8px;
+  }
+
+  #claim-button, #sponsor-button {
+    font-size: 0.9em;
+    padding: 8px 15px;
+    margin: 0 5px;
+  }
+  aside {
+    width: auto;
+  }
 }

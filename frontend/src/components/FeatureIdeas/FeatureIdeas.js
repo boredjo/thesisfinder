@@ -16,7 +16,7 @@ const FeaturesIdeas = ({ ideas }) => {
               </div>
             ))}
           </div>
-          <p className="date">{idea.date}</p>
+          <p className="date">Date Posted: {idea.date}</p>
           <div className="author-container">
             <img
               src={idea.authorImage}

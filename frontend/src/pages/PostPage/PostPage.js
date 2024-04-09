@@ -138,18 +138,27 @@ const PostPage = ({ ideas, authToken }) => {
     // Close modal
     setShowModal(false);
   };
-  
+
 
   return (
     <div>
       <main>
-        <div id="tags">
+        <nav className="article-nav">
           <ul>
-            {idea.tags.map((tag, index) => (
-              <li key={index}><a href="#">{tag}</a></li>
-            ))}
+            <li><a href="#">Overview</a></li>
+            <li><a href="#">Stats</a></li>
+            <li><a href="#">Comments</a></li>
+            <li><a href="#">More Info</a></li>
+            <li><a href="#">Suggested Ideas</a></li>
+            <li><a href="#">Research Papers</a></li>
+            {authToken && (
+              <>
+                <li><a href="#">Sponsors</a></li>
+                <li><a href="#" onClick={handleClaim}>Claim</a></li>
+              </>
+            )}
           </ul>
-        </div>
+        </nav>
         <div id="content">
           <article>
             <h1>{idea.title}</h1>
@@ -157,22 +166,13 @@ const PostPage = ({ ideas, authToken }) => {
               <span className="author">Author(s): {idea.author}</span>
               <span className="date">Date Posted: {idea.date}</span>
             </div>
-            <nav className="article-nav">
+            <div id="tags">
               <ul>
-                <li><a href="#">Overview</a></li>
-                <li><a href="#">Stats</a></li>
-                <li><a href="#">Comments</a></li>
-                <li><a href="#">More Info</a></li>
-                <li><a href="#">Suggested Ideas</a></li>
-                <li><a href="#">Research Papers</a></li>
-                {authToken && (
-                  <>
-                    <li><a href="#">Sponsors</a></li>
-                    <li><a href="#" onClick={handleClaim}>Claim</a></li>
-                  </>
-                )}
+                {idea.tags.map((tag, index) => (
+                  <li key={index}><a href="#">{tag}</a></li>
+                ))}
               </ul>
-            </nav>
+            </div>
             <section id="description">
               <h2>Description</h2>
               <p>{idea.description}</p>
@@ -221,7 +221,7 @@ const PostPage = ({ ideas, authToken }) => {
           </aside>
         </div>
       </main>
-  
+
       {/* Modal for uploading papers */}
       {showModal && (
         <div className="modal display-block">
@@ -255,7 +255,7 @@ const PostPage = ({ ideas, authToken }) => {
           </section>
         </div>
       )}
-  
+
       {/* Modal for sponsoring */}
       {showSponsorModal && (
         <div className="modal display-block">
@@ -296,5 +296,5 @@ const PostPage = ({ ideas, authToken }) => {
     </div>
   );
 };
-  
-  export default PostPage;
+
+export default PostPage;

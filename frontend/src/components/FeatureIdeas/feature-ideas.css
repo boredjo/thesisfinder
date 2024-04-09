@@ -7,12 +7,17 @@
     padding: 20px;
     margin-bottom: 20px;
     position: relative;
-    width: 80%;
+    width: 85%;
     margin-left: auto;
     margin-right: auto;
   }
 
-
+  .idea-title {
+    color:rgb(236, 54, 14);
+  }
+  .idea-title:hover {
+    color: rgb(198, 47, 13);
+  }
 
   .idea-container h3 {
     font-weight: bold;
@@ -27,11 +32,12 @@
   }
 
   .tag {
+    font-size: 0.8em;
     background-color: rgb(236, 54, 14);
     color: white;
-    padding: 3px 3px;
-    margin-right: 10px;
-    margin-bottom: 5px;
+    padding: 3px 5px;
+    margin: 2.5px 10px 2.5px 0;
+    border-radius: 3px; 
   }
 
   .date {
