@@ -218,3 +218,27 @@
 .submit-idea:hover {
   background-color: rgb(198, 47, 13);
 }
+
+@media only screen and (max-width: 600px) {
+  .submission-prompt,
+  .submission-type-header { 
+    width: 90%; 
+  }
+
+  .submission-option input {
+    width: 100%;
+  }
+
+  .attachment-item {
+    flex-direction: column; 
+    align-items: flex-start; 
+  }
+
+  .attachment-info {
+    margin-top: 5px;
+  }
+
+  .add-attachment {
+    width: 100%;
+  }
+}

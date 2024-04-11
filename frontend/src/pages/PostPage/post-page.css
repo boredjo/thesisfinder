@@ -224,7 +224,7 @@ aside {
   font-size: 0.9em;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 600px) {
   #tags ul li {
     font-size: 0.8em;
     margin: 0 5px 5px 0;

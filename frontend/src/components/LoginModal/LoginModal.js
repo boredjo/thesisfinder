@@ -57,29 +57,38 @@ const LoginModal = ({ show, handleClose }) => {
   return (
     <div className={showHideClassName}>
       <section className="modal-main">
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="email"
-            name="email"
-            placeholder="Username"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-          <button type="submit">Log in</button>
-        </form>
-        {error && <p className="error-message">{error}</p>}
-        <button onClick={handleClose}>Close</button>
-        <p>
-          Don't have an account? <Link to="/signup">Sign up here</Link>.
-        </p>
+        <div className="login-container">
+          <h2>Login</h2>
+          <form onSubmit={handleSubmit}>
+            <label>
+              Email:
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+            </label>
+            <br />
+            <label>
+              Password:
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </label>
+            <br />
+            <button type="submit">Login</button>
+          </form>
+          {error && <p className="error-message">{error}</p>}
+          <p>
+            Don't have an account? <Link to="/signup">Sign up here</Link>.
+          </p>
+        </div>
       </section>
     </div>
   );

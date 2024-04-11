@@ -82,7 +82,7 @@ const Account = () => {
       {/* Put authenticatedheader.js here */}
       {/* Top part with pfp, name, and description */}
       {loading ? (
-        <p>Loading...</p>
+        <p className="loading-message">Loading...</p>
       ) : (
         userData && ( // Conditionally render only if userData is not null
           <div className="profile-header">

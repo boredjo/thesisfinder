@@ -85,7 +85,7 @@
   margin: 1em auto;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 600px) {
   .content-container #image-1 {
     width: 50%;
   }

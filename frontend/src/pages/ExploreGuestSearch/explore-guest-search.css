@@ -1,77 +1,98 @@
-  .filter-container {
-    margin-top: 20px;
-    border: 1px solid #ececec;
-    padding: 20px;
-    margin-bottom: 20px;
-    position: relative;
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-  }
+.filter-container {
+  margin-top: 20px;
+  border: 1px solid #ececec;
+  padding: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
 
-  .header-info h2 {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    text-align: center;
-    font-weight: bold;
+.header-info h2 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.header-info p {
+  font-family: 'Noto Sans';
+  margin-left: 75px;
+  margin-right: 75px;
+  margin-bottom: 20px;
+}
+
+.search-container #search-bar {
+  display: block;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+}
+
+.result-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sort-container {
+  margin-top: 0;
+}
+
+.sort-container label {
+  margin-right: 10px;
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  justify-content: center;
+}
+
+.pagination span {
+  padding: 8px 12px;
+  margin: 0 4px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #f8f8f8;
+}
+
+.pagination span:hover {
+  background-color: #ddd;
+}
+
+.pagination span.active {
+  background-color: rgb(198, 47, 13);
+  color: white;
+}
+
+.pagination span:hover.active {
+  background-color: rgb(198, 47, 13);
+}
+
+@media only screen and (max-width: 600px) {
+  .result-box h2 {
+    font-size: 100%; 
   }
 
   .header-info p {
-    font-family: 'Noto Sans';
-    margin-left: 75px;
-    margin-right: 75px;
-    margin-bottom: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
   }
 
   .search-container #search-bar {
-    display: block;
     width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 10px;
   }
 
-  .result-box {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .sort-container {
-    margin-top: 0;
-  }
-  
-  .sort-container label {
-    margin-right: 10px;
-  }
-  
   .pagination {
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 20px 0;
-    justify-content: center; /* Center horizontally */
+    flex-wrap: wrap;
   }
-  
+
   .pagination span {
-    padding: 8px 12px;
-    margin: 0 4px;
-    cursor: pointer;
-    border: 1px solid #ccc;
-    background-color: #f8f8f8;
+    margin: 4px;
   }
-  
-  .pagination span:hover {
-    background-color: #ddd;
-  }
-  
-  .pagination span.active {
-    background-color: red;
-    color: white;
-  }
-  
-  .pagination span:hover.active {
-    background-color: red;
-  }
-  
-  
+}
