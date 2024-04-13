@@ -47,7 +47,7 @@ def get_username_sponsors(cursor:cursor, user:User, username):
         user = User.find_user(username, cursor)
     except mysql.connector.Error as err:
         logger.error(err, 'routes/sponsor.py - get_username_sponsors() - find user')
-        return Response(u'User not found', mimetype= 'text/plain', status=422)
+        return Response(u'no user', mimetype= 'text/plain', status=422)
     
     try:
         data = Sponsor.find_sponsor_by_user(user.name, cursor)
@@ -99,7 +99,7 @@ def post_sponsorship(data, cursor:cursor, user:User):
 
     if user.isAnon():
         logger.message("POST_SPONSOR", "not authenticated")
-        return Response(u'You need to be authenticated', mimetype= 'text/plain', status=401)
+        return Response(u'no auth', mimetype= 'text/plain', status=401)
     
     new_sponsor = Sponsor('', user.name, data['idea'], data['amount'], data['description'], deadline=data['deadline'])
 
@@ -110,7 +110,7 @@ def post_sponsorship(data, cursor:cursor, user:User):
         logger.error(err, 'routes/sponsor.py - post_sponsorship() - store sponsor')
         
         logger.message("POST_SPONSOR", 'sponsorship already exists')
-        return Response(u'The sponsorship already exists', mimetype= 'text/plain', status=422)
+        return Response(u'not unique', mimetype= 'text/plain', status=422)
     
     logger.message("POST_SPONSOR", f'idea {new_sponsor.idea} was sponsored by {new_sponsor.author}')
     return jsonify({"id": new_sponsor.id})
@@ -126,7 +126,7 @@ def delete_sponsor(cursor:cursor, user:User, id:str):
         sponsor.delete(cursor)
     except mysql.connector.Error as err:
         logger.message("DELETE_SPONSOR", "Sponsorship doesn't exists")
-        return Response(u"The sponsorship doesn't exists", mimetype= 'text/plain', status=422)
+        return Response(u"no sponsor", mimetype= 'text/plain', status=422)
 
     logger.message("DELETE_SPONSOR", f'The sponsorship {sponsor.id} was removed')
     return Response(u'sponsorship deleted', mimetype= 'text/plain', status=200)
@@ -139,7 +139,7 @@ def get_sponsorship(cursor:cursor, id):
     try:
         sponsor = Sponsor.get_sponsorship(id, cursor)
     except Exception:
-        logger.message("DELETE_SPONSOR", "Sponsorship doesn't exists")
-        return Response(u"The sponsorship doesn't exists", mimetype= 'text/plain', status=422)
+        logger.message("GET_SPONSOR", "Sponsorship doesn't exists")
+        return Response(u"no sponsor", mimetype= 'text/plain', status=422)
 
     return sponsor.jsonify()
