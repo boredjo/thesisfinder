@@ -60,7 +60,7 @@ This endpoint will return all the ideas claimed by the authenticated user.
 Parameter | Datatype | Description
 --------- | ------- | -----------
 username | str | The user name, for which the claims will be returned. If ommitted, then the user name provided by the auth token will be used.
-idea | str | The id hash of the idea that is claimed claimed
+idea | str | The id hash of the idea that is claimed
 author | str | The user name of the user that claimed the idea
 date_posted | str | Timestamp of when the claim was posted
 attachments | str[] | File names of attachments that can be obtained using `/attachments/claim/`
