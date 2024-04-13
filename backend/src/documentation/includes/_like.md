@@ -56,16 +56,17 @@ This endpoint uses the auth middleware. Request cannot be send anonymouly
 curl --location --request GET 'https://api.thesisfinder.com/like/user/'\
 --header 'Token: tokentokentoken' 
 ```
-> The above command returns JSON that contains a list of five results structured like this:
+> The above command returns JSON that contains a list all liked ideas structured like this:
 
 ```json
 {
-	"likes":[
+	"ideas":[
 		{
-			"idea" : "somehash",
+			"id" : "somehash",
+			"title": "Exploring Sustainable Urban Agriculture",
 			"author": "anonymous",
-			"date_posted": "2024-04-24",
-			"attachments":[]
+			"date_posted": "2024-02-24",
+			"tags":["Urban Agriculture", "Sustainability", "Food security"]
 		},
 		...
 	]
@@ -77,10 +78,11 @@ This endpoint will return all the ideas liked by the authenticated user.
 ### Parameters
 Parameter | Datatype | Description
 --------- | ------- | -----------
-idea | str | The id hash of the idea that is claimed
-author | str | The user name of the user that claimed the idea
-date_posted | str | Timestamp of when the claim was posted
-attachments | str[] | File names of attachments that can be obtained using `/attachments/claim/`
+id | str | The unique ID of the idea, which is a hash value of the time posted
+title | str | The title of the idea. The tiltle can be no longer than 200 characters
+author | str | The user name of the author of the idea. This can be `anonymous`
+date_posted | str | UTC Timestamp of when the idea was posted
+tags | str[] | Tags accociated with the idea. There can be no more than 5 tags.
 
 
 
