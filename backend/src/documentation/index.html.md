@@ -19,6 +19,7 @@ includes:
   - idea
   - claim
   - sponsor
+  - like
 
 search: true
 
