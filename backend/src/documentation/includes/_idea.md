@@ -85,7 +85,7 @@ Code | Message | Explaination
 422 | not unique | The user name or email are already taken.
 401 | no auth | The authorized user does not have the permisson for this action. -->
 
-### Idea Details
+## Idea Details
 
 > This method requires the idea id to look up the details of the question
 
@@ -125,6 +125,48 @@ views | int | This shows the number of detail request sent for this idea
 Code | Message | Explaination
 --------- | ------- | -----------
 422 | no idea | The given idea id does not exist.
+
+## Get Recomendations
+
+<aside class="notice">
+This endpoint is not implemented.
+</aside>
+
+> you can send this anonmously
+
+```shell
+curl --location --request GET 'https://api.thesisfinder.com/idea/recommend/ideaid' 
+```
+> The above command returns JSON that contains a list of five results structured like this:
+
+```json
+{
+	"ideas":[
+		{
+			"id" : "somehash",
+			"title": "Exploring Sustainable Urban Agriculture",
+			"author": "anonymous",
+			"date_posted": "2024-02-24",
+			"tags":["Urban Agriculture", "Sustainability", "Food security"]
+		},
+		...
+	]
+}
+```
+> To get more details send a request to `https://api.thesisfinder.com/idea/details`
+
+This endpoint gives a list 5 questions that are most closly related to the given idea.
+
+### Parameters
+Parameter | Datatype | Description
+--------- | ------- | -----------
+ideaid | str | Id of the idea, for which recommendations will be generated.
+id | str | The unique ID of the idea, which is a hash value of the time posted
+title | str | The title of the idea. The tiltle can be no longer than 200 characters
+author | str | The user name of the author of the idea. This can be `anonymous`
+date_posted | str | UTC Timestamp of when the idea was posted
+tags | str[] | Tags accociated with the idea. There can be no more than 5 tags.
+
 
 ## Post an Idea
 <aside class="notice">

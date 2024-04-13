@@ -145,3 +145,20 @@ def delete_idea(cursor:cursor, user:User, idea_id):
     logger.message("DELETE_IDEA", f'idea {idea.id} deleted')
     return Response(u'idea deleted', mimetype= 'text/plain', status=200)
 
+
+@idea_blueprint.route('/recommend/<path:ideaid>', methods=['GET'])
+@util_db()
+def get_recommended_ideas(cursor:cursor, ideaid):
+    data = Idea.get_random(int(5), cursor)
+    # print(data[0].short_jsonify())
+    # json_array = [idea.short_jsonify() for idea in data]
+    return jsonify(ideas=[
+        {
+            "id" : idea.id,
+            "title": idea.title,
+            "author": idea.author,
+            "date_posted": idea.date_posted,
+            "tags": idea.tags,
+        }
+        for idea in data
+    ])
