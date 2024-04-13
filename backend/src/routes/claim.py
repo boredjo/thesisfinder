@@ -41,7 +41,7 @@ def get_username_claims(cursor:cursor, username):
     try:
         user = User.find_user(username, cursor)
     except Exception as err:
-        logger.error(err, 'routes/claim.py - get_user_claims() - find user')
+        logger.error(err, 'routes/claim.py - get_username_claims() - find user')
         return Response(u'no user', mimetype= 'text/plain', status=422)
     
     try:
