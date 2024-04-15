@@ -16,6 +16,7 @@ from routes.login import login_blueprint
 from routes.idea import idea_blueprint
 from routes.claim import claim_blueprint
 from routes.sponsor import sponsor_blueprint
+from routes.like import like_blueprint
 
 pre_check() # check folder structure
 if os.environ['RESET_DB'] == 'True': rebase()
@@ -60,6 +61,7 @@ app.register_blueprint(login_blueprint, url_prefix='/login')
 app.register_blueprint(idea_blueprint, url_prefix='/idea')
 app.register_blueprint(claim_blueprint, url_prefix='/claim')
 app.register_blueprint(sponsor_blueprint, url_prefix='/sponsor')
+app.register_blueprint(like_blueprint, url_prefix='/like')
 
 
 # serve api documentation
