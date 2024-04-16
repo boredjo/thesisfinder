@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import FeaturesIdeas from '../../components/FeatureIdeas/FeatureIdeas';
 import LoadingIndicator from '../../components/LoadingIndicator/LoadingIndicator'; // Import LoadingIndicator component
 import { getFeaturedIdeas } from '../../utils/api';
+import { tagsData } from '../../data/tagsData';
 import '../../styles/main.css';
 import './explore-guest-search.css';
 
@@ -13,6 +14,7 @@ const ExploreGuestSearch = () => {
   const initialQuery = queryParams.get('query') || '';
 
   const [query, setQuery] = useState(initialQuery);
+  const [selectedTag, setSelectedTag] = useState('');
   const [ideas, setIdeas] = useState([]);
   const [filteredIdeas, setFilteredIdeas] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -35,13 +37,21 @@ const ExploreGuestSearch = () => {
   }, []);
 
   useEffect(() => {
-    // Filter ideas based on the search query
-    const filtered = ideas.filter(idea =>
-      idea.title.toLowerCase().includes(query.toLowerCase())
-    );
+    // Filter ideas based on the search query and selected tag
+    let filtered = ideas;
+    if (query) {
+      filtered = filtered.filter(idea =>
+        idea.title.toLowerCase().includes(query.toLowerCase())
+      );
+    }
+    if (selectedTag) {
+      filtered = filtered.filter(idea =>
+        idea.tags.includes(selectedTag)
+      );
+    }
     setFilteredIdeas(filtered);
     setCurrentPage(1); // Reset to first page when filtering changes
-  }, [query, ideas]);
+  }, [query, selectedTag, ideas]);
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -49,6 +59,11 @@ const ExploreGuestSearch = () => {
       navigate(`/explore-guest-search?query=${searchQuery}`);
       setQuery(searchQuery);
     }
+  };
+
+  const handleTagChange = (event) => {
+    const tag = event.target.value;
+    setSelectedTag(tag);
   };
 
   // Pagination logic
@@ -82,6 +97,15 @@ const ExploreGuestSearch = () => {
           onKeyPress={handleKeyPress}
           defaultValue={query}
         />
+      </div>
+      <div className='tag-filter'>
+        <label htmlFor="tag-select">Filter by Tag: </label>
+        <select id="tag-select" onChange={handleTagChange} value={selectedTag}>
+          <option value="">All</option>
+          {tagsData.map((tag, index) => (
+            <option key={index} value={tag}>{tag}</option>
+          ))}
+        </select>
       </div>
       {loading ? ( // Show LoadingIndicator while loading
         <LoadingIndicator />

@@ -3,112 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { submitIdea } from '../../utils/api'; // Import the submitIdea function
 import { getAuthToken } from '../../utils/authService';
 import LoadingIndicator from '../../components/LoadingIndicator/LoadingIndicator';
+import { tagsData } from '../../data/tagsData';
 
 import '../../styles/main.css';
 import '../../styles/mainheader.css';
 import './submit.css';
-
-const tagsList = [
-  'Classical Mechanics',
-  'Electromagnetism',
-  'Quantum Mechanics',
-  'Thermodynamics',
-  'Statistical Mechanics',
-  'Relativity',
-  'Atomic Physics',
-  'Molecular Physics',
-  'Condensed Matter Physics',
-  'High-energy Particle Physics',
-  'Quantum Computing',
-  'String Theory',
-  'Optics',
-  'Acoustics',
-  'Nuclear Physics',
-  'Astrophysics',
-  'Gravitational Waves',
-  'Plasma Physics',
-  'Particle Accelerators',
-  'Quantum Entanglement',
-  'Quantum Field Theory',
-  'Black Holes',
-  'Superconductivity',
-  'Fluid Dynamics',
-  'Quantum Information Science',
-  'Stellar Physics',
-  'Neutrino Physics',
-  'Magnetic Resonance Imaging (MRI)',
-  'Semiconductor Physics',
-  'Cosmological Models',
-  'Quantum Teleportation',
-  'Nuclear Fusion',
-  'Quantum Hall Effect',
-  'Quantum Dot',
-  'Quantum Gravity',
-  'Neutron Stars',
-  'Quantum Cryptography',
-  'Quantum Dot Solar Cells',
-  'Quantum Computing Algorithms',
-  'Neutrino Oscillations',
-  'Dark Energy',
-  'Blackbody Radiation',
-  'Superstring Theory',
-  'Quantum Electrodynamics (QED)',
-  'Quantum Spin Hall Effect',
-  'Bose-Einstein Condensate',
-  'Supergravity',
-  'Quantum Dot Lasers',
-  'Gravitational Lensing',
-  'Quantum Chromodynamics (QCD)',
-  'Quantum Phase Transitions',
-  'Neutrino Astronomy',
-  'Quantum Magnetism',
-  'Hawking Radiation',
-  'Quantum Optics',
-  'Neutron Diffraction',
-  'Quantum Annealing',
-  'Gravitational Radiation',
-  'Quantum Error Correction',
-  'Quantum Key Distribution',
-  'Neutrino Detection',
-  'Quantum Metrology',
-  'Gravitational Collapse',
-  'Quantum Sensing',
-  'Neutron Scattering',
-  'Quantum Biology',
-  'Gravitational Redshift',
-  'Quantum Memory',
-  'Neutrino Oscillation Experiments',
-  'Quantum Annealing',
-  'Gravitational Wave Detection',
-  'Quantum Simulation',
-  'Neutron Star Merger',
-  'Quantum Communication',
-  'Gravitational Wave Astronomy',
-  'Quantum Algorithms',
-  'Neutron Star Formation',
-  'Quantum Sensing Devices',
-  'Gravitational Wave Interferometry',
-  'Quantum Phase Transition',
-  'Gravitational Wave Sources',
-  'Quantum Computing Architecture',
-  'Neutrino Flux',
-  'Quantum Entanglement-based Communication',
-  'Gravitational Wave Signals',
-  'Quantum Cryptography Protocols',
-  'Neutrino Detection Methods',
-  'Quantum Computing Hardware',
-  'Gravitational Wave Detectors',
-  'Quantum Many-Body Systems',
-  'Gravitational Wave Astrophysics',
-  'Quantum Network',
-  'Neutrino Mass Hierarchy',
-  'Quantum Computing Software',
-  'Gravitational Wave Data Analysis',
-  'Quantum Error Correction Codes',
-  'Neutrino Interactions',
-  'Quantum Algorithm Development',
-  'Gravitational Wave Event Localization',
-];
 
 const Submit = () => {
   const navigate = useNavigate();
@@ -237,7 +136,7 @@ const Submit = () => {
           <div className="form-group">
             <label htmlFor="tags">Select up to 5 Tags:</label>
             <select id="tags" name="tags" multiple size={5} onChange={handleTagSelection} required>
-              {tagsList.map((tag) => (
+              {tagsData.map((tag) => (
                 <option key={tag} value={tag}>
                   {tag}
                 </option>
