@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { setAuthenticatedUser, setAuthToken } from '../../utils/authService'; // Import setAuthToken
-import { getToken } from '../../utils/api'; // Import getToken function
+import { setAuthenticatedUser, setAuthToken } from '../../utils/authService';
+import { getToken } from '../../utils/api';
 
 import './loginmodal.css';
 
@@ -24,25 +24,17 @@ const LoginModal = ({ show, handleClose }) => {
     e.preventDefault();
 
     try {
-      // Call the API to get the authentication token
       const response = await getToken(formData.email, formData.password);
 
-      // Check if the response has a token
       if (response && response.token) {
-        // Set the authenticated user in local storage
         setAuthenticatedUser({
           email: formData.email,
-          // Add any other user-related info you may need
         });
 
-        // Set the authentication token in local storage
         setAuthToken(response.token);
 
-        // Redirect to the home page after successful login
         navigate('/');
-
-        // Close the modal
-        handleClose();
+        handleClose(); // Close the modal after successful login
       } else {
         setError('Invalid email or password');
       }
@@ -52,10 +44,16 @@ const LoginModal = ({ show, handleClose }) => {
     }
   };
 
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      handleClose(); // Close the modal if clicking outside the modal content
+    }
+  };
+
   const showHideClassName = show ? 'modal display-block' : 'modal display-none';
 
   return (
-    <div className={showHideClassName}>
+    <div className={showHideClassName} onClick={handleOverlayClick}>
       <section className="modal-main">
         <div className="login-container">
           <h2>Login</h2>
