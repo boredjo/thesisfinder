@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { setAuthenticatedUser, setAuthToken } from '../../utils/authService';
 import { getToken } from '../../utils/api';
+import LoadingIndicator from '../LoadingIndicator/LoadingIndicator'; // Import LoadingIndicator component
 
 import './loginmodal.css';
 
@@ -14,6 +15,7 @@ const LoginModal = ({ show, handleClose }) => {
   });
 
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false); // State to track loading state
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,6 +24,8 @@ const LoginModal = ({ show, handleClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setLoading(true); // Set loading state to true when submitting
 
     try {
       const response = await getToken(formData.email, formData.password);
@@ -36,11 +40,13 @@ const LoginModal = ({ show, handleClose }) => {
         navigate('/');
         handleClose(); // Close the modal after successful login
       } else {
-        setError('Invalid email or password');
+        setError('Invalid email and/or password');
       }
     } catch (error) {
-      setError('Error during login. Please try again.');
+      setError('Wrong Email/Password.');
       console.error(error);
+    } finally {
+      setLoading(false); // Set loading state back to false when request completes
     }
   };
 
@@ -80,8 +86,9 @@ const LoginModal = ({ show, handleClose }) => {
               />
             </label>
             <br />
-            <button type="submit">Login</button>
+            <button type="submit" disabled={loading}>Login</button> {/* Disable button when loading */}
           </form>
+          {loading && <LoadingIndicator />} {/* Show LoadingIndicator when loading */}
           {error && <p className="error-message">{error}</p>}
           <p>
             Don't have an account? <Link to="/signup">Sign up here</Link>.

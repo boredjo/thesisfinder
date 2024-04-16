@@ -86,7 +86,7 @@ const AuthenticatedHeader = ({ authToken }) => {
       <div className="left-section">
         <Link id='header-title' to="/">ThesisFinder</Link>
         {/* <button className="left-section-button" onClick={() => navigate('/home')}>Home</button> */}
-        <button className="left-section-button" onClick={() => navigate('/explore-guest-search')}>Ideas</button>
+        {/* <button className="left-section-button" onClick={() => navigate('/explore-guest-search')}>Ideas</button> */}
       </div>
       <div className='middle-section'>
         <input
