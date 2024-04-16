@@ -57,11 +57,32 @@
 
 @media only screen and (max-width: 600px) {
   .header-container h2 {
+/* <<<<<<< HEAD */
+    font-weight: bold;
+    font-size: 30px;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  } 
+
+  .header-container p {
+    font-size: 18px;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 30px;
+  }
+
+  .header-container hr {
+    color: #ececec;
+    margin-bottom: 30px;
+/* /* ======= */
     font-size: 2rem; 
   }
 
   .header-container p {
     font-size: 1rem; 
+/* >>>>>>> 2946619a5d17a9b935ace40559f4ac8d7ed0b23f */
   }
 
   .signup-container label {

@@ -1,4 +1,4 @@
-const ideas = [
+export const ideas = [
   { 
     id: 1,
     title: 'Exploring Sustainable Urban Agriculture',
@@ -186,4 +186,9 @@ const ideas = [
   },
 ];
 
-  export default ideas;
+export const getIdeasData = () => {
+  const ideasData = JSON.parse(localStorage.getItem('ideasData')) || [];
+  return ideasData;
+};
+
+export default ideas;

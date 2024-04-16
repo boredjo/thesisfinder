@@ -1,125 +1,88 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-
+import { useLocation, useNavigate } from 'react-router-dom';
 import FeaturesIdeas from '../../components/FeatureIdeas/FeatureIdeas';
-
-import ideas from '../../data/ideasData.js';
-
+import { getFeaturedIdeas } from '../../utils/api';
 import '../../styles/main.css';
 import './explore-guest-search.css';
 
 const ExploreGuestSearch = () => {
-  const { query: initialQuery } = useParams();
-  const [query, setQuery] = useState(initialQuery || '');
-  const [sortBy, setSortBy] = useState('relevance'); // Default sort option
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentIdeas, setCurrentIdeas] = useState([]);
+  const location = useLocation();
   const navigate = useNavigate();
+  const queryParams = new URLSearchParams(location.search);
+  const initialQuery = queryParams.get('query') || '';
+
+  const [query, setQuery] = useState(initialQuery);
+  const [ideas, setIdeas] = useState([]);
+  const [filteredIdeas, setFilteredIdeas] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5); // Adjust the number of items per page
 
   useEffect(() => {
-    setCurrentPage(1); // Reset to the first page when query or sorting changes
-  }, [query, sortBy]);
+    const fetchFeaturedIdeas = async () => {
+      try {
+        const response = await getFeaturedIdeas(); // Fetch all featured ideas
+        setIdeas(response.ideas || []); // Update state with fetched ideas
+      } catch (error) {
+        console.error('Error fetching featured ideas:', error);
+      }
+    };
+
+    fetchFeaturedIdeas(); // Call the fetchFeaturedIdeas function
+  }, []);
 
   useEffect(() => {
-    let sortedIdeas = [...ideas];
+    // Filter ideas based on the search query
+    const filtered = ideas.filter(idea =>
+      idea.title.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredIdeas(filtered);
+    setCurrentPage(1); // Reset to first page when filtering changes
+  }, [query, ideas]);
 
-    if (sortBy === 'newest') {
-      sortedIdeas.sort((a, b) => new Date(b.date) - new Date(a.date));
-    } else if (sortBy === 'oldest') {
-      sortedIdeas.sort((a, b) => new Date(a.date) - new Date(b.date));
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      const searchQuery = event.target.value;
+      navigate(`/explore-guest-search?query=${searchQuery}`);
+      setQuery(searchQuery);
     }
+  };
 
-    setCurrentIdeas(sortedIdeas);
-  }, [sortBy]);
-
-  const filteredIdeas = currentIdeas.filter(idea =>
-    idea.title.toLowerCase().includes(query.toLowerCase())
-  );
-
-  useEffect(() => {
-    const numberOfPages = Math.ceil(filteredIdeas.length / itemsPerPage);
-
-    // Ensure that currentPage stays within valid bounds
-    if (currentPage > numberOfPages) {
-      setCurrentPage(numberOfPages);
-    }
-  }, [currentPage, filteredIdeas]);
-
-  const itemsPerPage = 5;
+  // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentIdeasToShow = filteredIdeas.slice(indexOfFirstItem, indexOfLastItem);
 
-  const pageNumbers = Array.from(
-    { length: Math.ceil(filteredIdeas.length / itemsPerPage) },
-    (_, index) => index + 1
-  );
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(filteredIdeas.length / itemsPerPage); i++) {
+    pageNumbers.push(i);
+  }
 
-  const handlePageChange = pageNumber => {
+  const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < pageNumbers.length) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handleKeyPress = event => {
-    if (event.key === 'Enter') {
-      const newQuery = event.target.value;
-      setQuery(newQuery);
-      setCurrentPage(1); // Set currentPage to 1 when navigating
-      navigate(`/explore-guest-search/${newQuery}`);
-    }
-  };
-
-  const handleSortChange = event => {
-    setSortBy(event.target.value);
-  };
-
   return (
-    <div>
-      <div className='header-info'>
+    <div className="explore-container">
+      <div className="explore-header">
         <h2>Explore Research Ideas</h2>
+        <p>
+          Explore a curated collection of research concepts. Access diverse ideas 
+          and stay informed about the latest developments in your field.
+        </p>
       </div>
-      <div className="search-container">
-        <input
+      <div className='search-container'>
+        <input 
+          type="text" 
+          placeholder="Search Ideas" 
           id="search-bar"
-          type="text"
-          placeholder="Search Ideas"
-          value={query}
           onKeyPress={handleKeyPress}
-          onChange={(e) => setQuery(e.target.value)}
+          defaultValue={query}
         />
       </div>
-      <div className='filter-container'>
-        <div className="result-box">
-          <h2>Showing results for "{query}"</h2>
-          <div className="sort-container">
-            <label htmlFor="sort-dropdown">Sort By:</label>
-            <select
-              id="sort-dropdown"
-              value={sortBy}
-              onChange={handleSortChange}
-            >
-              {/* Current sorting options */}
-              <option value="relevance">Relevance</option>
-              <option value="newest">Newest</option>
-              <option value="oldest">Oldest</option>
-            </select>
-          </div>
-        </div>
-      </div>
+      <hr className="section-divider" />
+      <h2>Showing results for "{query}"</h2>
       <FeaturesIdeas ideas={currentIdeasToShow} />
       <div className="pagination">
-        <span onClick={handlePreviousPage}>&lt;</span>
         {pageNumbers.map((number) => (
           <span
             key={number}
@@ -129,7 +92,6 @@ const ExploreGuestSearch = () => {
             {number}
           </span>
         ))}
-        <span onClick={handleNextPage}>&gt;</span>
       </div>
     </div>
   );

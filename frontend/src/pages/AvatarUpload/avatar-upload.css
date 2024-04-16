@@ -84,6 +84,14 @@
   border: none;
   cursor: pointer;
   margin-bottom: 20px;
+/* <<<<<<< HEAD */
+  color: red; /* Set text color */
+  text-decoration: underline; /* Add underline */
+  cursor: pointer; /* Change cursor to pointer */
+}
+
+.conditions-button:hover {
+  color: darkred; /* Darken text color on hover */
   text-align: center;
 }
 
@@ -104,6 +112,11 @@
 
 .preview-container {
   margin-left: auto;
+/* <<<<<<< HEAD */
+  /* max-width: 300px; /* Adjust the max-width as needed */
+  /* margin-top: 0px; */ /* Adjust the margin-top as needed */
+  /* margin-right: 10%;  */
+
   max-width: 300px; 
 
 }
@@ -114,7 +127,42 @@
   border-radius: 8px;
 }
 
-@media only screen and (max-width: 600px) {
+/* <<<<<<< HEAD */
+.skip-button,
+.complete-signup-button {
+  width: 150px; /* Adjusted width */
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+  text-align: center;
+  margin-bottom: 15px; /* Increase bottom margin */
+}
+
+.skip-button {
+  background-color: white;
+  color: red;
+  border-color: red;
+}
+
+.complete-signup-button {
+  background-color: red;
+  color: #ffffff;
+}
+
+.action-buttons {
+  margin-left: auto; /* Move buttons to the right */
+  display: flex; /* Ensure buttons are in a row */
+  justify-content: flex-end; /* Push buttons to the right */
+  margin-top: 10px; /* Add top margin to separate from the content above */
+}
+
+.skip-button {
+  margin-right: 10px; /* Add margin between buttons */
+}
+
+@media only screen and (max-width: 768px) {
   .upload-container,
   .button-container,
   .preview-container {

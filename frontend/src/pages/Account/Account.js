@@ -3,9 +3,9 @@ import '../../styles/main.css';
 import '../../styles/mainheader.css';
 import './account.css';
 
-import { getUser, updateUser } from '../../utils/api'; // Import getUser and updateUser functions
+import { getUser, updateUser, getProfilePictureByUsername } from '../../utils/api'; // Import getUser, updateUser, and getProfilePictureByUsername functions
 
-const Account = () => {
+const Account = ({ authToken }) => { // Receive authToken from props
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false); // State to control modal visibility
@@ -14,13 +14,13 @@ const Account = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [county, setCounty] = useState('');
+  const [avatarImage, setAvatarImage] = useState(null); // State for profile picture
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // Call the getUser function to fetch user data
-        const token = localStorage.getItem('authToken');
-        const response = await getUser(token);
+        // Call the getUser function to fetch user data using authToken
+        const response = await getUser(authToken); // Use authToken for API call
 
         if (response) {
           setUserData(response);
@@ -31,6 +31,9 @@ const Account = () => {
           setUsername(response.user);
           setPassword(response.password);
           setCounty(response.country);
+
+          // Fetch and set profile picture
+          fetchProfilePicture(response.user);
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -38,7 +41,23 @@ const Account = () => {
     };
 
     fetchUserData();
-  }, []);
+  }, [authToken]); // Include authToken in dependency array
+
+  // Function to fetch profile picture
+  const fetchProfilePicture = async (username) => {
+    try {
+      // Make an API call to fetch the profile picture URL using the username
+      const profilePictureUrl = await getProfilePictureByUsername(username);
+
+      // console.log('Profile Picture URL:', profilePictureUrl); // Log profile picture URL
+
+      // Update the avatar image state with the profile picture URL
+      setAvatarImage("https://data.thesisfinder.com/profilepicture/" + username);
+    } catch (error) {
+      console.error('Error fetching profile picture:', error); // Log any errors
+    }
+  };
+
 
   // Function to handle opening the modal
   const handleEditProfile = () => {
@@ -54,7 +73,7 @@ const Account = () => {
   const handleSaveProfile = async (e) => {
     e.preventDefault();
     try {
-      // Call updateUser function with updated profile details
+      // Call updateUser function with updated profile details and authToken
       const updatedUserData = {
         user: username,
         first_name: firstName,
@@ -63,14 +82,15 @@ const Account = () => {
         email: userData.email,
         password: password
       };
-      const token = localStorage.getItem('authToken');
-      await updateUser(updatedUserData, token);
+      await updateUser(updatedUserData, authToken); // Use authToken for API call
       // Close the modal after saving changes
       setShowModal(false);
       // Refetch user data to update UI
-      const response = await getUser(token);
+      const response = await getUser(authToken); // Use authToken for API call
       if (response) {
         setUserData(response);
+        // Update profile picture if it has changed
+        fetchProfilePicture(response.user);
       }
     } catch (error) {
       console.error('Error updating user data:', error);
@@ -84,10 +104,9 @@ const Account = () => {
       {loading ? (
         <p className="loading-message">Loading...</p>
       ) : (
-        userData && ( // Conditionally render only if userData is not null
+        userData && (
           <div className="profile-header">
-            {/* src path is a placeholder, replace with actual image data */}
-            <img className="profile-image" src="../assets/avatar1.png" alt="Profile image" />
+            <img className="profile-image" src={avatarImage} alt="Profile image" />
             <div className="profile-info">
               <h1>{`${userData.first_name} ${userData.last_name}`}</h1>
               <p>{userData.email}</p>
@@ -99,7 +118,7 @@ const Account = () => {
           </div>
         )
       )}
-
+  
       {/* Toolbar */}
       <nav className="profile-nav">
         <ul>
@@ -107,16 +126,16 @@ const Account = () => {
           <li><a href="#research-papers">Research Papers</a></li>
         </ul>
       </nav>
-
+  
       {/* About me div */}
       <section className="about-me">
         <h2>About Me</h2>
-
+  
         <div className="input-group">
           <label htmlFor="introduction">Introduction</label>
           <textarea id="introduction" placeholder="Introduce yourself and your research"></textarea>
         </div>
-
+  
         <div className="input-group">
           <label htmlFor="disciplines">Disciplines</label>
           <select id="disciplines">
@@ -124,12 +143,12 @@ const Account = () => {
             {/* Options would go here */}
           </select>
         </div>
-
+  
         <div className="input-group">
           <label htmlFor="skills">Skills and expertise</label>
           <input type="text" id="skills" placeholder="Enter or select skills and expertise" />
         </div>
-
+  
         <div className="input-group">
           <label htmlFor="languages">Languages</label>
           <select id="languages">
@@ -137,7 +156,7 @@ const Account = () => {
             {/* Options would go here */}
           </select>
         </div>
-
+  
         {/* Render email input only if userData is not null */}
         {userData && (
           <div className="input-group">
@@ -145,13 +164,13 @@ const Account = () => {
             <input type="email" id="email" value={userData.email} readOnly />
           </div>
         )}
-
+  
         <div className="actions">
           <button className="cancel-btn">Cancel</button>
           <button className="save-btn">Save</button>
         </div>
       </section>
-
+  
       {/* Modal for editing profile details */}
       {showModal && (
         <div className="modal display-block">
@@ -187,7 +206,7 @@ const Account = () => {
         </div>
       )}
     </div>
-  );
+  );  
 };
 
 export default Account;

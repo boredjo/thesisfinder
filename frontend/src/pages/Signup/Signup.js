@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import { registerUser } from '../../utils/api';
+import { getToken } from '../../utils/api';
+import { setAuthenticatedUser, setAuthToken } from '../../utils/authService';
+import LoadingIndicator from '../../components/LoadingIndicator/LoadingIndicator'; // Import LoadingIndicator component
 
 import './signup.css';
 
@@ -9,51 +11,99 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    region: '',
+    user: '',
+    first_name: '',
+    last_name: '',
+    country: '',
     email: '',
     password: '',
-    work: '',
   });
+
+  const [loading, setLoading] = useState(false); // State for loading indicator
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+
+    // Additional validation for the 'country' field
+    if (name === 'country' && value.length > 2) {
+      // If the input length exceeds 2 characters, truncate it to the first 2 characters
+      setFormData((prevData) => ({ ...prevData, [name]: value.substring(0, 2) }));
+    } else {
+      // Otherwise, update the form data as usual
+      setFormData((prevData) => ({ ...prevData, [name]: value }));
+    }
   };
 
-  const handleContinue = (e) => {
+  const handleContinue = async (e) => {
     e.preventDefault();
-  
+
+    // Set loading to true to show loading indicator
+    setLoading(true);
+
     // Validation
     const isFormValid = Object.values(formData).every((value) => value.trim() !== '');
     if (!isFormValid) {
       alert('Please fill in all fields.');
+      setLoading(false); // Reset loading state
       return;
     }
-  
-    // Create a user object
-    const newUser = {
-      id: Date.now(), // Unique identifier (timestamp in this example)
-      ...formData,
-    };
-  
-    // Retrieve existing users or initialize an empty array
-    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
-  
-    // Append the new user to the array
-    const updatedUsers = [...existingUsers, newUser];
-  
-    // Save the updated array back to local storage
-    localStorage.setItem('users', JSON.stringify(updatedUsers));
-  
-    // Save form data in local storage
-    localStorage.setItem('signupFormData', JSON.stringify(formData));
 
-    // Navigate to the avatar upload page
-    navigate('/signup/avatar-upload');
+    // Email format validation
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    if (!emailRegex.test(formData.email)) {
+      alert('Please enter a valid email address.');
+      setLoading(false); // Reset loading state
+      return;
+    }
+
+    // Password security requirements
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    if (!passwordRegex.test(formData.password)) {
+      alert('Password must be at least 8 characters long and contain at least one letter, one number, and one special character.');
+      setLoading(false); // Reset loading state
+      return;
+    }
+
+    try {
+      // Register the user using the formData
+      await registerUser(formData);
+
+      // Log the user in after successful registration
+      const response = await getToken(formData.user, formData.password); // Use username instead of email
+
+      // Check if the response has a token
+      if (response && response.token) {
+        // Set the authenticated user
+        setAuthenticatedUser({
+          username: formData.user,
+          // Add any other user-related info you may need
+        });
+
+        // Set the authentication token
+        setAuthToken(response.token);
+
+        // Redirect to the home page after successful login
+        navigate('/signup/avatar-upload');
+      } else {
+        // Handle error if token is not received
+        console.error('Error: Token not received after registration.');
+      }
+    } catch (error) {
+      // Handle registration error
+      console.error('Error registering user:', error);
+
+      // Check if the error message indicates that the username or email is already taken
+      if (error.message.includes('Username or Email is already taken')) {
+        alert('Username or Email is already taken. Please choose a different one.');
+      } else {
+        // Display a generic error message for other types of errors
+        alert('An error occurred while registering. Please try again.');
+      }
+    } finally {
+      // Reset loading state after registration attempt is finished
+      setLoading(false);
+    }
   };
-
 
   return (
     <div className="main-container">
@@ -68,12 +118,23 @@ const Signup = () => {
       <div className='signup-container'>
         <form>
           <label>
+            Username:
+            <input
+              type="text"
+              name="user"
+              placeholder='Username'
+              value={formData.user}
+              onChange={handleChange}
+            />
+          </label>
+          <br />
+          <label>
             First Name:
             <input
               type="text"
-              name="firstName"
+              name="first_name"
               placeholder='First Name'
-              value={formData.firstName}
+              value={formData.first_name}
               onChange={handleChange}
             />
           </label>
@@ -82,31 +143,20 @@ const Signup = () => {
             Last Name:
             <input
               type="text"
-              name="lastName"
+              name="last_name"
               placeholder='Last Name'
-              value={formData.lastName}
+              value={formData.last_name}
               onChange={handleChange}
             />
           </label>
           <br />
           <label>
-            School/Work Location:
+            Country:
             <input
               type="text"
-              name="work"
-              placeholder='School/Work Location'
-              value={formData.work}
-              onChange={handleChange}
-            />
-          </label>
-          <br />
-          <label>
-            County/Region:
-            <input
-              type="text"
-              name="region"
-              placeholder='County/Region'
-              value={formData.region}
+              name="country"
+              placeholder='Country'
+              value={formData.country}
               onChange={handleChange}
             />
           </label>
@@ -127,14 +177,18 @@ const Signup = () => {
             <input
               type="password"
               name="password"
-              placeholder='Password'
+              placeholder='Password (at least 8 characters long, one letter, number, and special character)'
               value={formData.password}
               onChange={handleChange}
             />
           </label>
           <br />
           <div className='continue-container'>
-            <button onClick={handleContinue}>Continue</button>
+            {loading ? (
+              <LoadingIndicator /> // Render loading indicator if loading is true
+            ) : (
+              <button onClick={handleContinue}>Continue</button> // Otherwise, render the button
+            )}
           </div>
         </form>
       </div>

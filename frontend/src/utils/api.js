@@ -11,13 +11,6 @@ const makeRequest = async (url, method, headers, data) => {
       },
     };
 
-    // Disabling SSL certificate validation (not recommended for production)
-    if (process.env.NODE_ENV === 'development') {
-      requestConfig.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000';
-      requestConfig.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE';
-      requestConfig.headers['Access-Control-Allow-Headers'] = 'Content-Type, Token';
-    }
-
     // Add a body for non-GET requests
     if (method !== 'GET') {
       requestConfig.body = JSON.stringify(data);
@@ -112,10 +105,178 @@ const updateUser = (userData, token) => {
   );
 };
 
+// Get Featured Ideas API request
+const getFeaturedIdeas = () => {
+  return makeRequest(
+    '/idea/featured',
+    'GET',
+    { 'Content-Type': 'application/json'}
+  );
+};
+
+// Submit Idea API request
+const submitIdea = (ideaData, token) => {
+  return makeRequest(
+    '/idea/',
+    'POST',
+    { 'Content-Type': 'application/json', 'Token': token },
+    ideaData
+  );
+};
+
+// Get Idea Details API request
+const getIdeaDetails = (ideaId, token) => {
+  return makeRequest(
+    `/idea/details/${ideaId}`,
+    'GET',
+    { 'Content-Type': 'application/json', 'Token': token }
+  );
+};
+
+// Update Profile Picture API request
+const updateProfilePicture = (formData, token) => {
+  const headers = {
+    'Token': token,
+    'Content-Type': 'image/png'
+  };
+
+  return makeRequest(
+    '/profilepicture',
+    'POST',
+    headers,
+    formData // Pass FormData object
+  );
+};
+
+// Get Profile Picture by Username API request
+const getProfilePictureByUsername = (username) => {
+  return makeRequest(
+    `/profilepicture/${username}`,
+    'GET',
+  );
+};
+
+// Claim Idea API request
+const claimIdea = (ideaId, token) => {
+  return makeRequest(
+    '/claim/',
+    'POST',
+    { 'Token': token },
+    { 'idea': ideaId }
+  );
+};
+
+// Get Claim from User API request
+const getClaimFromUser = (token) => {
+  return makeRequest(
+    '/claim/user/',
+    'GET',
+    { 'Token': token }
+  );
+};
+
+// Get Claim from Any User API request
+const getClaimFromAnyUser = (username) => {
+  return makeRequest(
+    `/claim/user/${username}`,
+    'GET',
+    { 'Content-Type': 'application/json' }
+  );
+};
+
+// Get Claim from Question API request
+const getClaimFromQuestion = (ideaId) => {
+  return makeRequest(
+    `/claim/idea/${ideaId}`,
+    'GET',
+    { 'Content-Type': 'application/json' }
+  );
+};
+
+// Delete a Claim API request
+const deleteClaim = (claimId, token) => {
+  return makeRequest(
+    `/claim/${claimId}`,
+    'DELETE',
+    { 'Token': token }
+  );
+};
+
+// Sponsor an Idea API request
+const sponsorIdea = (sponsorData, token) => {
+  return makeRequest(
+    '/sponsor/',
+    'POST',
+    { 'Content-Type': 'application/json', 'Token': token },
+    sponsorData
+  );
+};
+
+// Get Sponsorship Details API request
+const getSponsorshipDetails = (ideaId, token) => {
+  return makeRequest(
+    `/sponsor/${ideaId}`,
+    'GET',
+    { 'Content-Type': 'application/json', 'Token': token }
+  );
+};
+
+// Get Sponsorships from User API request
+const getSponsorshipsFromUser = (token) => {
+  return makeRequest(
+    '/sponsor/user/',
+    'GET',
+    { 'Token': token }
+  );
+};
+
+// Get Sponsorships from Any User API request
+const getSponsorshipsFromAnyUser = (username) => {
+  return makeRequest(
+    `/sponsor/user/${username}`,
+    'GET',
+    { 'Content-Type': 'application/json' }
+  );
+};
+
+// Get Sponsorships for Ideas API request
+const getSponsorshipsForIdeas = (ideaId) => {
+  return makeRequest(
+    `/sponsor/idea/${ideaId}`,
+    'GET',
+    { 'Content-Type': 'application/json' }
+  );
+};
+
+// Delete Sponsoring API request
+const deleteSponsoring = (sponsorshipId, token) => {
+  return makeRequest(
+    `/sponsor/${sponsorshipId}`,
+    'DELETE',
+    { 'Token': token }
+  );
+};
+
 export {
   getToken,
   registerUser,
   getUser,
   createUser,
-  updateUser
+  updateUser,
+  getFeaturedIdeas,
+  submitIdea,
+  getIdeaDetails,
+  updateProfilePicture,
+  getProfilePictureByUsername,
+  claimIdea,
+  getClaimFromUser,
+  getClaimFromAnyUser,
+  getClaimFromQuestion,
+  deleteClaim,
+  sponsorIdea,
+  getSponsorshipDetails,
+  getSponsorshipsFromUser,
+  getSponsorshipsFromAnyUser,
+  getSponsorshipsForIdeas,
+  deleteSponsoring
 };
