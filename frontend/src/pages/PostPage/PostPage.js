@@ -225,6 +225,7 @@ const PostPage = ({ authToken }) => {
     });
   };
 
+// <<<<<<< HEAD
   return (
     <div>
       <main>
@@ -299,6 +300,83 @@ const PostPage = ({ authToken }) => {
                     <h2>Comments</h2>
                     {/* Render comments */}
                   </section>
+
+//   return (
+//     <div>
+//       <main>
+//         <nav className="article-nav">
+//           <ul>
+//             <li><a href="#">Overview</a></li>
+//             <li><a href="#">Stats</a></li>
+//             <li><a href="#">Comments</a></li>
+//             <li><a href="#">More Info</a></li>
+//             <li><a href="#">Suggested Ideas</a></li>
+//             <li><a href="#">Research Papers</a></li>
+//             {authToken && (
+//               <>
+//                 <li><a href="#">Sponsors</a></li>
+//                 <li><a href="#" onClick={handleClaim}>Claim</a></li>
+//               </>
+//             )}
+//           </ul>
+//         </nav>
+//         <div id="content">
+//           <article>
+//             <h1>{idea.title}</h1>
+//             <div className="metadata">
+//               <span className="author">Author(s): {idea.author}</span>
+//               <span className="date">Date Posted: {idea.date}</span>
+//             </div>
+//             <div id="tags">
+//               <ul>
+//                 {idea.tags.map((tag, index) => (
+//                   <li key={index}><a href="#">{tag}</a></li>
+//                 ))}
+//               </ul>
+//             </div>
+//             <section id="description">
+//               <h2>Description</h2>
+//               <p>{idea.description}</p>
+//             </section>
+//             <section id="attachments">
+//               <h2>Attachments</h2>
+//               <div className="attachment-item">
+//                 <img className="attachment-icon" src={require('../../assets/researchdocimage.png')} id="Attachment Icon" alt="Attachment Icon" />
+//                 <div className="attachment-info">
+//                   <span className="attachment-name">attachment-name.pdf</span>
+//                   <span className="attachment-size">attachment-size</span>
+//                 </div>
+//                 <a href="#" className="attachment-download">Download</a>
+//               </div>
+//             </section>
+//             <section id="collaboration">
+//               <h2>Collaboration Preferences</h2>
+//               <ul className="collaboration-list">
+//                 <li>Placeholder Collaborations</li>
+//               </ul>
+//             </section>
+//             <div id="action-buttons">
+//               {authToken && (
+//                 <>
+//                   <button type="button" id="claim-button" onClick={handleClaim}>Claim</button>
+//                   <button type="button" id="sponsor-button" onClick={handleSponsorModalOpen}>Sponsor</button>
+//                 </>
+//               )}
+//             </div>
+//           </article>
+//           <aside>
+//             <div id="claimed-by">
+//               <h3>Claimed by:</h3>
+//               <ul>
+//                 {/* Display the claimed by information */}
+//                 {claimedBy ? (
+//                   <li>
+//                     <img src={require('../../assets/avatar1.png')} id="Claimant Name" alt="Claimant Name" />
+//                     <span>{claimedBy.username}</span>
+//                   </li>
+//                 ) : (
+//                   <li>Not claimed</li>
+// >>>>>>> 252be4168fb7e4f2bec1921faa7a4f8786d859c8
                 )}
                 {selectedTab === 'research-papers' && (
                   // Render research papers section

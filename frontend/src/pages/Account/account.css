@@ -1,3 +1,8 @@
+.loading-message {
+  font-size: 16px;
+  margin-top: 10px;
+}
+
 .profile-header {
   background-color: #ffffff;
   padding: 35px 25px;
@@ -76,7 +81,7 @@
 
 .profile-nav li a:hover,
 .profile-nav li a:focus {
-  border-bottom: 5px solid rgb(236, 54, 14);
+  border-bottom: 8px solid rgb(236, 54, 14);
   padding-bottom: 0;
 }
 
@@ -148,4 +153,44 @@
 .save-btn:hover,
 .save-btn:focus {
   background-color: rgb(198, 47, 13);
+}
+
+@media only screen and (max-width: 600px) {
+  .profile-header {
+    padding: 25px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profile-image {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+
+  .profile-info {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .profile-nav {
+    margin-top: 20px;
+  }
+
+  .profile-nav li a {
+    margin: 0;
+  }
+
+  .about-me {
+    margin: 20px 0;
+  }
+
+  .actions {
+    text-align: center;
+  }
+
+  .cancel-btn,
+  .save-btn {
+    margin-left: 0;
+    margin-right: 10px;
+  }
 }

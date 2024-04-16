@@ -102,7 +102,7 @@ const Account = ({ authToken }) => { // Receive authToken from props
       {/* Put authenticatedheader.js here */}
       {/* Top part with pfp, name, and description */}
       {loading ? (
-        <p>Loading...</p>
+        <p className="loading-message">Loading...</p>
       ) : (
         userData && (
           <div className="profile-header">

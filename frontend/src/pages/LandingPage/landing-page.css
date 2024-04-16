@@ -23,7 +23,7 @@
 
 .header-section h2 {
   font-family: 'Noto Sans';
-  font-size: 2em;
+  font-size: 1.75em;
   font-weight: bold;
   padding: 1em;
   text-align: center;
@@ -58,7 +58,11 @@
 
 .main-section h2 {
   font-size: 1.5em;
-  margin: 0 0 1em 0;
+  margin: 1em 0;
+}
+
+.main-section .explore-header h2 {
+  margin: 0.625em;
 }
 
 .main-section .explore-header p {
@@ -66,22 +70,22 @@
   font-size: 1.2em;
   text-align: center;
   margin: 0;
-  padding: 1em;
+  padding: 0.75em;
 }
 
 .main-section #search-ideas {
-  width: 80%;
+  width: 90%;
   max-width: 500px;
   margin: 1em auto;
-  padding: 1em;
+  padding: 0.75em;
 }
 
 .main-section #section-divider {
   width: 80%;
-  margin: 2em auto;
+  margin: 1em auto;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 600px) {
   .content-container #image-1 {
 /* <<<<<<< HEAD */
     width: 50%;

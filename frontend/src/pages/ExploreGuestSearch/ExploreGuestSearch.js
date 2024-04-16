@@ -69,6 +69,8 @@ const ExploreGuestSearch = () => {
           Explore a curated collection of research concepts. Access diverse ideas 
           and stay informed about the latest developments in your field.
         </p>
+      </div>
+      <div className='search-container'>
         <input 
           type="text" 
           placeholder="Search Ideas" 
