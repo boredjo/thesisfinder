@@ -103,7 +103,7 @@ const AuthenticatedHeader = ({ authToken }) => {
           <img className="dark-mode-button" src={darkModeImage} alt="Dark Mode" />
         </button>
         <button onClick={() => {}}>
-          <img className="notification-button" src={notificationImage} alt="Notification" />
+          {/* <img className="notification-button" src={notificationImage} alt="Notification" /> */}
         </button>
         <button onClick={openModal}>
           {avatarImage ? (
