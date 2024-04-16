@@ -85,10 +85,10 @@ const AuthenticatedHeader = ({ authToken }) => {
     <header className="main-header">
       <div className="left-section">
         <Link id='header-title' to="/">ThesisFinder</Link>
-        <button className="left-section-button" onClick={() => navigate('/home')}>Home</button>
+        {/* <button className="left-section-button" onClick={() => navigate('/home')}>Home</button> */}
         <button className="left-section-button" onClick={() => navigate('/explore-guest-search')}>Ideas</button>
       </div>
-      <div>
+      <div className='middle-section'>
         <input
           className="main-header-search"
           type="text"
@@ -98,11 +98,11 @@ const AuthenticatedHeader = ({ authToken }) => {
           onKeyPress={handleSearch}
         />
       </div>
-      <div>
-        <button onClick={() => {/* Handle dark mode button click */}}>
+      <div className='right-section'>
+        <button onClick={() => {}}>
           <img className="dark-mode-button" src={darkModeImage} alt="Dark Mode" />
         </button>
-        <button onClick={() => {/* Handle notification button click */}}>
+        <button onClick={() => {}}>
           <img className="notification-button" src={notificationImage} alt="Notification" />
         </button>
         <button onClick={openModal}>
@@ -124,6 +124,7 @@ const AuthenticatedHeader = ({ authToken }) => {
               <button onClick={() => { navigate('/account'); closeModal(); }} className="profile-option-button">Your Profile</button>
               <button onClick={() => { handleLogout(); }} className="profile-option-button">Logout</button>
             </div>
+
           </div>
         </div>
       )}

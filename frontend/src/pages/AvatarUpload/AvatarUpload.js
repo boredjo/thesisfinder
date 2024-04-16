@@ -6,7 +6,7 @@ import ConditionsModal from '../../components/ConditionsModal/ConditionsModal';
 import ProfilePreview from '../../components/ProfilePreview/ProfilePreview';
 import defaultAvatar from '../../assets/avatar1.png';
 import './avatar-upload.css';
-import LoadingIndicator from '../../components/LoadingIndicator/LoadingIndicator';
+import LoadingIndicator from '../../components/LoadingIndicator/LoadingIndicator'; 
 
 const AvatarUpload = ({ authToken }) => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -14,6 +14,24 @@ const AvatarUpload = ({ authToken }) => {
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(false); // Add loading state
   const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userData = await getUser(authToken);
+        const fetchedUsername = userData.username;
+
+        setUsername(fetchedUsername);
+
+        // fetchProfilePicture(fetchedUsername);
+      } catch (error) {
+        console.error('Error fetching user data:', error.message);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -24,7 +42,7 @@ const AvatarUpload = ({ authToken }) => {
     }
   };
 
-  const avatarImage = selectedFile ? URL.createObjectURL(selectedFile) : defaultAvatar;
+  const avatarImage = selectedFile ? URL.createObjectURL(selectedFile) : "https://data.thesisfinder.com/profilepicture/" + username;
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -104,13 +122,13 @@ const AvatarUpload = ({ authToken }) => {
           <input id="file-input" type="file" accept="image/png" onChange={handleFileChange} style={{ display: 'none' }} />
         </div>
         <div className='preview-container'>
-          {userData && <ProfilePreview avatarImage={avatarImage} name={`${userData.first_name} ${userData.last_name}`} location={userData.country} />}
+          {/* {userData && <ProfilePreview avatarImage={avatarImage} name={`${userData.first_name} ${userData.last_name}`} location={userData.country} />} */}
         </div>
       </div>
       <div className="bottom-container">
         <hr />
         <button className="conditions-button" onClick={openModal}>
-          View conditions for sharing content
+          View conditions for sharing content;
         </button>
         <div className="action-buttons">
           <button className="skip-button" onClick={handleSkipStep}>

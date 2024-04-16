@@ -9,9 +9,8 @@
   }
   
   #header-title {
-    color: red;
+    color: rgb(236, 54, 14);
     font-family: 'IBM Plex Mono';
-    /* font-weight: bold; */
     font-size: 2em;
     text-decoration: none; 
   }
@@ -22,11 +21,19 @@
     font-family: 'Fredoka One';
     font-weight: bold;
   }
+  #login-button:hover {
+    text-decoration: underline;
+  }
 
   #signup-link {
-    color:red;
+    color: rgb(236, 54, 14);
     font-size: 1.25em;
     font-family: 'Fredoka One';
     font-weight: bold;
+    transition: 0.2s;
+  }
+  #signup-link:hover {
+    color: rgb(198, 47, 13);
+    text-decoration: underline;
   }
   

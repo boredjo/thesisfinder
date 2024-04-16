@@ -4,7 +4,6 @@
     border: 2px solid #ececec;
     border-radius: 5px;
     padding: 10px;
-    margin-top: 20px;
 
     /* border: 1px solid #ececec;
     padding: 20px;
@@ -27,6 +26,7 @@
   
   .info-container {
     flex-grow: 1;
+    text-align: center;
   }
   
   .info-container h4 {

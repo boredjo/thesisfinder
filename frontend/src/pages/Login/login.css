@@ -1,0 +1,85 @@
+.login-container {
+  text-align: center;
+  font-family: 'Noto Sans';
+}
+
+.login-container h2 {
+  font-weight: bold;
+  font-size: 2em;
+  margin: 30px auto;
+}
+
+.login-container form {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.login-container label {
+  display: block;
+  font-size: 15px;
+  width: 100%; 
+  margin: 0 auto;
+  text-align: left;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.login-container button {
+  display: block;
+  font-family: Arial;
+  background-color: rgb(236, 54, 14);
+  color: #ffffff;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  width: 100%;
+  margin: 10px auto;
+  margin-bottom: 30px;
+  transition: 
+    background-color 0.2s;
+}
+
+.login-container button:hover {
+  background-color: rgb(198, 47, 13);
+}
+
+.login-container .error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.login-container p {
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+.login-container a {
+  color: rgb(236, 54, 14);
+  transition: 0.2s;
+}
+
+.login-container a:hover {
+  color: rgb(198, 47, 13);
+}
+
+@media only screen and (max-width: 768px) {
+  .login-container h2 {
+    font-size: 2em;
+  }
+
+  .login-container label {
+    width: 80%;
+  }
+
+  .login-container button {
+    width: 80%;
+  }
+}
+
