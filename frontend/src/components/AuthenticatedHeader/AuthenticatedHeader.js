@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { clearAuthenticatedUser } from '../../utils/authService';
 import { getProfilePictureByUsername, getUser } from '../../utils/api';
+import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
 
 import darkModeImage from '../../assets/AuthenticatedHeader/dark-mode.png';
 import notificationImage from '../../assets/AuthenticatedHeader/notification-bell.png';
@@ -17,6 +18,7 @@ const AuthenticatedHeader = ({ authToken }) => {
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [username, setUsername] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -26,7 +28,7 @@ const AuthenticatedHeader = ({ authToken }) => {
 
         setUsername(fetchedUsername);
 
-        fetchProfilePicture(fetchedUsername);
+        // fetchProfilePicture(fetchedUsername);
       } catch (error) {
         console.error('Error fetching user data:', error.message);
       }
@@ -35,14 +37,17 @@ const AuthenticatedHeader = ({ authToken }) => {
     fetchUserData();
   }, []);
 
-  const fetchProfilePicture = async (username) => {
-    try {
-      const profilePictureUrl = await getProfilePictureByUsername(username);
-      setAvatarImage(profilePictureUrl);
-    } catch (error) {
-      console.error('Error fetching profile picture:', error.message);
-    }
-  };
+  // const fetchProfilePicture = async (username) => {
+  //   try {
+  //     const profilePictureUrl = await getProfilePictureByUsername(username);
+  //     setAvatarImage(profilePictureUrl);
+  //   } catch (error) {
+  //     console.error('Error fetching profile picture:', error.message);
+  //   }
+  //   finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const openModal = () => {
     setIsModalOpen(true);

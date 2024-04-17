@@ -4,6 +4,7 @@ import FeaturesIdeas from '../../components/FeatureIdeas/FeatureIdeas';
 import LoadingIndicator from '../../components/LoadingIndicator/LoadingIndicator'; // Import LoadingIndicator component
 import { getFeaturedIdeas } from '../../utils/api';
 import { tagsData } from '../../data/tagsData';
+import Select from 'react-select';
 import '../../styles/main.css';
 import './explore-guest-search.css';
 
@@ -14,7 +15,7 @@ const ExploreGuestSearch = () => {
   const initialQuery = queryParams.get('query') || '';
 
   const [query, setQuery] = useState(initialQuery);
-  const [selectedTag, setSelectedTag] = useState('');
+  const [selectedTags, setSelectedTags] = useState([]); // State to store selected tags
   const [ideas, setIdeas] = useState([]);
   const [filteredIdeas, setFilteredIdeas] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,21 +38,21 @@ const ExploreGuestSearch = () => {
   }, []);
 
   useEffect(() => {
-    // Filter ideas based on the search query and selected tag
+    // Filter ideas based on the search query and selected tags
     let filtered = ideas;
     if (query) {
       filtered = filtered.filter(idea =>
         idea.title.toLowerCase().includes(query.toLowerCase())
       );
     }
-    if (selectedTag) {
+    if (selectedTags.length > 0) {
       filtered = filtered.filter(idea =>
-        idea.tags.includes(selectedTag)
+        selectedTags.every(tag => idea.tags.includes(tag.value))
       );
     }
     setFilteredIdeas(filtered);
     setCurrentPage(1); // Reset to first page when filtering changes
-  }, [query, selectedTag, ideas]);
+  }, [query, selectedTags, ideas]);
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -61,9 +62,8 @@ const ExploreGuestSearch = () => {
     }
   };
 
-  const handleTagChange = (event) => {
-    const tag = event.target.value;
-    setSelectedTag(tag);
+  const handleTagChange = (selectedOptions) => {
+    setSelectedTags(selectedOptions || []);
   };
 
   // Pagination logic
@@ -100,12 +100,13 @@ const ExploreGuestSearch = () => {
       </div>
       <div className='tag-filter'>
         <label htmlFor="tag-select">Filter by Tag: </label>
-        <select id="tag-select" onChange={handleTagChange} value={selectedTag}>
-          <option value="">All</option>
-          {tagsData.map((tag, index) => (
-            <option key={index} value={tag}>{tag}</option>
-          ))}
-        </select>
+        <Select
+          id="tag-select"
+          isMulti
+          options={tagsData.map(tag => ({ value: tag, label: tag }))}
+          value={selectedTags}
+          onChange={handleTagChange}
+        />
       </div>
       {loading ? ( // Show LoadingIndicator while loading
         <LoadingIndicator />
