@@ -120,7 +120,7 @@ const Submit = () => {
   };
 
   // Word count for description
-  const descriptionWordCount = formData.description.trim().split(/\s+/).length - 1;
+  const descriptionWordCount = formData.description.trim().split(/\s+/).length;
 
   // Character count for title
   const titleCharacterCount = formData.title.length;
@@ -132,12 +132,12 @@ const Submit = () => {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="title">Research Idea Title</label>
-            <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} required />
+            <input type="text" id="title" name="title" value={formData.title} placeholder='75 Characters Min.' onChange={handleChange} required />
             <p>Character Count: {titleCharacterCount}</p>
           </div>
           <div className="form-group">
             <label htmlFor="description">Research Idea Description (Markdown supported)</label>
-            <textarea id="description" name="description" value={formData.description} onChange={handleChange} required />
+            <textarea id="description" name="description" value={formData.description} placeholder='200-300 Words' onChange={handleChange} required />
             <p>Word Count: {descriptionWordCount}</p>
           </div>
           <div className="form-group">
