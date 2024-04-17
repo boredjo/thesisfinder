@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { submitIdea } from '../../utils/api'; // Import the submitIdea function
 import { getAuthToken } from '../../utils/authService';
 import LoadingIndicator from '../../components/LoadingIndicator/LoadingIndicator';
+import Select from 'react-select'; // Import react-select
 import { tagsData } from '../../data/tagsData';
 
 import '../../styles/main.css';
@@ -43,22 +44,28 @@ const Submit = () => {
     }
   };
 
-  const handleAttachmentChange = (e) => {
-    // Assuming only one file is allowed to be attached
-    const file = e.target.files[0];
-    setFormData({
-      ...formData,
-      attachment: file,
-    });
-  };
+  // const handleAttachmentChange = (e) => {
+  //   // Assuming only one file is allowed to be attached
+  //   const file = e.target.files[0];
+  //   setFormData({
+  //     ...formData,
+  //     attachment: file,
+  //   });
+  // };
 
-  const handleTagSelection = (e) => {
-    const selectedTags = Array.from(e.target.selectedOptions, (option) => option.value);
-    setFormData({
-      ...formData,
-      tags: selectedTags,
-    });
+  const handleTagSelection = (selectedOptions) => {
+    if (selectedOptions.length <= 5) {
+      const selectedTags = selectedOptions.map(option => option.value);
+      setFormData({
+        ...formData,
+        tags: selectedTags,
+      });
+    } else {
+      // Display an alert or message to inform the user
+      alert('You can only select up to 5 tags.');
+    }
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,15 +76,15 @@ const Submit = () => {
     }
 
     // Validate description word count
-    const descriptionWordCount = formData.description.trim().split(/\s+/).length;
+    // const descriptionWordCount = formData.description.trim().split(/\s+/).length;
     // if (descriptionWordCount < 200 || descriptionWordCount > 300) {
-      alert('Description must be between 200 and 300 words.');
+    //   alert('Description must be between 200 and 300 words.');
     //   return;
     // }
 
     // Validate title and description character count
     // if (formData.title.length < 75 || formData.description.length < 75) {
-      alert('Title and Description must be at least 75 characters long.');
+    //   alert('Title and Description must be at least 75 characters long.');
     //   return;
     // }
 
@@ -113,7 +120,7 @@ const Submit = () => {
   };
 
   // Word count for description
-  const descriptionWordCount = formData.description.trim().split(/\s+/).length;
+  const descriptionWordCount = formData.description.trim().split(/\s+/).length - 1;
 
   // Character count for title
   const titleCharacterCount = formData.title.length;
@@ -135,29 +142,29 @@ const Submit = () => {
           </div>
           <div className="form-group">
             <label htmlFor="tags">Select up to 5 Tags:</label>
-            <select id="tags" name="tags" multiple size={5} onChange={handleTagSelection} required>
-              {tagsData.map((tag) => (
-                <option key={tag} value={tag}>
-                  {tag}
-                </option>
-              ))}
-            </select>
+            <Select
+              id="tags"
+              isMulti
+              options={tagsData.map(tag => ({ value: tag, label: tag }))}
+              value={formData.tags.map(tag => ({ value: tag, label: tag }))}
+              onChange={handleTagSelection}
+              required
+            />
           </div>
-          <div className="form-group">
+          {/* <div className="form-group">
             <label>Collaboration Preferences:</label>
             <label>
               <input type="checkbox" name="feedback" checked={formData.feedback} onChange={handleChange} />
               Open to Feedback
             </label>
-            {/* Other checkbox inputs */}
-          </div>
-          <div className="form-group">
+          </div> */}
+          {/* <div className="form-group">
             <label htmlFor="visibility">Visibility Settings:</label>
             <select id="visibility" name="visibility" value={formData.visibility} onChange={handleChange} required>
               <option value="public">Public</option>
               <option value="private">Private</option>
             </select>
-          </div>
+          </div> */}
           {/* <div className="form-group">
             <label htmlFor="attachment">Attach Supporting Documents (optional):</label>
             <input type="file" id="attachment" name="attachment" onChange={handleAttachmentChange} accept=".pdf,.jpg,.jpeg,.png" />
