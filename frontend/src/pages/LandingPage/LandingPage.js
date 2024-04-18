@@ -37,24 +37,26 @@ const LandingPage = ({ authToken }) => {
 
   return (
     <div className="content-container">
-      <img src={require('../../assets/image1.jpg')} id="image-1" alt="Image 1" />
+      <img src={require('../../assets/image1.jpg')} id="image-1" alt="Image 1" className="w-full max-w-full" />
       <div>
-        <div className="header-section">
-          <h2>
+        <div className="header-section bg-gray-200 text-center p-8">
+          <h2 className="font-bold text-2xl">
             Connect with researchers, democratize science. Have a 
             lingering question or a debate? Your curiosity is more suited 
             for research. Need answers but lack a full-time researcher? 
             Pose questions and incentivize with prize money!
           </h2>
           <Link to="/signup">
-            <button>Join for free</button>
+            <button className="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700">
+              Join for free
+            </button>
           </Link>
         </div>
-        <div className="main-section">
-          <img src={require('../../assets/image2.png')} id="image-2" alt="Image 2" />
+        <div className="main-section text-center">
+          <img src={require('../../assets/image2.png')} id="image-2" alt="Image 2" className="w-80 max-w-md mx-auto my-4" />
           <div className="explore-header">
-            <h2>Explore Research Ideas</h2>
-            <p>
+            <h2 className="font-bold text-xl">Explore Research Ideas</h2>
+            <p className="font-normal text-lg">
               Discover a curated collection of research concepts. Access 
               diverse ideas and stay informed about the latest developments 
               in your field.
@@ -64,10 +66,11 @@ const LandingPage = ({ authToken }) => {
               placeholder="Search Ideas" 
               id="search-ideas"
               onKeyPress={handleKeyPress}
+              className="w-90 max-w-xl mx-auto my-4 p-2"
             />
           </div>
-          <hr id='section-divider' />
-          <h2>Featured Ideas</h2>
+          <hr id='section-divider' className="w-80 max-w-md mx-auto my-4" />
+          <h2 className="font-bold text-xl">Featured Ideas</h2>
           <FeaturesIdeas ideas={featuredIdeas} />
         </div>
       </div>
