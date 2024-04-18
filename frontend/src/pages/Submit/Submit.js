@@ -23,6 +23,7 @@ const Submit = () => {
     contributions: false,
     collaboration: false,
     visibility: 'public',
+    anonymous: false, // Add anonymous option
     attachment: null, // Store attachment file object
   });
 
@@ -44,15 +45,6 @@ const Submit = () => {
     }
   };
 
-  // const handleAttachmentChange = (e) => {
-  //   // Assuming only one file is allowed to be attached
-  //   const file = e.target.files[0];
-  //   setFormData({
-  //     ...formData,
-  //     attachment: file,
-  //   });
-  // };
-
   const handleTagSelection = (selectedOptions) => {
     if (selectedOptions.length <= 5) {
       const selectedTags = selectedOptions.map(option => option.value);
@@ -65,7 +57,6 @@ const Submit = () => {
       alert('You can only select up to 5 tags.');
     }
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,19 +65,6 @@ const Submit = () => {
       alert('Please fill in all mandatory fields.');
       return;
     }
-
-    // Validate description word count
-    // const descriptionWordCount = formData.description.trim().split(/\s+/).length;
-    // if (descriptionWordCount < 200 || descriptionWordCount > 300) {
-    //   alert('Description must be between 200 and 300 words.');
-    //   return;
-    // }
-
-    // Validate title and description character count
-    // if (formData.title.length < 75 || formData.description.length < 75) {
-    //   alert('Title and Description must be at least 75 characters long.');
-    //   return;
-    // }
 
     // Validate attachment format
     if (formData.attachment) {
@@ -151,24 +129,11 @@ const Submit = () => {
               required
             />
           </div>
-          {/* <div className="form-group">
-            <label>Collaboration Preferences:</label>
-            <label>
-              <input type="checkbox" name="feedback" checked={formData.feedback} onChange={handleChange} />
-              Open to Feedback
+          <div className="form-group">
+            <label htmlFor="anonymous">Anonymous
+              <input type="checkbox" id="anonymous" name="anonymous" checked={formData.anonymous} onChange={handleChange} />
             </label>
-          </div> */}
-          {/* <div className="form-group">
-            <label htmlFor="visibility">Visibility Settings:</label>
-            <select id="visibility" name="visibility" value={formData.visibility} onChange={handleChange} required>
-              <option value="public">Public</option>
-              <option value="private">Private</option>
-            </select>
-          </div> */}
-          {/* <div className="form-group">
-            <label htmlFor="attachment">Attach Supporting Documents (optional):</label>
-            <input type="file" id="attachment" name="attachment" onChange={handleAttachmentChange} accept=".pdf,.jpg,.jpeg,.png" />
-          </div> */}
+          </div>
           {/* Conditional rendering of loading indicator */}
           {loading && <LoadingIndicator />}
           <button type="submit">Submit</button>

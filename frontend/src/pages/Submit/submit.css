@@ -75,3 +75,7 @@
     width: 100%;
   }
 }
+
+.form-group #anonymous {
+  margin-left: 1%;
+}
