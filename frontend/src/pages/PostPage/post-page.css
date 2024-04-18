@@ -224,6 +224,57 @@ aside {
   font-size: 0.9em;
 }
 
+.research-papers-container,
+.sponsors-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 20px;
+}
+
+.research-paper-box,
+.sponsor-box {
+  border: 1px solid #ececec;
+  padding: 20px;
+}
+
+.attachment-item {
+  display: flex;
+  align-items: center;
+}
+
+.attachment-icon {
+  height: 48px;
+  background-size: cover;
+  margin-right: 9px;
+}
+
+.attachment-info {
+  flex-grow: 1;
+}
+
+.attachment-name,
+.attachment-size {
+  display: block;
+}
+
+.attachment-name {
+  font-weight: bold;
+}
+
+.attachment-size {
+  color: grey;
+}
+
+.attachment-download {
+  text-decoration: none;
+  color: rgb(236, 54, 14);
+}
+
+.attachment-download:hover {
+  text-decoration: underline;
+  color: rgb(198, 47, 13);
+}
+
 @media only screen and (max-width: 600px) {
   #tags ul li {
     font-size: 0.8em;
@@ -294,3 +345,4 @@ aside {
     width: auto;
   }
 }
+

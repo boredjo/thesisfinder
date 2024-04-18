@@ -318,30 +318,34 @@ const PostPage = ({ authToken }) => {
                   </section>
                 )} */}
                 {selectedTab === 'research-papers' && (
-                  // Render research papers section
                   <section id="research-papers">
                     <h2>Research Papers</h2>
-                    {console.log(researchPapers)}
                     {researchPapers.length > 0 ? (
-                      <ul>
+                      <div className="research-papers-container">
                         {researchPapers.map((paper, index) => (
-                          <li key={index}>
+                          <div key={index} className="research-paper-box">
                             <h3>Author: {paper.author}</h3>
                             <p>Date Posted: {paper.date_posted}</p>
-                            {/* Render attachments */}
                             {paper.attachments.length > 0 && (
                               <div className="attachment-item">
-                                <img className="attachment-icon" src={require('../../assets/researchdocimage.png')} id="Attachment Icon" alt="Attachment Icon" />
+                                <img
+                                  className="attachment-icon"
+                                  src={require('../../assets/researchdocimage.png')}
+                                  id="Attachment Icon"
+                                  alt="Attachment Icon"
+                                />
                                 <div className="attachment-info">
                                   <span className="attachment-name">{paper.attachments[0].name}</span>
                                   <span className="attachment-size">{paper.attachments[0].size}</span>
                                 </div>
-                                <a href="#" className="attachment-download">Download</a>
+                                <a href="#" className="attachment-download">
+                                  Download
+                                </a>
                               </div>
                             )}
-                          </li>
+                          </div>
                         ))}
-                      </ul>
+                      </div>
                     ) : (
                       <p>No research papers available</p>
                     )}
@@ -351,17 +355,17 @@ const PostPage = ({ authToken }) => {
                   <section id="sponsors">
                     <h2>Sponsors</h2>
                     {sponsors && sponsors.sponsors && sponsors.sponsors.length > 0 ? (
-                      <ul>
+                      <div className="sponsors-container">
                         {sponsors.sponsors.map((sponsor, index) => (
-                          <li key={index}>
+                          <div key={index} className="sponsor-box">
                             <h3>Author: {sponsor.author}</h3>
                             <p>Date Posted: {sponsor.date_posted}</p>
                             <p>Amount: {sponsor.amount}</p>
                             <p>Deadline: {sponsor.deadline}</p>
                             {/* Add more sponsor details here */}
-                          </li>
+                          </div>
                         ))}
-                      </ul>
+                      </div>
                     ) : (
                       <p>No sponsors available</p>
                     )}
