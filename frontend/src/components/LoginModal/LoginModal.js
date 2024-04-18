@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { setAuthenticatedUser, setAuthToken } from '../../utils/authService'; // Import setAuthToken
-import { getToken } from '../../utils/api'; // Import getToken function
+import { setAuthenticatedUser, setAuthToken } from '../../utils/authService';
+import { getToken } from '../../utils/api';
+import LoadingIndicator from '../LoadingIndicator/LoadingIndicator'; // Import LoadingIndicator component
 
 import './loginmodal.css';
 
@@ -14,6 +15,7 @@ const LoginModal = ({ show, handleClose }) => {
   });
 
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false); // State to track loading state
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,39 +25,41 @@ const LoginModal = ({ show, handleClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setLoading(true); // Set loading state to true when submitting
+
     try {
-      // Call the API to get the authentication token
       const response = await getToken(formData.email, formData.password);
 
-      // Check if the response has a token
       if (response && response.token) {
-        // Set the authenticated user in local storage
         setAuthenticatedUser({
           email: formData.email,
-          // Add any other user-related info you may need
         });
 
-        // Set the authentication token in local storage
         setAuthToken(response.token);
 
-        // Redirect to the home page after successful login
         navigate('/');
-
-        // Close the modal
-        handleClose();
+        handleClose(); // Close the modal after successful login
       } else {
-        setError('Invalid email or password');
+        setError('Invalid email and/or password');
       }
     } catch (error) {
-      setError('Error during login. Please try again.');
+      setError('Wrong Email/Password.');
       console.error(error);
+    } finally {
+      setLoading(false); // Set loading state back to false when request completes
+    }
+  };
+
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      handleClose(); // Close the modal if clicking outside the modal content
     }
   };
 
   const showHideClassName = show ? 'modal display-block' : 'modal display-none';
 
   return (
-    <div className={showHideClassName}>
+    <div className={showHideClassName} onClick={handleOverlayClick}>
       <section className="modal-main">
         <div className="login-container">
           <h2>Login</h2>
@@ -82,8 +86,9 @@ const LoginModal = ({ show, handleClose }) => {
               />
             </label>
             <br />
-            <button type="submit">Login</button>
+            <button type="submit" disabled={loading}>Login</button> {/* Disable button when loading */}
           </form>
+          {loading && <LoadingIndicator />} {/* Show LoadingIndicator when loading */}
           {error && <p className="error-message">{error}</p>}
           <p>
             Don't have an account? <Link to="/signup">Sign up here</Link>.

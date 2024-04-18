@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { clearAuthenticatedUser } from '../../utils/authService';
 import { getProfilePictureByUsername, getUser } from '../../utils/api';
+import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
 
 import darkModeImage from '../../assets/AuthenticatedHeader/dark-mode.png';
 import notificationImage from '../../assets/AuthenticatedHeader/notification-bell.png';
@@ -17,6 +18,8 @@ const AuthenticatedHeader = ({ authToken }) => {
   const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [username, setUsername] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [invertColors, setInvertColors] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -26,7 +29,7 @@ const AuthenticatedHeader = ({ authToken }) => {
 
         setUsername(fetchedUsername);
 
-        fetchProfilePicture(fetchedUsername);
+        // fetchProfilePicture(fetchedUsername);
       } catch (error) {
         console.error('Error fetching user data:', error.message);
       }
@@ -35,13 +38,8 @@ const AuthenticatedHeader = ({ authToken }) => {
     fetchUserData();
   }, []);
 
-  const fetchProfilePicture = async (username) => {
-    try {
-      const profilePictureUrl = await getProfilePictureByUsername(username);
-      setAvatarImage(profilePictureUrl);
-    } catch (error) {
-      console.error('Error fetching profile picture:', error.message);
-    }
+  const toggleInvertColors = () => {
+    setInvertColors(!invertColors);
   };
 
   const openModal = () => {
@@ -81,12 +79,19 @@ const AuthenticatedHeader = ({ authToken }) => {
     }
   };
 
+  useEffect(() => {
+    const rootElement = document.documentElement;
+    if (invertColors) {
+      rootElement.style.filter = 'invert(100%)'; // Invert colors
+    } else {
+      rootElement.style.filter = 'none'; // Reset filter
+    }
+  }, [invertColors]);
+
   return (
     <header className="main-header">
       <div className="left-section">
         <Link id='header-title' to="/">ThesisFinder</Link>
-        {/* <button className="left-section-button" onClick={() => navigate('/home')}>Home</button> */}
-        <button className="left-section-button" onClick={() => navigate('/explore-guest-search')}>Ideas</button>
       </div>
       <div className='middle-section'>
         <input
@@ -99,11 +104,11 @@ const AuthenticatedHeader = ({ authToken }) => {
         />
       </div>
       <div className='right-section'>
-        <button onClick={() => {}}>
+        <button onClick={toggleInvertColors}> {/* Toggle color inversion */}
           <img className="dark-mode-button" src={darkModeImage} alt="Dark Mode" />
         </button>
         <button onClick={() => {}}>
-          <img className="notification-button" src={notificationImage} alt="Notification" />
+          {/* <img className="notification-button" src={notificationImage} alt="Notification" /> */}
         </button>
         <button onClick={openModal}>
           {avatarImage ? (

@@ -252,13 +252,13 @@ const PostPage = ({ authToken }) => {
                 <nav className="article-nav">
                   <ul>
                     <li><a href="#" onClick={() => setSelectedTab('overview')}>Overview</a></li>
-                    <li><a href="#" onClick={() => setSelectedTab('comments')}>Comments</a></li>
+                    {/* <li><a href="#" onClick={() => setSelectedTab('comments')}>Comments</a></li> */}
                     <li><a href="#" onClick={() => setSelectedTab('research-papers')}>Research Papers</a></li>
-                    {authToken && (
-                      <>
-                        <li><a href="#">Sponsors</a></li>
-                      </>
-                    )}
+                    {/* {authToken && (
+                      <> */}
+                        <li><a href="#" onClick={() => setSelectedTab('sponsors')}>Sponsors</a></li>
+                      {/* </>
+                    )} */}
                   </ul>
                 </nav>
                 {selectedTab === 'overview' && (
@@ -278,12 +278,12 @@ const PostPage = ({ authToken }) => {
                         <a href="#" className="attachment-download">Download</a>
                       </div>
                     </section> */}
-                    <section id="collaboration">
+                    {/* <section id="collaboration">
                       <h2>Collaboration Preferences</h2>
                       <ul className="collaboration-list">
                         <li>Placeholder Collaborations</li>
                       </ul>
-                    </section>
+                    </section> */}
                     <div id="action-buttons">
                       {authToken && (
                         <>
@@ -294,12 +294,117 @@ const PostPage = ({ authToken }) => {
                     </div>
                   </>
                 )}
-                {selectedTab === 'comments' && (
-                  // Render comments section
+                {/* {selectedTab === 'comments' && (
                   <section id="comments">
                     <h2>Comments</h2>
-                    {/* Render comments */}
                   </section>
+                )} */}
+                {selectedTab === 'research-papers' && (
+                  // Render research papers section
+                  <section id="research-papers">
+                    <h2>Research Papers</h2>
+                    {researchPapers.length > 0 ? (
+                      <ul>
+                        {researchPapers.map((paper, index) => (
+                          <li key={index}>
+                            <h3>Author: {paper.author}</h3>
+                            <p>Date Posted: {paper.date_posted}</p>
+                            {/* Render attachments */}
+                            {paper.attachments.length > 0 && (
+                              <div className="attachment-item">
+                                <img className="attachment-icon" src={require('../../assets/researchdocimage.png')} id="Attachment Icon" alt="Attachment Icon" />
+                                <div className="attachment-info">
+                                  <span className="attachment-name">{paper.attachments[0].name}</span>
+                                  <span className="attachment-size">{paper.attachments[0].size}</span>
+                                </div>
+                                <a href="#" className="attachment-download">Download</a>
+                              </div>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>No research papers available</p>
+                    )}
+                  </section>
+                )}
+                {selectedTab === 'sponsors' && (
+                  <section id="sponsors">
+                      <h2>Sponsors</h2>
+                  </section>
+                )}
+              </>
+            )}
+          </article>
+        </div>
+      </main>
+
+      {/* Modal for uploading papers */}
+      {showModal && (
+        <div className="modal display-block">
+          <section className="modal-main">
+            <h2></h2>
+            <form onSubmit={handleSubmit}>
+              <div className="input-group">
+                <label htmlFor="title">Title</label>
+                <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} />
+              </div>
+              <div className="input-group">
+                <label htmlFor="description">Description</label>
+                <textarea id="description" name="description" value={formData.description} onChange={handleChange}></textarea>
+              </div>
+              {/* <div className="input-group">
+                <label htmlFor="documents">Attach Supporting Documents (PDF)</label>
+                <input type="file" id="documents" name="documents" accept=".pdf" multiple onChange={handleDocumentChange} />
+              </div> */}
+              <div className="input-group">
+                <label htmlFor="visibility">Visibility Settings</label>
+                <select id="visibility" name="visibility" value={formData.visibility} onChange={handleChange}>
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                </select>
+              </div>
+              <div className="actions">
+                <button type="submit" className="save-btn">Submit</button>
+                <button type="button" className="cancel-btn" onClick={handleCloseModal}>Cancel</button>
+              </div>
+            </form>
+          </section>
+        </div>
+      )}
+
+      {/* Modal for sponsoring */}
+      {showSponsorModal && (
+        <div className="modal display-block">
+          <section className="modal-main">
+            <h2>Sponsor</h2>
+            <form onSubmit={handleSponsorSubmit}>
+              <div className="input-group">
+                <label htmlFor="amount">Amount ($100.00 - $5000.00)</label>
+                <input type="text" id="amount" name="amount" placeholder='Example: 100.00' value={sponsorFormData.amount} onChange={handleSponsorFormChange} />
+              </div>
+              <div className="input-group">
+                <label htmlFor="purpose">Purpose</label>
+                <textarea id="purpose" name="purpose" value={sponsorFormData.purpose} onChange={handleSponsorFormChange}></textarea>
+              </div>
+              <div className="input-group">
+                <label htmlFor="duration">Deadline</label>
+                <input type="text" id="duration" name="duration" placeholder='Example: 2024-02-24' value={sponsorFormData.duration} onChange={handleSponsorFormChange} />
+              </div>
+              <div className="actions">
+                <button type="submit" className="save-btn">Submit</button>
+                <button type="button" className="cancel-btn" onClick={handleSponsorModalClose}>Cancel</button>
+              </div>
+            </form>
+          </section>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default PostPage;
+
 
 //   return (
 //     <div>
@@ -377,105 +482,3 @@ const PostPage = ({ authToken }) => {
 //                 ) : (
 //                   <li>Not claimed</li>
 // >>>>>>> 252be4168fb7e4f2bec1921faa7a4f8786d859c8
-                )}
-                {selectedTab === 'research-papers' && (
-                  // Render research papers section
-                  <section id="research-papers">
-                    <h2>Research Papers</h2>
-                    {researchPapers.length > 0 ? (
-                      <ul>
-                        {researchPapers.map((paper, index) => (
-                          <li key={index}>
-                            <h3>Author: {paper.author}</h3>
-                            <p>Date Posted: {paper.date_posted}</p>
-                            {/* Render attachments */}
-                            {paper.attachments.length > 0 && (
-                              <div className="attachment-item">
-                                <img className="attachment-icon" src={require('../../assets/researchdocimage.png')} id="Attachment Icon" alt="Attachment Icon" />
-                                <div className="attachment-info">
-                                  <span className="attachment-name">{paper.attachments[0].name}</span>
-                                  <span className="attachment-size">{paper.attachments[0].size}</span>
-                                </div>
-                                <a href="#" className="attachment-download">Download</a>
-                              </div>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p>No research papers available</p>
-                    )}
-                  </section>
-                )}
-              </>
-            )}
-          </article>
-          
-        </div>
-      </main>
-
-      {/* Modal for uploading papers */}
-      {showModal && (
-        <div className="modal display-block">
-          <section className="modal-main">
-            <h2></h2>
-            <form onSubmit={handleSubmit}>
-              <div className="input-group">
-                <label htmlFor="title">Title</label>
-                <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} />
-              </div>
-              <div className="input-group">
-                <label htmlFor="description">Description</label>
-                <textarea id="description" name="description" value={formData.description} onChange={handleChange}></textarea>
-              </div>
-              {/* <div className="input-group">
-                <label htmlFor="documents">Attach Supporting Documents (PDF)</label>
-                <input type="file" id="documents" name="documents" accept=".pdf" multiple onChange={handleDocumentChange} />
-              </div> */}
-              <div className="input-group">
-                <label htmlFor="visibility">Visibility Settings</label>
-                <select id="visibility" name="visibility" value={formData.visibility} onChange={handleChange}>
-                  <option value="public">Public</option>
-                  <option value="private">Private</option>
-                </select>
-              </div>
-              <div className="actions">
-                <button type="submit" className="save-btn">Submit</button>
-                <button type="button" className="cancel-btn" onClick={handleCloseModal}>Cancel</button>
-              </div>
-            </form>
-          </section>
-        </div>
-      )}
-
-      {/* Modal for sponsoring */}
-      {showSponsorModal && (
-        <div className="modal display-block">
-          <section className="modal-main">
-            <h2>Sponsor</h2>
-            <form onSubmit={handleSponsorSubmit}>
-              <div className="input-group">
-                <label htmlFor="amount">Amount ($100.00 - $5000.00)</label>
-                <input type="text" id="amount" name="amount" placeholder='Example: 100.00' value={sponsorFormData.amount} onChange={handleSponsorFormChange} />
-              </div>
-              <div className="input-group">
-                <label htmlFor="purpose">Purpose</label>
-                <textarea id="purpose" name="purpose" value={sponsorFormData.purpose} onChange={handleSponsorFormChange}></textarea>
-              </div>
-              <div className="input-group">
-                <label htmlFor="duration">Deadline</label>
-                <input type="text" id="duration" name="duration" placeholder='Example: 2024-02-24' value={sponsorFormData.duration} onChange={handleSponsorFormChange} />
-              </div>
-              <div className="actions">
-                <button type="submit" className="save-btn">Submit</button>
-                <button type="button" className="cancel-btn" onClick={handleSponsorModalClose}>Cancel</button>
-              </div>
-            </form>
-          </section>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default PostPage;

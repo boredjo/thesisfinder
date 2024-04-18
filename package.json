@@ -1,3 +1,18 @@
 {
-    
+    
+"dependencies": {
+    
+    
+"katex": "^0.16.10",
+    
+    
+"react-katex": "^3.0.1",
+    
+    
+"react-markdown": "^9.0.1",
+    
+    
+"remark-math": "^6.0.0"
+    
+}
 }

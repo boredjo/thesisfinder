@@ -3,112 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { submitIdea } from '../../utils/api'; // Import the submitIdea function
 import { getAuthToken } from '../../utils/authService';
 import LoadingIndicator from '../../components/LoadingIndicator/LoadingIndicator';
+import Select from 'react-select'; // Import react-select
+import { tagsData } from '../../data/tagsData';
 
 import '../../styles/main.css';
 import '../../styles/mainheader.css';
 import './submit.css';
-
-const tagsList = [
-  'Classical Mechanics',
-  'Electromagnetism',
-  'Quantum Mechanics',
-  'Thermodynamics',
-  'Statistical Mechanics',
-  'Relativity',
-  'Atomic Physics',
-  'Molecular Physics',
-  'Condensed Matter Physics',
-  'High-energy Particle Physics',
-  'Quantum Computing',
-  'String Theory',
-  'Optics',
-  'Acoustics',
-  'Nuclear Physics',
-  'Astrophysics',
-  'Gravitational Waves',
-  'Plasma Physics',
-  'Particle Accelerators',
-  'Quantum Entanglement',
-  'Quantum Field Theory',
-  'Black Holes',
-  'Superconductivity',
-  'Fluid Dynamics',
-  'Quantum Information Science',
-  'Stellar Physics',
-  'Neutrino Physics',
-  'Magnetic Resonance Imaging (MRI)',
-  'Semiconductor Physics',
-  'Cosmological Models',
-  'Quantum Teleportation',
-  'Nuclear Fusion',
-  'Quantum Hall Effect',
-  'Quantum Dot',
-  'Quantum Gravity',
-  'Neutron Stars',
-  'Quantum Cryptography',
-  'Quantum Dot Solar Cells',
-  'Quantum Computing Algorithms',
-  'Neutrino Oscillations',
-  'Dark Energy',
-  'Blackbody Radiation',
-  'Superstring Theory',
-  'Quantum Electrodynamics (QED)',
-  'Quantum Spin Hall Effect',
-  'Bose-Einstein Condensate',
-  'Supergravity',
-  'Quantum Dot Lasers',
-  'Gravitational Lensing',
-  'Quantum Chromodynamics (QCD)',
-  'Quantum Phase Transitions',
-  'Neutrino Astronomy',
-  'Quantum Magnetism',
-  'Hawking Radiation',
-  'Quantum Optics',
-  'Neutron Diffraction',
-  'Quantum Annealing',
-  'Gravitational Radiation',
-  'Quantum Error Correction',
-  'Quantum Key Distribution',
-  'Neutrino Detection',
-  'Quantum Metrology',
-  'Gravitational Collapse',
-  'Quantum Sensing',
-  'Neutron Scattering',
-  'Quantum Biology',
-  'Gravitational Redshift',
-  'Quantum Memory',
-  'Neutrino Oscillation Experiments',
-  'Quantum Annealing',
-  'Gravitational Wave Detection',
-  'Quantum Simulation',
-  'Neutron Star Merger',
-  'Quantum Communication',
-  'Gravitational Wave Astronomy',
-  'Quantum Algorithms',
-  'Neutron Star Formation',
-  'Quantum Sensing Devices',
-  'Gravitational Wave Interferometry',
-  'Quantum Phase Transition',
-  'Gravitational Wave Sources',
-  'Quantum Computing Architecture',
-  'Neutrino Flux',
-  'Quantum Entanglement-based Communication',
-  'Gravitational Wave Signals',
-  'Quantum Cryptography Protocols',
-  'Neutrino Detection Methods',
-  'Quantum Computing Hardware',
-  'Gravitational Wave Detectors',
-  'Quantum Many-Body Systems',
-  'Gravitational Wave Astrophysics',
-  'Quantum Network',
-  'Neutrino Mass Hierarchy',
-  'Quantum Computing Software',
-  'Gravitational Wave Data Analysis',
-  'Quantum Error Correction Codes',
-  'Neutrino Interactions',
-  'Quantum Algorithm Development',
-  'Gravitational Wave Event Localization',
-];
 
 const Submit = () => {
   const navigate = useNavigate();
@@ -123,6 +23,7 @@ const Submit = () => {
     contributions: false,
     collaboration: false,
     visibility: 'public',
+    anonymous: false, // Add anonymous option
     attachment: null, // Store attachment file object
   });
 
@@ -144,21 +45,17 @@ const Submit = () => {
     }
   };
 
-  const handleAttachmentChange = (e) => {
-    // Assuming only one file is allowed to be attached
-    const file = e.target.files[0];
-    setFormData({
-      ...formData,
-      attachment: file,
-    });
-  };
-
-  const handleTagSelection = (e) => {
-    const selectedTags = Array.from(e.target.selectedOptions, (option) => option.value);
-    setFormData({
-      ...formData,
-      tags: selectedTags,
-    });
+  const handleTagSelection = (selectedOptions) => {
+    if (selectedOptions.length <= 5) {
+      const selectedTags = selectedOptions.map(option => option.value);
+      setFormData({
+        ...formData,
+        tags: selectedTags,
+      });
+    } else {
+      // Display an alert or message to inform the user
+      alert('You can only select up to 5 tags.');
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -168,19 +65,6 @@ const Submit = () => {
       alert('Please fill in all mandatory fields.');
       return;
     }
-
-    // Validate description word count
-    const descriptionWordCount = formData.description.trim().split(/\s+/).length;
-    // if (descriptionWordCount < 200 || descriptionWordCount > 300) {
-      alert('Description must be between 200 and 300 words.');
-    //   return;
-    // }
-
-    // Validate title and description character count
-    // if (formData.title.length < 75 || formData.description.length < 75) {
-      alert('Title and Description must be at least 75 characters long.');
-    //   return;
-    // }
 
     // Validate attachment format
     if (formData.attachment) {
@@ -226,43 +110,30 @@ const Submit = () => {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="title">Research Idea Title</label>
-            <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} required />
+            <input type="text" id="title" name="title" value={formData.title} placeholder='75 Characters Min.' onChange={handleChange} required />
             <p>Character Count: {titleCharacterCount}</p>
           </div>
           <div className="form-group">
             <label htmlFor="description">Research Idea Description (Markdown supported)</label>
-            <textarea id="description" name="description" value={formData.description} onChange={handleChange} required />
+            <textarea id="description" name="description" value={formData.description} placeholder='200-300 Words' onChange={handleChange} required />
             <p>Word Count: {descriptionWordCount}</p>
           </div>
           <div className="form-group">
             <label htmlFor="tags">Select up to 5 Tags:</label>
-            <select id="tags" name="tags" multiple size={5} onChange={handleTagSelection} required>
-              {tagsList.map((tag) => (
-                <option key={tag} value={tag}>
-                  {tag}
-                </option>
-              ))}
-            </select>
+            <Select
+              id="tags"
+              isMulti
+              options={tagsData.map(tag => ({ value: tag, label: tag }))}
+              value={formData.tags.map(tag => ({ value: tag, label: tag }))}
+              onChange={handleTagSelection}
+              required
+            />
           </div>
           <div className="form-group">
-            <label>Collaboration Preferences:</label>
-            <label>
-              <input type="checkbox" name="feedback" checked={formData.feedback} onChange={handleChange} />
-              Open to Feedback
+            <label htmlFor="anonymous">Anonymous
+              <input type="checkbox" id="anonymous" name="anonymous" checked={formData.anonymous} onChange={handleChange} />
             </label>
-            {/* Other checkbox inputs */}
           </div>
-          <div className="form-group">
-            <label htmlFor="visibility">Visibility Settings:</label>
-            <select id="visibility" name="visibility" value={formData.visibility} onChange={handleChange} required>
-              <option value="public">Public</option>
-              <option value="private">Private</option>
-            </select>
-          </div>
-          {/* <div className="form-group">
-            <label htmlFor="attachment">Attach Supporting Documents (optional):</label>
-            <input type="file" id="attachment" name="attachment" onChange={handleAttachmentChange} accept=".pdf,.jpg,.jpeg,.png" />
-          </div> */}
           {/* Conditional rendering of loading indicator */}
           {loading && <LoadingIndicator />}
           <button type="submit">Submit</button>
