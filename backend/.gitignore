@@ -5,6 +5,7 @@ src/utils/__pycache__/
 database/
 .env
 env/
+llm_env/
 DS_Store
 src/static/fonts
 src/static/images

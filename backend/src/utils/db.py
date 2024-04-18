@@ -5,7 +5,9 @@ import mysql.connector
 import sys
 import os
 
+from dotenv import load_dotenv
 
+load_dotenv('.env')
 from utils.logs import Logger, log_error, log_info
 
 try:
@@ -77,18 +79,18 @@ def util_db():
     def _db_decorator(f):
         @wraps(f)
         def __db_decorator(*args, **kwargs):
-            logger:Logger = request.environ['logger']
+            # logger:Logger = request.environ['logger']
 
             try:
                 if not connection.is_connected():
-                    logger.info('Reconecting to DB', 'db.py')
+                    print('Reconecting to DB', 'db.py')
                     connection.reconnect(3)
             
                 cursor = connection.cursor(buffered=True)
             except Exception as e:
-                logger.error(e, 'db.py - util_db - generating cursor')
+                print(e, 'db.py - util_db - generating cursor')
                 return Response(u'auth fail', mimetype= 'text/plain', status=500)
-            logger.message('MYSQL', 'created cursor')
+            print('MYSQL', 'created cursor')
 
             result = f(cursor, *args, **kwargs)
             cursor.close()
