@@ -4,8 +4,8 @@ import './footer.css';
 
 const Footer = () => {
   return (
-    <footer>
-      <p>&copy; 2023 ThesisFinder</p>
+    <footer className='main-footer'>
+      <p>2023 ThesisFinder</p>
     </footer>
   );
 };
