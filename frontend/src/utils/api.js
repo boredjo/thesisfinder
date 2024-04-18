@@ -167,11 +167,11 @@ const claimIdea = (ideaId, token) => {
 };
 
 // Get Claim from User API request
-const getClaimFromUser = (token) => {
+const getClaimFromUser = (username) => {
   return makeRequest(
-    '/claim/user/',
+    `/claim/user/${username}`, // Update the URL to include the username
     'GET',
-    { 'Token': token }
+    { 'Content-Type': 'application/json' }
   );
 };
 

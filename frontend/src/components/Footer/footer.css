@@ -1,9 +1,11 @@
-footer {
-    text-align: center;
+.main-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #f8f9fa;
     padding: 10px;
-    background-color: #ececec;
-}
-
-footer p {
-    margin: 0;
+    text-align: center;
+    color: #555;
+    font-size: 14px;
+    border-top: 1px solid #ccc; /* Add a 1px solid border at the top */
 }
