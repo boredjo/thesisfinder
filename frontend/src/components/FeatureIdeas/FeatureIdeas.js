@@ -35,7 +35,7 @@ const FeaturesIdeas = ({ ideas }) => {
               ))}
             </div>
             <div className="author-container">
-              {/* {console.log('https://data.thesisfinder.com/profilepicture/' + idea.author)} */}
+              {console.log('https://data.thesisfinder.com/profilepicture/' + idea.author)}
               <img
                 src={`https://data.thesisfinder.com/profilepicture/${idea.author}`}
                 alt={`${idea.author}'s profile`}
