@@ -32,7 +32,7 @@ const App = () => {
     // Set up an interval to check for changes in localStorage
     const intervalId = setInterval(() => {
       const storedToken = getStoredAuthToken();
-      // console.log(storedToken)
+      console.log(storedToken)
       if (storedToken !== authToken) {
         setAuthToken(storedToken);
       }
