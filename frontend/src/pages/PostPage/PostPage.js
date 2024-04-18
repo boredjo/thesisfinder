@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getUser, getIdeaDetails, getClaimFromQuestion } from '../../utils/api';
+import { getSponsorshipsForIdeas } from '../../utils/api';
 import { claimIdea } from '../../utils/api';
 import { sponsorIdea } from '../../utils/api';
 import '../../styles/main.css';
@@ -31,6 +32,7 @@ const PostPage = ({ authToken }) => {
   });  
   const [selectedTab, setSelectedTab] = useState('overview');
   const [researchPapers, setResearchPapers] = useState([]);
+  const [sponsors, setSponsors] = useState([]);
 
   // Fetch idea details from the API when component mounts or ID changes
   useEffect(() => {
@@ -73,6 +75,22 @@ const PostPage = ({ authToken }) => {
 
     if (selectedTab === 'research-papers') {
       fetchResearchPapers();
+    }
+  }, [id, selectedTab]);
+
+  // Fetch sponsors when the "Sponsors" tab is selected
+  useEffect(() => {
+    const fetchSponsors = async () => {
+      try {
+        const response = await getSponsorshipsForIdeas(id);
+        setSponsors(response);
+      } catch (error) {
+        console.error('Error fetching sponsors:', error);
+      }
+    };
+
+    if (selectedTab === 'sponsors') {
+      fetchSponsors();
     }
   }, [id, selectedTab]);
 
@@ -303,6 +321,7 @@ const PostPage = ({ authToken }) => {
                   // Render research papers section
                   <section id="research-papers">
                     <h2>Research Papers</h2>
+                    {console.log(researchPapers)}
                     {researchPapers.length > 0 ? (
                       <ul>
                         {researchPapers.map((paper, index) => (
@@ -330,7 +349,22 @@ const PostPage = ({ authToken }) => {
                 )}
                 {selectedTab === 'sponsors' && (
                   <section id="sponsors">
-                      <h2>Sponsors</h2>
+                    <h2>Sponsors</h2>
+                    {sponsors && sponsors.sponsors && sponsors.sponsors.length > 0 ? (
+                      <ul>
+                        {sponsors.sponsors.map((sponsor, index) => (
+                          <li key={index}>
+                            <h3>Author: {sponsor.author}</h3>
+                            <p>Date Posted: {sponsor.date_posted}</p>
+                            <p>Amount: {sponsor.amount}</p>
+                            <p>Deadline: {sponsor.deadline}</p>
+                            {/* Add more sponsor details here */}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>No sponsors available</p>
+                    )}
                   </section>
                 )}
               </>
@@ -343,7 +377,7 @@ const PostPage = ({ authToken }) => {
       {showModal && (
         <div className="modal display-block">
           <section className="modal-main">
-            <h2></h2>
+            <h2>Claim</h2>
             <form onSubmit={handleSubmit}>
               <div className="input-group">
                 <label htmlFor="title">Title</label>
@@ -404,81 +438,3 @@ const PostPage = ({ authToken }) => {
 };
 
 export default PostPage;
-
-
-//   return (
-//     <div>
-//       <main>
-//         <nav className="article-nav">
-//           <ul>
-//             <li><a href="#">Overview</a></li>
-//             <li><a href="#">Stats</a></li>
-//             <li><a href="#">Comments</a></li>
-//             <li><a href="#">More Info</a></li>
-//             <li><a href="#">Suggested Ideas</a></li>
-//             <li><a href="#">Research Papers</a></li>
-//             {authToken && (
-//               <>
-//                 <li><a href="#">Sponsors</a></li>
-//                 <li><a href="#" onClick={handleClaim}>Claim</a></li>
-//               </>
-//             )}
-//           </ul>
-//         </nav>
-//         <div id="content">
-//           <article>
-//             <h1>{idea.title}</h1>
-//             <div className="metadata">
-//               <span className="author">Author(s): {idea.author}</span>
-//               <span className="date">Date Posted: {idea.date}</span>
-//             </div>
-//             <div id="tags">
-//               <ul>
-//                 {idea.tags.map((tag, index) => (
-//                   <li key={index}><a href="#">{tag}</a></li>
-//                 ))}
-//               </ul>
-//             </div>
-//             <section id="description">
-//               <h2>Description</h2>
-//               <p>{idea.description}</p>
-//             </section>
-//             <section id="attachments">
-//               <h2>Attachments</h2>
-//               <div className="attachment-item">
-//                 <img className="attachment-icon" src={require('../../assets/researchdocimage.png')} id="Attachment Icon" alt="Attachment Icon" />
-//                 <div className="attachment-info">
-//                   <span className="attachment-name">attachment-name.pdf</span>
-//                   <span className="attachment-size">attachment-size</span>
-//                 </div>
-//                 <a href="#" className="attachment-download">Download</a>
-//               </div>
-//             </section>
-//             <section id="collaboration">
-//               <h2>Collaboration Preferences</h2>
-//               <ul className="collaboration-list">
-//                 <li>Placeholder Collaborations</li>
-//               </ul>
-//             </section>
-//             <div id="action-buttons">
-//               {authToken && (
-//                 <>
-//                   <button type="button" id="claim-button" onClick={handleClaim}>Claim</button>
-//                   <button type="button" id="sponsor-button" onClick={handleSponsorModalOpen}>Sponsor</button>
-//                 </>
-//               )}
-//             </div>
-//           </article>
-//           <aside>
-//             <div id="claimed-by">
-//               <h3>Claimed by:</h3>
-//               <ul>
-//                 {/* Display the claimed by information */}
-//                 {claimedBy ? (
-//                   <li>
-//                     <img src={require('../../assets/avatar1.png')} id="Claimant Name" alt="Claimant Name" />
-//                     <span>{claimedBy.username}</span>
-//                   </li>
-//                 ) : (
-//                   <li>Not claimed</li>
-// >>>>>>> 252be4168fb7e4f2bec1921faa7a4f8786d859c8
