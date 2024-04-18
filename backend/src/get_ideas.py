@@ -50,15 +50,18 @@ def store_idea(cursor, title, tags, abstract):
     new_idea = Idea(title, tags, User.ANON().name, abstract)
     new_idea.store(cursor)
 
-for i in range(13000, 14000):
+for i in range(13044, 14000):
     page = requests.get(PATH+str(i))
     if not page.text == error:
-        soup = BeautifulSoup(page.text, 'html.parser')
-        header = soup.find_all('h2')[1].text
-        abstract = find_abstract(soup)
-        tags = get_tags(abstract)
-        if not tags == []: store_idea(header, tags, abstract)
-        print(tags)
+        try:
+            soup = BeautifulSoup(page.text, 'html.parser')
+            header = soup.find_all('h2')[1].text
+            abstract = find_abstract(soup)
+            tags = get_tags(abstract)
+            if not tags == []: store_idea(header, tags, abstract)
+            print(tags)
+        except:
+            pass
     print(f'finished i={i}')
 
 
