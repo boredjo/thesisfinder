@@ -7,6 +7,7 @@ const FeaturesIdeas = ({ ideas }) => {
     <div className="features-ideas">
       {ideas.map((idea) => {
         const filteredTags = idea.tags.filter(tag => tag !== null);
+        console.log("https://data.thesisfinder.com/profilepicture/" + idea.author)
         return (
           <div key={idea.id} className="idea-container">
             {/* Link each idea title to the post page */}

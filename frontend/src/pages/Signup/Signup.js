@@ -23,7 +23,13 @@ const Signup = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
+    // Validate input for username, first name, and last name fields
+    if (name === 'user' || name === 'first_name' || name === 'last_name') {
+      const alphanumericRegex = /^[a-zA-Z0-9]*$/;
+      if (!alphanumericRegex.test(value)) {
+        return; // Do not update state if input contains non-alphanumeric characters
+      }
+    }
     // Additional validation for the 'country' field
     if (name === 'country' && value.length > 2) {
       // If the input length exceeds 2 characters, truncate it to the first 2 characters
@@ -33,6 +39,7 @@ const Signup = () => {
       setFormData((prevData) => ({ ...prevData, [name]: value }));
     }
   };
+  
 
   const handleContinue = async (e) => {
     e.preventDefault();

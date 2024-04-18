@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { setAuthenticatedUser, setAuthToken } from '../../utils/authService';
 import { getToken } from '../../utils/api';
-import LoadingIndicator from '../LoadingIndicator/LoadingIndicator'; // Import LoadingIndicator component
+import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
 
 import './loginmodal.css';
 
@@ -10,12 +10,12 @@ const LoginModal = ({ show, handleClose }) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    email: '',
+    username: '', // Changed from email to username
     password: '',
   });
 
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false); // State to track loading state
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,34 +25,34 @@ const LoginModal = ({ show, handleClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setLoading(true); // Set loading state to true when submitting
+    setLoading(true);
 
     try {
-      const response = await getToken(formData.email, formData.password);
+      const response = await getToken(formData.username, formData.password); // Changed email to username
 
       if (response && response.token) {
         setAuthenticatedUser({
-          email: formData.email,
+          username: formData.username, // Changed email to username
         });
 
         setAuthToken(response.token);
 
         navigate('/');
-        handleClose(); // Close the modal after successful login
+        handleClose();
       } else {
-        setError('Invalid email and/or password');
+        setError('Invalid username and/or password'); // Changed email to username
       }
     } catch (error) {
-      setError('Wrong Email/Password.');
+      setError('Wrong Username/Password.'); // Changed email to username
       console.error(error);
     } finally {
-      setLoading(false); // Set loading state back to false when request completes
+      setLoading(false);
     }
   };
 
   const handleOverlayClick = (e) => {
     if (e.target === e.currentTarget) {
-      handleClose(); // Close the modal if clicking outside the modal content
+      handleClose();
     }
   };
 
@@ -65,12 +65,12 @@ const LoginModal = ({ show, handleClose }) => {
           <h2>Login</h2>
           <form onSubmit={handleSubmit}>
             <label>
-              Email:
+              Username: {/* Changed from Email to Username */}
               <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
+                type="text" // Changed from email to text
+                name="username" // Changed from email to username
+                placeholder="Username" // Changed from Email to Username
+                value={formData.username}
                 onChange={handleChange}
               />
             </label>
@@ -86,9 +86,9 @@ const LoginModal = ({ show, handleClose }) => {
               />
             </label>
             <br />
-            <button type="submit" disabled={loading}>Login</button> {/* Disable button when loading */}
+            <button type="submit" disabled={loading}>Login</button>
           </form>
-          {loading && <LoadingIndicator />} {/* Show LoadingIndicator when loading */}
+          {loading && <LoadingIndicator />}
           {error && <p className="error-message">{error}</p>}
           <p>
             Don't have an account? <Link to="/signup">Sign up here</Link>.
