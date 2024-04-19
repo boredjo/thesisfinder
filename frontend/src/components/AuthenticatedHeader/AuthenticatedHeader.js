@@ -97,7 +97,7 @@ const AuthenticatedHeader = ({ authToken }) => {
         <input
           className="main-header-search"
           type="text"
-          placeholder="Search for research ideas, sponsorships, people, etc."
+          placeholder="Search for research ideas"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyPress={handleSearch}

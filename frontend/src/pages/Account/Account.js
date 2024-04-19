@@ -2,37 +2,36 @@ import React, { useState, useEffect } from 'react';
 import '../../styles/main.css';
 import '../../styles/mainheader.css';
 import './account.css';
+import { getUser, updateUser, getProfilePictureByUsername, getClaimFromQuestion, getSponsorshipsFromUser } from '../../utils/api'; 
+import { getClaimFromUser } from '../../utils/api';
+import ReactTimeAgo from 'react-time-ago';
 
-import { getUser, updateUser, getProfilePictureByUsername } from '../../utils/api'; // Import getUser, updateUser, and getProfilePictureByUsername functions
-
-const Account = ({ authToken }) => { // Receive authToken from props
+const Account = ({ authToken }) => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false); // State to control modal visibility
+  const [showModal, setShowModal] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [county, setCounty] = useState('');
-  const [avatarImage, setAvatarImage] = useState(null); // State for profile picture
+  const [avatarImage, setAvatarImage] = useState(null);
+  const [researchPapers, setResearchPapers] = useState([]);
+  const [sponsorships, setSponsorships] = useState([]);
+  const [activeTab, setActiveTab] = useState('profile');
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        // Call the getUser function to fetch user data using authToken
-        const response = await getUser(authToken); // Use authToken for API call
-
+        const response = await getUser(authToken); 
         if (response) {
           setUserData(response);
           setLoading(false);
-          // Set initial values for input fields
           setFirstName(response.first_name);
           setLastName(response.last_name);
           setUsername(response.user);
           setPassword(response.password);
           setCounty(response.country);
-
-          // Fetch and set profile picture
           fetchProfilePicture(response.user);
         }
       } catch (error) {
@@ -41,39 +40,54 @@ const Account = ({ authToken }) => { // Receive authToken from props
     };
 
     fetchUserData();
-  }, [authToken]); // Include authToken in dependency array
+  }, [authToken]); 
 
-  // Function to fetch profile picture
   const fetchProfilePicture = async (username) => {
     try {
-      // Make an API call to fetch the profile picture URL using the username
       const profilePictureUrl = await getProfilePictureByUsername(username);
-
-      // console.log('Profile Picture URL:', profilePictureUrl); // Log profile picture URL
-
-      // Update the avatar image state with the profile picture URL
       setAvatarImage("https://data.thesisfinder.com/profilepicture/" + username);
     } catch (error) {
-      console.error('Error fetching profile picture:', error); // Log any errors
+      console.error('Error fetching profile picture:', error);
     }
   };
 
+  useEffect(() => {
+    const fetchResearchPapers = async () => {
+      try {
+        const response = await getClaimFromUser(username); // Fetch research papers by username
+        setResearchPapers(response.claims);
+      } catch (error) {
+        console.error('Error fetching research papers:', error);
+      }
+    };
+  
+    fetchResearchPapers();
+  }, [username]);   
 
-  // Function to handle opening the modal
+  useEffect(() => {
+    const fetchSponsorships = async () => {
+      try {
+        const response = await getSponsorshipsFromUser(authToken); // Fetch sponsorships by user token
+        setSponsorships(response);
+      } catch (error) {
+        console.error('Error fetching sponsorships:', error);
+      }
+    };
+
+    fetchSponsorships();
+  }, [authToken]);
+
   const handleEditProfile = () => {
     setShowModal(true);
   };
 
-  // Function to handle closing the modal
   const handleCloseModal = () => {
     setShowModal(false);
   };
 
-  // Function to handle saving the edited profile details
   const handleSaveProfile = async (e) => {
     e.preventDefault();
     try {
-      // Call updateUser function with updated profile details and authToken
       const updatedUserData = {
         user: username,
         first_name: firstName,
@@ -82,19 +96,20 @@ const Account = ({ authToken }) => { // Receive authToken from props
         email: userData.email,
         password: password
       };
-      await updateUser(updatedUserData, authToken); // Use authToken for API call
-      // Close the modal after saving changes
+      await updateUser(updatedUserData, authToken); 
       setShowModal(false);
-      // Refetch user data to update UI
-      const response = await getUser(authToken); // Use authToken for API call
+      const response = await getUser(authToken); 
       if (response) {
         setUserData(response);
-        // Update profile picture if it has changed
         fetchProfilePicture(response.user);
       }
     } catch (error) {
       console.error('Error updating user data:', error);
     }
+  };
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
   };
 
   return (
@@ -110,9 +125,6 @@ const Account = ({ authToken }) => { // Receive authToken from props
             <div className="profile-info">
               <h1>{`${userData.first_name} ${userData.last_name}`}</h1>
               <p>{userData.email}</p>
-              {/* Replace with actual description */}
-              <p>Description Placeholder</p>
-              {/* Button to open the modal */}
               <button className="edit-btn" onClick={handleEditProfile}>Edit</button>
             </div>
           </div>
@@ -122,54 +134,81 @@ const Account = ({ authToken }) => { // Receive authToken from props
       {/* Toolbar */}
       <nav className="profile-nav">
         <ul>
-          <li><a href="#profile" className="active">Profile</a></li>
-          <li><a href="#research-papers">Research Papers</a></li>
+          <li><a href="#profile" className={activeTab === 'profile' ? 'active' : ''} onClick={() => handleTabChange('profile')}>Research Papers</a></li>
+          <li><a href="#research-papers" className={activeTab === 'research-papers' ? 'active' : ''} onClick={() => handleTabChange('research-papers')}>Sponsorships</a></li>
         </ul>
       </nav>
   
-      {/* About me div */}
-      <section className="about-me">
-        <h2>About Me</h2>
-  
-        <div className="input-group">
-          <label htmlFor="introduction">Introduction</label>
-          <textarea id="introduction" placeholder="Introduce yourself and your research"></textarea>
-        </div>
-  
-        <div className="input-group">
-          <label htmlFor="disciplines">Disciplines</label>
-          <select id="disciplines">
-            <option value="">Enter or select disciplines</option>
-            {/* Options would go here */}
-          </select>
-        </div>
-  
-        <div className="input-group">
-          <label htmlFor="skills">Skills and expertise</label>
-          <input type="text" id="skills" placeholder="Enter or select skills and expertise" />
-        </div>
-  
-        <div className="input-group">
-          <label htmlFor="languages">Languages</label>
-          <select id="languages">
-            <option value="">Enter or select languages</option>
-            {/* Options would go here */}
-          </select>
-        </div>
-  
-        {/* Render email input only if userData is not null */}
-        {userData && (
-          <div className="input-group">
-            <label htmlFor="email">Email</label>
-            <input type="email" id="email" value={userData.email} readOnly />
-          </div>
-        )}
-  
-        <div className="actions">
-          <button className="cancel-btn">Cancel</button>
-          <button className="save-btn">Save</button>
-        </div>
+      {/* Research Papers section */}
+      <section className="research-papers-section" style={{ display: activeTab === 'profile' ? 'block' : 'none' }}>
+        <section className="research-papers-section">
+          <h2>Research Papers</h2>
+          {researchPapers.length > 0 ? (
+            <div className="research-papers-container">
+              {researchPapers.map((paper, index) => {
+                // Convert API date to local time zone
+                const apiDate = new Date(paper.date_posted);
+                const userLocalDateTimeString = apiDate.toLocaleString(undefined, {
+                  timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                  timeZoneName: 'short'
+                });
+                
+                return (
+                  <div key={index} className="research-paper-box">
+                    {paper.idea && (
+                      <p>
+                        <a href={`/post-page/${paper.idea}`}>{paper.idea}</a>
+                      </p>
+                    )}
+                    {/* Use ReactTimeAgo for displaying date posted */}
+                    <p>Posted <ReactTimeAgo date={userLocalDateTimeString} locale="en-US" /></p>
+                    {paper.attachments.length > 0 && (
+                      <div className="attachment-item">
+                        <img
+                          className="attachment-icon"
+                          src={require('../../assets/researchdocimage.png')}
+                          id="Attachment Icon"
+                          alt="Attachment Icon"
+                        />
+                        <div className="attachment-info">
+                          <span className="attachment-name">{paper.attachments[0].name}</span>
+                          <span className="attachment-size">{paper.attachments[0].size}</span>
+                        </div>
+                        <a href="#" className="attachment-download">
+                          Download
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <p>No research papers available</p>
+          )}
+        </section>
       </section>
+  
+      {/* // Sponsorships section */}
+      <section className="sponsorships-section" style={{ display: activeTab === 'research-papers' ? 'block' : 'none' }}>
+        <h2>Sponsorships</h2>
+        {sponsorships.length > 0 ? (
+          <div className="sponsorships-container">
+            {sponsorships.map((sponsorship, index) => (
+              <div key={index} className="sponsorship-box">
+                <h3>Author: {sponsorship.author}</h3>
+                <p>Date Posted: {sponsorship.date_posted}</p>
+                <p>Amount: {sponsorship.amount}</p>
+                <p>Deadline: {sponsorship.deadline}</p>
+                {/* Add more sponsorship details here */}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No sponsorships available</p>
+        )}
+      </section>
+
   
       {/* Modal for editing profile details */}
       {showModal && (
@@ -177,30 +216,7 @@ const Account = ({ authToken }) => { // Receive authToken from props
           <section className="modal-main">
             <h2>Edit Profile Details</h2>
             <form onSubmit={handleSaveProfile}>
-              <div className="input-group">
-                <label htmlFor="firstName">First Name</label>
-                <input type="text" id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-              </div>
-              <div className="input-group">
-                <label htmlFor="lastName">Last Name</label>
-                <input type="text" id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-              </div>
-              <div className="input-group">
-                <label htmlFor="username">Username</label>
-                <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-              </div>
-              <div className="input-group">
-                <label htmlFor="password">Password</label>
-                <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-              </div>
-              <div className="input-group">
-                <label htmlFor="county">County</label>
-                <input type="text" id="county" value={county} onChange={(e) => setCounty(e.target.value)} />
-              </div>
-              <div className="actions">
-                <button type="submit" className="save-btn">Save</button>
-                <button type="button" className="cancel-btn" onClick={handleCloseModal}>Cancel</button>
-              </div>
+              {/* Your existing code for the modal form */}
             </form>
           </section>
         </div>

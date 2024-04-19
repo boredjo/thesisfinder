@@ -82,7 +82,7 @@
 .profile-nav li a:hover,
 .profile-nav li a:focus {
   border-bottom: 8px solid rgb(236, 54, 14);
-  padding-bottom: 0;
+  padding-bottom: 1;
 }
 
 .about-me {
