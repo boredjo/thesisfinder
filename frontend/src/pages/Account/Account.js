@@ -35,7 +35,7 @@ const Account = ({ authToken }) => {
           fetchProfilePicture(response.user);
         }
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        // console.error('Error fetching user data:', error);
       }
     };
 
@@ -47,7 +47,7 @@ const Account = ({ authToken }) => {
       const profilePictureUrl = await getProfilePictureByUsername(username);
       setAvatarImage("https://data.thesisfinder.com/profilepicture/" + username);
     } catch (error) {
-      console.error('Error fetching profile picture:', error);
+      // console.error('Error fetching profile picture:', error);
     }
   };
 
@@ -64,7 +64,7 @@ const Account = ({ authToken }) => {
         }));
         setResearchPapers(papers);
       } catch (error) {
-        console.error('Error fetching research papers:', error);
+        // console.error('Error fetching research papers:', error);
       }
     };
   
@@ -84,7 +84,7 @@ const Account = ({ authToken }) => {
         }));
         setSponsorships(sponsorshipsWithTitles);
       } catch (error) {
-        console.error('Error fetching sponsorships:', error);
+        // console.error('Error fetching sponsorships:', error);
       }
     };
   
@@ -154,72 +154,71 @@ const Account = ({ authToken }) => {
       </nav>
   
       {/* Research Papers section */}
-<section className="research-papers-section" style={{ display: activeTab === 'profile' ? 'block' : 'none' }}>
-  <h2>Currently Researching</h2>
-  {researchPapers.length > 0 ? (
-    <div className="research-papers-container">
-      {researchPapers.map((paper, index) => {
-        // Convert API date to local time zone
-        const apiDate = new Date(paper.date_posted);
-        const userLocalDateTimeString = apiDate.toLocaleString(undefined, {
-          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          timeZoneName: 'short'
-        });
-        
-        return (
-          <div key={index} className="research-paper-box">
-            {paper.title && (
-              <p><a href={`/post-page/${paper.idea}`}>{paper.title}</a></p>
-            )}
-            {/* Use ReactTimeAgo for displaying date posted */}
-            <p>Posted <ReactTimeAgo date={userLocalDateTimeString} locale="en-US" /></p>
-            {paper.attachments.length > 0 && (
-              <div className="attachment-item">
-                <img
-                  className="attachment-icon"
-                  src={require('../../assets/researchdocimage.png')}
-                  id="Attachment Icon"
-                  alt="Attachment Icon"
-                />
-                <div className="attachment-info">
-                  <span className="attachment-name">{paper.attachments[0].name}</span>
-                  <span className="attachment-size">{paper.attachments[0].size}</span>
+      <section className="research-papers-section" style={{ display: activeTab === 'profile' ? 'block' : 'none' }}>
+        <h2>Currently Researching</h2>
+        {researchPapers.length > 0 ? (
+          <div className="research-papers-container">
+            {researchPapers.map((paper, index) => {
+              // Convert API date to local time zone
+              const apiDate = new Date(paper.date_posted);
+              const userLocalDateTimeString = apiDate.toLocaleString(undefined, {
+                timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                timeZoneName: 'short'
+              });
+              
+              return (
+                <div key={index} className="research-paper-box">
+                  {paper.title && (
+                    <p><a href={`/post-page/${paper.idea}`}>{paper.title}</a></p>
+                  )}
+                  {/* Use ReactTimeAgo for displaying date posted */}
+                  <p>Posted <ReactTimeAgo date={userLocalDateTimeString} locale="en-US" /></p>
+                  {paper.attachments.length > 0 && (
+                    <div className="attachment-item">
+                      <img
+                        className="attachment-icon"
+                        src={require('../../assets/researchdocimage.png')}
+                        id="Attachment Icon"
+                        alt="Attachment Icon"
+                      />
+                      <div className="attachment-info">
+                        <span className="attachment-name">{paper.attachments[0].name}</span>
+                        <span className="attachment-size">{paper.attachments[0].size}</span>
+                      </div>
+                      <a href="#" className="attachment-download">
+                        Download
+                      </a>
+                    </div>
+                  )}
                 </div>
-                <a href="#" className="attachment-download">
-                  Download
-                </a>
-              </div>
-            )}
+              );
+            })}
           </div>
-        );
-      })}
-    </div>
-  ) : (
-    <p>Not actively researching</p>
-  )}
-</section>
+        ) : (
+          <p>Not actively researching</p>
+        )}
+      </section>
 
-{/* Sponsorships section */}
-<section className="sponsorships-section" style={{ display: activeTab === 'research-papers' ? 'block' : 'none' }}>
-  <h2>Sponsorships</h2>
-  {sponsorships.length > 0 ? (
-    <div className="sponsorships-container">
-      {sponsorships.map((sponsorship, index) => (
-        <div key={index} className="sponsorship-box">
-          {sponsorship.title && (
-            <p><a href={`/post-page/${sponsorship.idea}`}>{sponsorship.title}</a></p>
-          )}
-          <p>Sponsored {sponsorship.date_posted}</p>
-          <p>Amount: {sponsorship.amount}</p>
-          <p>Deadline: {sponsorship.deadline}</p>
-          {/* Add more sponsorship details here */}
-        </div>
-      ))}
-    </div>
-  ) : (
-    <p>No sponsorships available</p>
-  )}
-</section>
+      {/* Sponsorships section */}
+      <section className="sponsorships-section" style={{ display: activeTab === 'research-papers' ? 'block' : 'none' }}>
+        <h2>Sponsorships</h2>
+        {sponsorships.length > 0 ? (
+          <div className="sponsorships-container">
+            {sponsorships.map((sponsorship, index) => (
+              <div key={index} className="sponsorship-box">
+                {sponsorship.title && (
+                  <p><a href={`/post-page/${sponsorship.idea}`}>{sponsorship.title}</a></p>
+                )}
+                <p>Sponsored {sponsorship.date_posted}</p>
+                <p>Amount: {sponsorship.amount}</p>
+                <p>Deadline: {sponsorship.deadline}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>No sponsorships available</p>
+        )}
+      </section>
 
   
       {/* Modal for editing profile details */}
