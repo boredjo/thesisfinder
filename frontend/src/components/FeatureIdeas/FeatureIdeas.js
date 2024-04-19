@@ -44,7 +44,7 @@ const FeaturesIdeas = ({ ideas }) => {
               <p className="author">{idea.author}</p>
             </div>
             {/* Display the date in the user's local time zone */}
-            <p className="date">Date: <ReactTimeAgo date={userTimeZoneDate} locale="en-US"/></p>
+            <p className="date">Posted <ReactTimeAgo date={userTimeZoneDate} locale="en-US"/></p>
           </div>
         );
       })}
