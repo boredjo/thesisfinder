@@ -4,7 +4,7 @@ import { registerUser } from '../../utils/api';
 import { getToken } from '../../utils/api';
 import { setAuthenticatedUser, setAuthToken } from '../../utils/authService';
 import LoadingIndicator from '../../components/LoadingIndicator/LoadingIndicator'; // Import LoadingIndicator component
-
+import Select from 'react-select'; // Import react-select
 import './signup.css';
 
 const Signup = () => {
@@ -21,17 +21,9 @@ const Signup = () => {
 
   const [loading, setLoading] = useState(false); // State for loading indicator
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    // Additional validation for the 'country' field
-    if (name === 'country' && value.length > 2) {
-      // If the input length exceeds 2 characters, truncate it to the first 2 characters
-      setFormData((prevData) => ({ ...prevData, [name]: value.substring(0, 2) }));
-    } else {
-      // Otherwise, update the form data as usual
-      setFormData((prevData) => ({ ...prevData, [name]: value }));
-    }
+  const handleChange = (name, value) => {
+    // Update the form data with the selected value
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleContinue = async (e) => {
@@ -105,6 +97,13 @@ const Signup = () => {
     }
   };
 
+  // Options for the country dropdown
+  const countryOptions = [
+    { value: 'US', label: 'United States' },
+    { value: 'CA', label: 'Canada' },
+    // Add more country options as needed
+  ];
+
   return (
     <div className="main-container">
       <div className='header-container'>
@@ -124,7 +123,7 @@ const Signup = () => {
               name="user"
               placeholder='Username'
               value={formData.user}
-              onChange={handleChange}
+              onChange={(e) => handleChange('user', e.target.value)}
             />
           </label>
           <br />
@@ -135,7 +134,7 @@ const Signup = () => {
               name="first_name"
               placeholder='First Name'
               value={formData.first_name}
-              onChange={handleChange}
+              onChange={(e) => handleChange('first_name', e.target.value)}
             />
           </label>
           <br />
@@ -146,18 +145,17 @@ const Signup = () => {
               name="last_name"
               placeholder='Last Name'
               value={formData.last_name}
-              onChange={handleChange}
+              onChange={(e) => handleChange('last_name', e.target.value)}
             />
           </label>
           <br />
           <label>
             Country:
-            <input
-              type="text"
-              name="country"
-              placeholder='Country'
-              value={formData.country}
-              onChange={handleChange}
+            <Select
+              options={countryOptions}
+              value={countryOptions.find((option) => option.value === formData.country)}
+              onChange={(selectedOption) => handleChange('country', selectedOption.value)}
+              placeholder="Select Country"
             />
           </label>
           <br />
@@ -168,7 +166,7 @@ const Signup = () => {
               name="email"
               placeholder='Email'
               value={formData.email}
-              onChange={handleChange}
+              onChange={(e) => handleChange('email', e.target.value)}
             />
           </label>
           <br />
@@ -179,7 +177,7 @@ const Signup = () => {
               name="password"
               placeholder='Password (at least 8 characters long, one letter, number, and special character)'
               value={formData.password}
-              onChange={handleChange}
+              onChange={(e) => handleChange('password', e.target.value)}
             />
           </label>
           <br />

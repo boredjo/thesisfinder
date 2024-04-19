@@ -1,3 +1,7 @@
+/* @import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities'; */
+
 .content-container {
   display: flex;
   flex-direction: column;
@@ -17,16 +21,11 @@
   padding: 2em;
 }
 
-.header-text {
-  margin-bottom: 1em;
-}
-
 .header-section h2 {
   font-family: 'Noto Sans';
   font-size: 1.75em;
   font-weight: bold;
   padding: 1em;
-  text-align: center;
 }
 
 .header-section button {
@@ -39,11 +38,10 @@
   cursor: pointer;
   transition: background-color 0.2s;
   margin: 1em auto;
-  display: block;
+  display: inline-block;
 }
 .header-section button:hover {
   background-color: rgb(198, 47, 13);
-  text-decoration: none;
 }
 
 .main-section {
@@ -87,123 +85,36 @@
 
 @media only screen and (max-width: 600px) {
   .content-container #image-1 {
-/* <<<<<<< HEAD */
-    width: 50%;
-    /* height: auto;
-    margin-left: auto;
-    margin-right: auto; */
-/* =======
-    width: 50%;
->>>>>>> 2946619a5d17a9b935ace40559f4ac8d7ed0b23f */
+    width: 100%;
   }
 
   .header-section {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+    padding: 1em;
   }
 
-  .header-text {
-    text-align: center;
-  }
-
-/* <<<<<<< HEAD */
-  .header-section h2 {
-    font-family: 'Noto Sans';
-    font-size: 30px;
-    font-weight: bold;
-    margin-left: 5%;
-    margin-right: 5%;
-    padding: 20px;
-    text-align: auto;
-  }
-
-  .header-section button {
-    background-color: red;
-    color: #ffffff;
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-    width: 200px;
-    margin: 10px;
-  }
-
-  .main-section #image-2 {
-    width: 33%;
-    display: block;
-    height: auto;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .main-section h2 {
-    text-align: center;
-    font-weight: bold;
-    padding: 10px;
-  }
-
-  .main-section .explore-header p {
-    font-family: "Noto Sans";
-    text-align: center;
-    margin-left: 175px;
-    margin-right: 175px;
-    font-size: 30px;
-    padding: 20px;
-  }
-  
-  .main-section #search-ideas {
-    display: block;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 10px;
-  }
-/* /* ======= */
-  .content-container {
-    display: flex;
-/* >>>>>>> //2946619a5d17a9b935ace40559f4ac8d7ed0b23f */
-  }
-
-  .content-container #image-1,
-  .header-section h2,
-  .header-section button,
-  .main-section #image-2,
-  .main-section h2,
-  .main-section .explore-header p,
-  .main-section #search-ideas,
-  .main-section #section-divider {
-    width: auto;
-    margin: 0.5em auto;
-    padding: auto;
-  }
-/* <<<<<<< HEAD */
-
-  /* Responsive Design portion */
-  @media (min-width: 1080px) {
-    .content-container #image-1 {
-      width: 75%;
-      /* margin-right: 0; */
-    }
-
-    .header-section {
-      display:flex;
-    }
-
-    .content-container {
-      display:flex;
-    }
-  }
-
-  .main-section #search-ideas {
-    width: 500px;
-  }
   .header-section h2 {
     font-size: 1.5em;
   }
-}
-/* /* ======= */
-  
 
-/* >>>>>>> 2946619a5d17a9b935ace40559f4ac8d7ed0b23f */
+  .header-section button {
+    width: 100%;
+    margin: 1em auto;
+  }
+
+  .main-section #image-2 {
+    width: 80%;
+    max-width: 300px;
+  }
+
+  .main-section .explore-header p {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .main-section #search-ideas {
+    width: 90%;
+    max-width: 500px;
+    margin: 1em auto;
+    padding: 0.75em;
+  }
+}

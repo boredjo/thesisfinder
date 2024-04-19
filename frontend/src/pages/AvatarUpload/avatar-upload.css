@@ -8,7 +8,7 @@
   font-size: 26px;
   text-align: center;
   margin-top: 30px;
-  margin-bottom: 5px;
+  margin-bottom: 4%;
   margin-left: auto;
   margin-right: auto;
   width: 100%
@@ -48,6 +48,7 @@
 
 .upload-button {
   background-color: rgb(236, 54, 14);
+  margin-left: 10%;
   color: #ffffff;
 }
 
@@ -73,7 +74,7 @@
 
 .bottom-container hr {
   height: 2px;
-  background-color: #ececec;
+  background-color: #eee;
   margin: 20px auto;
   margin-top: 50px;
   margin-bottom: 20px;
