@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../../styles/main.css';
 import '../../styles/mainheader.css';
 import './account.css';
-import { getUser, updateUser, getProfilePictureByUsername, getClaimFromQuestion, getSponsorshipsFromUser } from '../../utils/api'; 
+import { getUser, updateUser, getProfilePictureByUsername, getIdeaDetails, getClaimFromQuestion, getSponsorshipsFromUser } from '../../utils/api'; 
 import { getClaimFromUser } from '../../utils/api';
 import ReactTimeAgo from 'react-time-ago';
 
@@ -55,27 +55,41 @@ const Account = ({ authToken }) => {
     const fetchResearchPapers = async () => {
       try {
         const response = await getClaimFromUser(username); // Fetch research papers by username
-        setResearchPapers(response.claims);
+        const papers = await Promise.all(response.claims.map(async (paper) => {
+          const ideaDetails = await getIdeaDetails(paper.idea, authToken);
+          return {
+            ...paper,
+            title: ideaDetails.title
+          };
+        }));
+        setResearchPapers(papers);
       } catch (error) {
         console.error('Error fetching research papers:', error);
       }
     };
   
     fetchResearchPapers();
-  }, [username]);   
-
+  }, [username, authToken]);   
+  
   useEffect(() => {
     const fetchSponsorships = async () => {
       try {
         const response = await getSponsorshipsFromUser(authToken); // Fetch sponsorships by user token
-        setSponsorships(response.sponsors); // Update sponsorships state with the sponsors array from the response
+        const sponsorshipsWithTitles = await Promise.all(response.sponsors.map(async (sponsorship) => {
+          const ideaDetails = await getIdeaDetails(sponsorship.idea, authToken);
+          return {
+            ...sponsorship,
+            title: ideaDetails.title
+          };
+        }));
+        setSponsorships(sponsorshipsWithTitles);
       } catch (error) {
         console.error('Error fetching sponsorships:', error);
       }
     };
-
+  
     fetchSponsorships();
-  }, [authToken]);
+  }, [authToken]);  
 
   const handleEditProfile = () => {
     setShowModal(true);
@@ -140,72 +154,73 @@ const Account = ({ authToken }) => {
       </nav>
   
       {/* Research Papers section */}
-      <section className="research-papers-section" style={{ display: activeTab === 'profile' ? 'block' : 'none' }}>
-        <section className="research-papers-section">
-          <h2>Currently Researching</h2>
-          {researchPapers.length > 0 ? (
-            <div className="research-papers-container">
-              {researchPapers.map((paper, index) => {
-                // Convert API date to local time zone
-                const apiDate = new Date(paper.date_posted);
-                const userLocalDateTimeString = apiDate.toLocaleString(undefined, {
-                  timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                  timeZoneName: 'short'
-                });
-                
-                return (
-                  <div key={index} className="research-paper-box">
-                    {paper.idea && (
-                      <p><a href={`/post-page/${paper.idea}`}>{paper.idea}</a></p>
-                    )}
-                    {/* Use ReactTimeAgo for displaying date posted */}
-                    <p>Posted <ReactTimeAgo date={userLocalDateTimeString} locale="en-US" /></p>
-                    {paper.attachments.length > 0 && (
-                      <div className="attachment-item">
-                        <img
-                          className="attachment-icon"
-                          src={require('../../assets/researchdocimage.png')}
-                          id="Attachment Icon"
-                          alt="Attachment Icon"
-                        />
-                        <div className="attachment-info">
-                          <span className="attachment-name">{paper.attachments[0].name}</span>
-                          <span className="attachment-size">{paper.attachments[0].size}</span>
-                        </div>
-                        <a href="#" className="attachment-download">
-                          Download
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <p>Not actively researching</p>
-          )}
-        </section>
-      </section>
-  
-      {/* Sponsorships section */}
-      <section className="sponsorships-section" style={{ display: activeTab === 'research-papers' ? 'block' : 'none' }}>
-        <h2>Sponsorships</h2>
-        {sponsorships.length > 0 ? (
-          <div className="sponsorships-container">
-            {sponsorships.map((sponsorship, index) => (
-              <div key={index} className="sponsorship-box">
-                <p><a href={`/post-page/${sponsorship.idea}`}>{sponsorship.idea}</a></p>
-                <p>Sponsored {sponsorship.date_posted}</p>
-                <p>Amount: {sponsorship.amount}</p>
-                <p>Deadline: {sponsorship.deadline}</p>
-                {/* Add more sponsorship details here */}
+<section className="research-papers-section" style={{ display: activeTab === 'profile' ? 'block' : 'none' }}>
+  <h2>Currently Researching</h2>
+  {researchPapers.length > 0 ? (
+    <div className="research-papers-container">
+      {researchPapers.map((paper, index) => {
+        // Convert API date to local time zone
+        const apiDate = new Date(paper.date_posted);
+        const userLocalDateTimeString = apiDate.toLocaleString(undefined, {
+          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          timeZoneName: 'short'
+        });
+        
+        return (
+          <div key={index} className="research-paper-box">
+            {paper.title && (
+              <p><a href={`/post-page/${paper.idea}`}>{paper.title}</a></p>
+            )}
+            {/* Use ReactTimeAgo for displaying date posted */}
+            <p>Posted <ReactTimeAgo date={userLocalDateTimeString} locale="en-US" /></p>
+            {paper.attachments.length > 0 && (
+              <div className="attachment-item">
+                <img
+                  className="attachment-icon"
+                  src={require('../../assets/researchdocimage.png')}
+                  id="Attachment Icon"
+                  alt="Attachment Icon"
+                />
+                <div className="attachment-info">
+                  <span className="attachment-name">{paper.attachments[0].name}</span>
+                  <span className="attachment-size">{paper.attachments[0].size}</span>
+                </div>
+                <a href="#" className="attachment-download">
+                  Download
+                </a>
               </div>
-            ))}
+            )}
           </div>
-        ) : (
-          <p>No sponsorships available</p>
-        )}
-      </section>
+        );
+      })}
+    </div>
+  ) : (
+    <p>Not actively researching</p>
+  )}
+</section>
+
+{/* Sponsorships section */}
+<section className="sponsorships-section" style={{ display: activeTab === 'research-papers' ? 'block' : 'none' }}>
+  <h2>Sponsorships</h2>
+  {sponsorships.length > 0 ? (
+    <div className="sponsorships-container">
+      {sponsorships.map((sponsorship, index) => (
+        <div key={index} className="sponsorship-box">
+          {sponsorship.title && (
+            <p><a href={`/post-page/${sponsorship.idea}`}>{sponsorship.title}</a></p>
+          )}
+          <p>Sponsored {sponsorship.date_posted}</p>
+          <p>Amount: {sponsorship.amount}</p>
+          <p>Deadline: {sponsorship.deadline}</p>
+          {/* Add more sponsorship details here */}
+        </div>
+      ))}
+    </div>
+  ) : (
+    <p>No sponsorships available</p>
+  )}
+</section>
+
   
       {/* Modal for editing profile details */}
       {showModal && (
