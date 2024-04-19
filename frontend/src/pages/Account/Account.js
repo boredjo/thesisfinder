@@ -17,7 +17,7 @@ const Account = ({ authToken }) => {
   const [county, setCounty] = useState('');
   const [avatarImage, setAvatarImage] = useState(null);
   const [researchPapers, setResearchPapers] = useState([]);
-  const [sponsorships, setSponsorships] = useState([]);
+  const [sponsorships, setSponsorships] = useState([]); // Initialize sponsorships state as an empty array
   const [activeTab, setActiveTab] = useState('profile');
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const Account = ({ authToken }) => {
     const fetchSponsorships = async () => {
       try {
         const response = await getSponsorshipsFromUser(authToken); // Fetch sponsorships by user token
-        setSponsorships(response);
+        setSponsorships(response.sponsors); // Update sponsorships state with the sponsors array from the response
       } catch (error) {
         console.error('Error fetching sponsorships:', error);
       }
@@ -134,7 +134,7 @@ const Account = ({ authToken }) => {
       {/* Toolbar */}
       <nav className="profile-nav">
         <ul>
-          <li><a href="#profile" className={activeTab === 'profile' ? 'active' : ''} onClick={() => handleTabChange('profile')}>Research Papers</a></li>
+          <li><a href="#profile" className={activeTab === 'profile' ? 'active' : ''} onClick={() => handleTabChange('profile')}>Currently Researching</a></li>
           <li><a href="#research-papers" className={activeTab === 'research-papers' ? 'active' : ''} onClick={() => handleTabChange('research-papers')}>Sponsorships</a></li>
         </ul>
       </nav>
@@ -142,7 +142,7 @@ const Account = ({ authToken }) => {
       {/* Research Papers section */}
       <section className="research-papers-section" style={{ display: activeTab === 'profile' ? 'block' : 'none' }}>
         <section className="research-papers-section">
-          <h2>Research Papers</h2>
+          <h2>Currently Researching</h2>
           {researchPapers.length > 0 ? (
             <div className="research-papers-container">
               {researchPapers.map((paper, index) => {
@@ -156,9 +156,7 @@ const Account = ({ authToken }) => {
                 return (
                   <div key={index} className="research-paper-box">
                     {paper.idea && (
-                      <p>
-                        <a href={`/post-page/${paper.idea}`}>{paper.idea}</a>
-                      </p>
+                      <p><a href={`/post-page/${paper.idea}`}>{paper.idea}</a></p>
                     )}
                     {/* Use ReactTimeAgo for displaying date posted */}
                     <p>Posted <ReactTimeAgo date={userLocalDateTimeString} locale="en-US" /></p>
@@ -184,20 +182,20 @@ const Account = ({ authToken }) => {
               })}
             </div>
           ) : (
-            <p>No research papers available</p>
+            <p>Not actively researching</p>
           )}
         </section>
       </section>
   
-      {/* // Sponsorships section */}
+      {/* Sponsorships section */}
       <section className="sponsorships-section" style={{ display: activeTab === 'research-papers' ? 'block' : 'none' }}>
         <h2>Sponsorships</h2>
         {sponsorships.length > 0 ? (
           <div className="sponsorships-container">
             {sponsorships.map((sponsorship, index) => (
               <div key={index} className="sponsorship-box">
-                <h3>Author: {sponsorship.author}</h3>
-                <p>Date Posted: {sponsorship.date_posted}</p>
+                <p><a href={`/post-page/${sponsorship.idea}`}>{sponsorship.idea}</a></p>
+                <p>Sponsored {sponsorship.date_posted}</p>
                 <p>Amount: {sponsorship.amount}</p>
                 <p>Deadline: {sponsorship.deadline}</p>
                 {/* Add more sponsorship details here */}
@@ -208,7 +206,6 @@ const Account = ({ authToken }) => {
           <p>No sponsorships available</p>
         )}
       </section>
-
   
       {/* Modal for editing profile details */}
       {showModal && (
