@@ -51,9 +51,10 @@
 .profile-option-button,
 .submit-option-button {
   display: block;
-  width: 100%;
   padding: 10px;
-  background-color: #f5f5f5;
+  width: 100%;
+  background-color: red;
+  color: white;
   border: none;
   border-radius: 5px;
   margin-bottom: 10px;
@@ -63,5 +64,4 @@
 
 .profile-option-button:hover,
 .submit-option-button:hover {
-  background-color: #e0e0e0;
 }

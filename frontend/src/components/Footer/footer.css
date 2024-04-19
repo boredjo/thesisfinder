@@ -1,3 +1,5 @@
+/* 
+
 .main-footer {
     position: fixed;
     bottom: 0;
@@ -7,6 +9,6 @@
     color: #555;
     background-color: white;
     font-size: 14px;
-    border-top: 1px solid #ccc; /* Add a 1px solid border at the top */
-    margin-right: 10px;
+    border-top: 1px  #ccc; 
 }
+ */

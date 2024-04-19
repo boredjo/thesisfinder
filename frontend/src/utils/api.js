@@ -108,7 +108,7 @@ const updateUser = (userData, token) => {
 // Get Featured Ideas API request
 const getFeaturedIdeas = () => {
   return makeRequest(
-    '/idea/featured/11',
+    '/idea/featured/100',
     'GET',
     { 'Content-Type': 'application/json'}
   );

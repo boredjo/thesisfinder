@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../../utils/api';
 import { getToken } from '../../utils/api';
 import { setAuthenticatedUser, setAuthToken } from '../../utils/authService';
+import { countryOptions } from '../../data/countryData';
 import LoadingIndicator from '../../components/LoadingIndicator/LoadingIndicator'; // Import LoadingIndicator component
 import Select from 'react-select'; // Import react-select
 import './signup.css';
@@ -96,13 +97,6 @@ const Signup = () => {
       setLoading(false);
     }
   };
-
-  // Options for the country dropdown
-  const countryOptions = [
-    { value: 'US', label: 'United States' },
-    { value: 'CA', label: 'Canada' },
-    // Add more country options as needed
-  ];
 
   return (
     <div className="main-container">
