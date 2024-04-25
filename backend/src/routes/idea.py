@@ -40,7 +40,7 @@ def get_featured_ideas(cursor:cursor, n=5):
 @idea_blueprint.route('/search/<path:query>', methods=['GET'])
 @util_db()
 def get_search_ideas(cursor:cursor, query:str):
-    data = Idea.get_serach(5, cursor)
+    data = Idea.get_serach(5, query, cursor)
     return jsonify(ideas=[
         {
             "id" : idea.id,

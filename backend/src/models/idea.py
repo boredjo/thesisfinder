@@ -104,13 +104,13 @@ class Idea:
             data.append(idea)
         return data
     
-    def get_serach(n, cursor):
+    def get_serach(n, query, cursor):
         data = []
         cursor.execute(
             """
-            SELECT title, author, tag1, tag2, tag3, tag4, tag5, date_posted, hash FROM Ideas ORDER BY date_posted DESC LIMIT %s ;
+            SELECT title, author, tag1, tag2, tag3, tag4, tag5, date_posted, hash FROM Ideas LIKE '%' + %s + '%' ORDER BY date_posted DESC LIMIT %s ;
             """
-            , [n]
+            , [query, n]
         )
         for _ in range(n):
             row = cursor.fetchone()
