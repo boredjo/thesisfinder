@@ -70,6 +70,7 @@ const AuthenticatedHeader = ({ authToken }) => {
   };
 
   const handleYourResearchPapers = () => {
+    navigate("/account"); // Navigate to /account route
     closeModal();
   };
 

@@ -13,7 +13,8 @@ import PostPage from './pages/PostPage/PostPage';
 import Account from './pages/Account/Account';
 import Submit from './pages/Submit/Submit';
 import ideas from './data/ideasData.js';
-import { getAuthToken } from './utils/authService';
+import { clearAuthenticatedUser, getAuthToken } from './utils/authService';
+import { getUser } from './utils/api.js';
 import { Button, Flex } from 'antd';
 
 const App = () => {
@@ -32,7 +33,6 @@ const App = () => {
     // Set up an interval to check for changes in localStorage
     const intervalId = setInterval(() => {
       const storedToken = getStoredAuthToken();
-      console.log(storedToken)
       if (storedToken !== authToken) {
         setAuthToken(storedToken);
       }
@@ -42,12 +42,31 @@ const App = () => {
     return () => clearInterval(intervalId);
   }, []);
 
+  useEffect(() => {
+    const checkUserValidity = async () => {
+      try {
+        if (authToken) {
+          await getUser(authToken);
+        }
+      } catch (error) {
+        // Always log out the user on error
+        clearAuthenticatedUser();
+        setAuthToken(null);
+        localStorage.removeItem('authToken');
+        window.location.reload(); // Refresh the page
+      }
+    };
+  
+    checkUserValidity();
+  }, [authToken]);  
+
   const handleLogin = (token) => {
     setAuthToken(token);
     localStorage.setItem('authToken', token);
   };
 
   const handleLogout = () => {
+    clearAuthenticatedUser();
     setAuthToken(null);
     localStorage.removeItem('authToken');
   };
