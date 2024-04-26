@@ -41,10 +41,6 @@ tags | str[] | Tags accociated with the idea. There can be no more than 5 tags.
 
 ## Search for ideas
 
-<aside class="notice">
-This endpoint is not fully implemented and returns the same random result as `/idea/featured`
-</aside>
-
 > you can send this anonmously
 
 ```shell

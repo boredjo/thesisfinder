@@ -16,26 +16,6 @@ curl --location 'https://api.thesisfinder.com/login/' \
 }'
 ```
 
-```javascript
-var request = require('request');
-var options = {
-  'method': 'POST',
-  'url': 'https://data.thesisfinder.com/login/',
-  'headers': {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    "user": "testuser",
-    "password": "test123"
-  })
-
-};
-request(options, function (error, response) {
-  if (error) throw new Error(error);
-  console.log(response.body);
-});
-```
-
 > The above command returns JSON structured like this:
 
 ```json
