@@ -317,40 +317,6 @@ const PostPage = ({ authToken }) => {
                     <h2>Comments</h2>
                   </section>
                 )} */}
-                {selectedTab === 'research-papers' && (
-                  <section id="research-papers">
-                    <h2>Research Papers</h2>
-                    {researchPapers.length > 0 ? (
-                      <div className="research-papers-container">
-                        {researchPapers.map((paper, index) => (
-                          <div key={index} className="research-paper-box">
-                            <h3>Author: {paper.author}</h3>
-                            <p>Date Posted: {paper.date_posted}</p>
-                            {paper.attachments.length > 0 && (
-                              <div className="attachment-item">
-                                <img
-                                  className="attachment-icon"
-                                  src={require('../../assets/researchdocimage.png')}
-                                  id="Attachment Icon"
-                                  alt="Attachment Icon"
-                                />
-                                <div className="attachment-info">
-                                  <span className="attachment-name">{paper.attachments[0].name}</span>
-                                  <span className="attachment-size">{paper.attachments[0].size}</span>
-                                </div>
-                                <a href="#" className="attachment-download">
-                                  Download
-                                </a>
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <p>No research papers available</p>
-                    )}
-                  </section>
-                )}
                 {selectedTab === 'sponsors' && (
                   <section id="sponsors">
                     <h2>Sponsors</h2>
@@ -427,7 +393,7 @@ const PostPage = ({ authToken }) => {
               </div>
               <div className="input-group">
                 <label htmlFor="duration">Deadline</label>
-                <input type="text" id="duration" name="duration" placeholder='Example: 2024-02-24' value={sponsorFormData.duration} onChange={handleSponsorFormChange} />
+                <input type="date" id="duration" name="duration" placeholder='Example: 2024-02-24' value={sponsorFormData.duration} onChange={handleSponsorFormChange} />
               </div>
               <div className="actions">
                 <button type="submit" className="save-btn">Submit</button>
