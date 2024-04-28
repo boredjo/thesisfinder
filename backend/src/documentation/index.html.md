@@ -1,5 +1,5 @@
 ---
-title: ThesisFinder API Reference v0.7.0
+title: ThesisFinder API Reference v1.0.0
 
 language_tabs: # must be one of https://github.com/rouge-ruby/rouge/wiki/List-of-supported-languages-and-lexers
   - shell
@@ -32,4 +32,4 @@ meta:
 
 # Introduction
 
-Thesisfinder API! Work in progress. V0.6.5
+Thesisfinder API! Work in progress. V1.0.0
