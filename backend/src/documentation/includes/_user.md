@@ -7,7 +7,7 @@ This endpoint uses the auth middleware. Request can be send anonmously
 </aside>
 
 ```shell
-curl --location --request GET 'https://api.thesisfinder.com/user/' \
+curl --location --request GET 'https://data.thesisfinder.com/user/' \
 --header 'Content-Type: application/json' \
 --header 'Token: tokentokentoken' \
 ```
@@ -47,7 +47,7 @@ This endpoint parses for `application/json`
 > this has to be sent anonymously
 
 ```shell
-curl --location 'https://api.thesisfinder.com/user/' \
+curl --location 'https://data.thesisfinder.com/user/' \
 --header 'Content-Type: application/json' \
 --data-raw '{
 	"user": "username",
@@ -88,7 +88,7 @@ This endpoint parses for `application/json`.
 > this also uses the POST-method
 
 ```shell
-curl --location 'https://api.thesisfinder.com/user/' \
+curl --location 'https://data.thesisfinder.com/user/' \
 --header 'Content-Type: application/json' \
 --header 'Token: tokentokentoken' \
 --data-raw '{
@@ -130,7 +130,7 @@ This endpoint uses the auth middleware. Request can not be send anonymously.
 > this has to be sent authenticated
 
 ```shell
-curl --location --request DELETE 'https://api.thesisfinder.com/user/' \
+curl --location --request DELETE 'https://data.thesisfinder.com/user/' \
 --header 'Content-Type: application/json' \
 --header 'Token: tokentokentoken'
 ```

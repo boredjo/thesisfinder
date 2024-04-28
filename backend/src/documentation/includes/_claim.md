@@ -14,7 +14,7 @@ This endpoint parses for `application/json`
 > You need to be authentiacted to perform this action
 
 ```shell
-curl --location  'https://api.thesisfinder.com/claim/' \
+curl --location  'https://data.thesisfinder.com/claim/' \
 --header 'Token: tokentokentoken' \
 --data-raw '{
 		"idea": "some idea hash"
@@ -36,7 +36,7 @@ Code | Message | Explaination
 ## Get claims from User
 
 ```shell
-curl --location --request GET 'https://api.thesisfinder.com/claim/user/username' 
+curl --location --request GET 'https://data.thesisfinder.com/claim/user/username' 
 ```
 > The above command returns JSON that contains a list of five results structured like this:
 
@@ -76,7 +76,7 @@ Code | Message | Explaination
 ## Get claims from Idea
 
 ```shell
-curl --location --request GET 'https://api.thesisfinder.com/claims/idea/ideaid' 
+curl --location --request GET 'https://data.thesisfinder.com/claims/idea/ideaid' 
 ```
 > The above command returns JSON that contains a list of five results structured like this:
 
@@ -113,7 +113,7 @@ To delete a claim, simply sent an authenticated `DELETE` request
 > You need to be authentiacted to perform this action
 
 ```shell
-curl --location --request DELETE 'https://api.thesisfinder.com/claim/ideaid' \
+curl --location --request DELETE 'https://data.thesisfinder.com/claim/ideaid' \
 --header 'Token: tokentokentoken' 
 ```
 

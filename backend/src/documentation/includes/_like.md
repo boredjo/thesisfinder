@@ -1,10 +1,6 @@
 # Like
 
-<aside class="notice">
-This entire route is not implemented.
-</aside>
-
-Likes are used for the email newsletter.
+Likes will be used for the email newsletter.
 
 ## Like an idea
 
@@ -18,7 +14,7 @@ This endpoint parses for `application/json`
 > You need to be authentiacted to perform this action
 
 ```shell
-curl --location  'https://api.thesisfinder.com/like/' \
+curl --location  'https://data.thesisfinder.com/like/' \
 --header 'Token: tokentokentoken' \
 --data-raw '{
 		"idea": "some idea hash"
@@ -53,7 +49,7 @@ This endpoint uses the auth middleware. Request cannot be send anonymouly
 </aside>
 
 ```shell
-curl --location --request GET 'https://api.thesisfinder.com/like/user/'\
+curl --location --request GET 'https://data.thesisfinder.com/like/user/'\
 --header 'Token: tokentokentoken' 
 ```
 > The above command returns JSON that contains a list all liked ideas structured like this:
@@ -103,7 +99,7 @@ This endpoint uses the auth middleware. Request cannot be send anonymouly
 > You need to be authentiacted to perform this action
 
 ```shell
-curl --location --request GET 'https://api.thesisfinder.com/like/ideid' \
+curl --location --request GET 'https://data.thesisfinder.com/like/ideid' \
 --header 'Token: tokentokentoken' \
 ```
 

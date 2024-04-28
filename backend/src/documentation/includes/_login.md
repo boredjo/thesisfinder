@@ -8,7 +8,7 @@ This endpoint parses for `application/json`
 
 
 ```shell
-curl --location 'https://api.thesisfinder.com/login/' \
+curl --location 'https://data.thesisfinder.com/login/' \
 --header 'Content-Type: application/json' \
 --data-raw '{
 	"user": "username",

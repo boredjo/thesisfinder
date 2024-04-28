@@ -14,7 +14,7 @@ To sponsor an idea, you need to send a post request with the sponsor amount an o
 
 
 ```shell
-curl --location 'https://api.thesisfinder.com/sponsor/' \
+curl --location 'https://data.thesisfinder.com/sponsor/' \
 --header 'Content-Type: application/json' \
 --header 'Token: tokentokentoken' \
 --data-raw '{
@@ -51,7 +51,7 @@ Code | Message | Explaination
 ## Get Sponsorhip details
 
 ```shell
-curl --location --request GET 'https://api.thesisfinder.com/sponsor/sponsorshipid' 
+curl --location --request GET 'https://data.thesisfinder.com/sponsor/sponsorshipid' 
 ```
 > The above command returns JSON that contains a list of five results structured like this:
 
@@ -98,7 +98,7 @@ This endpoint uses the auth middleware. Request cannot be send anonymouly
 
 
 ```shell
-curl --location --request GET 'https://api.thesisfinder.com/sponsor/user/' \
+curl --location --request GET 'https://data.thesisfinder.com/sponsor/user/' \
 --header 'Token: tokentokentoken'
 ```
 > The above command returns JSON that contains a list of results structured like this:
@@ -136,7 +136,7 @@ amount | float | The amount of the price money in USD
 
 
 ```shell
-curl --location --request GET 'https://api.thesisfinder.com/sponsor/user/username' 
+curl --location --request GET 'https://data.thesisfinder.com/sponsor/user/username' 
 ```
 > The above command returns JSON that contains a list of results structured like this:
 
@@ -178,7 +178,7 @@ Code | Message | Explaination
 ## Get Sponsorhips for ides
 
 ```shell
-curl --location --request GET 'https://api.thesisfinder.com/sponsor/idea/ideaid' 
+curl --location --request GET 'https://data.thesisfinder.com/sponsor/idea/ideaid' 
 ```
 > The above command returns JSON that contains a list of results structured like this:
 
@@ -226,7 +226,7 @@ To delete a sponsoring, simply sent an authenticated `DELETE` request
 > You need to be authentiacted as the author to perform this action
 
 ```shell
-curl --location --request DELETE 'https://api.thesisfinder.com/sponsor/sponsorship_id' \
+curl --location --request DELETE 'https://data.thesisfinder.com/sponsor/sponsorship_id' \
 --header 'Token: tokentokentoken' 
 ```
 ### Parameters

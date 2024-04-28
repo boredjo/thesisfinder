@@ -7,7 +7,7 @@ Ideas have a hash value as id. The title has to be unique and not longer than 20
 > you can send this anonmously
 
 ```shell
-curl --location --request GET 'https://api.thesisfinder.com/idea/featured/n' 
+curl --location --request GET 'https://data.thesisfinder.com/idea/featured/n' 
 ```
 > The above command returns JSON that contains a list of five results structured like this:
 
@@ -25,7 +25,7 @@ curl --location --request GET 'https://api.thesisfinder.com/idea/featured/n'
 	]
 }
 ```
-> To get more details send a request to `https://api.thesisfinder.com/idea/details`
+> To get more details send a request to `https://data.thesisfinder.com/idea/details`
 
 This endpoint gives a list 5 questions, meant to be displayed at the featured idea page
 
@@ -44,7 +44,7 @@ tags | str[] | Tags accociated with the idea. There can be no more than 5 tags.
 > you can send this anonmously
 
 ```shell
-curl --location --request GET 'https://api.thesisfinder.com/idea/search/query' 
+curl --location --request GET 'https://data.thesisfinder.com/idea/search/query' 
 ```
 > The above command returns JSON that contains a list of five results structured like this:
 
@@ -62,7 +62,7 @@ curl --location --request GET 'https://api.thesisfinder.com/idea/search/query'
 	]
 }
 ```
-> To get more details send a request to `https://api.thesisfinder.com/idea/details`
+> To get more details send a request to `https://data.thesisfinder.com/idea/details`
 
 
 ### Parameters
@@ -86,7 +86,7 @@ Code | Message | Explaination
 > This method requires the idea id to look up the details of the question
 
 ```shell
-curl --location --request GET 'https://api.thesisfinder.com/idea/details/id' 
+curl --location --request GET 'https://data.thesisfinder.com/idea/details/id' 
 ```
 > The above command returns JSON that contains a list of five results structured like this:
 
@@ -131,7 +131,7 @@ This endpoint is not implemented.
 > you can send this anonmously
 
 ```shell
-curl --location --request GET 'https://api.thesisfinder.com/idea/recommend/ideaid' 
+curl --location --request GET 'https://data.thesisfinder.com/idea/recommend/ideaid' 
 ```
 > The above command returns JSON that contains a list of five results structured like this:
 
@@ -149,7 +149,7 @@ curl --location --request GET 'https://api.thesisfinder.com/idea/recommend/ideai
 	]
 }
 ```
-> To get more details send a request to `https://api.thesisfinder.com/idea/details`
+> To get more details send a request to `https://data.thesisfinder.com/idea/details`
 
 This endpoint gives a list 5 questions that are most closly related to the given idea.
 
@@ -174,7 +174,7 @@ This endpoint parses for `application/json`.
 > This is how a post request should be structured
 
 ```shell
-curl --location 'https://api.thesisfinder.com/idea/' \
+curl --location 'https://data.thesisfinder.com/idea/' \
 --header 'Content-Type: application/json' \
 --data-raw '{
 	"title": "Exploring Sustainable Urban Agriculture",
@@ -219,7 +219,7 @@ This endpoint parses for `application/json`.
 > You need to be authentiacted as the author to perform this action
 
 ```shell
-curl --location 'https://api.thesisfinder.com/idea/id' \
+curl --location 'https://data.thesisfinder.com/idea/id' \
 --header 'Content-Type: application/json' \
 --data-raw '{
 	"tags":["Urban Agriculture", "Sustainability", "Food security"],
@@ -251,7 +251,7 @@ This endpoint uses the auth middleware. Request can not be send anonymously.
 > You need to be authentiacted as the author to perform this action
 
 ```shell
-curl --location --request DELETE 'https://api.thesisfinder.com/idea/id' \
+curl --location --request DELETE 'https://data.thesisfinder.com/idea/id' \
 --header 'Content-Type: application/json' \
 --header 'Token: tokentokentoken'
 ```
@@ -276,7 +276,7 @@ This endpoint is not implemented.
 </aside>
 
 ```shell
-curl --location --request DELETE 'https://api.thesisfinder.com/idea/tags' \
+curl --location --request DELETE 'https://data.thesisfinder.com/idea/tags' \
 ```
 
 This will return a list of all valid tags
