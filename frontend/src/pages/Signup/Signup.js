@@ -90,7 +90,7 @@ const Signup = () => {
         alert('Username or Email is already taken. Please choose a different one.');
       } else {
         // Display a generic error message for other types of errors
-        alert('An error occurred while registering. Please try again.');
+        alert('Username or Email is already taken');
       }
     } finally {
       // Reset loading state after registration attempt is finished

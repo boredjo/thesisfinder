@@ -5,6 +5,9 @@ import { getUser, getIdeaDetails, getClaimFromQuestion } from '../../utils/api';
 import { getSponsorshipsForIdeas } from '../../utils/api';
 import { claimIdea } from '../../utils/api';
 import { sponsorIdea } from '../../utils/api';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
 import '../../styles/main.css';
 import '../../styles/mainheader.css';
 import './post-page.css';
@@ -105,6 +108,12 @@ const PostPage = ({ authToken }) => {
         console.error('Error fetching user data:', error);
       }
     }
+  };
+
+  // Function to format date as "Month Day, Year" (e.g., "January 1, 2024")
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
   // Function to handle opening the sponsor modal
@@ -220,13 +229,35 @@ const PostPage = ({ authToken }) => {
     return true;
   };
 
-  // Function to handle sponsor form input changes
+ // Function to handle sponsor form input changes
   const handleSponsorFormChange = (e) => {
     const { name, value } = e.target;
-    setSponsorFormData({
-      ...sponsorFormData,
-      [name]: value,
-    });
+
+    // Check if the input is for the duration field
+    if (name === "duration") {
+      // Parse the input value into a date object
+      const date = new Date(value);
+
+      // Increment the date by 1 day
+      date.setDate(date.getDate() - 1);
+
+      // Format the date into yyyy-mm-dd format
+      const formattedDate = date.toISOString().split('T')[0];
+
+      console.log(formattedDate)
+
+      // Update the state with the adjusted date
+      setSponsorFormData({
+        ...sponsorFormData,
+        [name]: formattedDate,
+      });
+    } else {
+      // For other inputs, update the state directly
+      setSponsorFormData({
+        ...sponsorFormData,
+        [name]: value,
+      });
+    }
   };
 
   // Function to handle sponsor document uploads
@@ -359,9 +390,9 @@ const PostPage = ({ authToken }) => {
                         {sponsors.sponsors.map((sponsor, index) => (
                           <div key={index} className="sponsor-box">
                             <h3>Author: {sponsor.author}</h3>
-                            <p>Date Posted: {sponsor.date_posted}</p>
+                            <p>Date Posted: {formatDate(sponsor.date_posted)}</p>
                             <p>Amount: {sponsor.amount}</p>
-                            <p>Deadline: {sponsor.deadline}</p>
+                            <p>Deadline: {formatDate(sponsor.deadline)}</p>
                             {/* Add more sponsor details here */}
                           </div>
                         ))}
@@ -426,8 +457,16 @@ const PostPage = ({ authToken }) => {
                 <textarea id="purpose" name="purpose" value={sponsorFormData.purpose} onChange={handleSponsorFormChange}></textarea>
               </div>
               <div className="input-group">
-                <label htmlFor="duration">Deadline</label>
-                <input type="text" id="duration" name="duration" placeholder='Example: 2024-02-24' value={sponsorFormData.duration} onChange={handleSponsorFormChange} />
+                <label htmlFor="duration">Deadline:</label>
+                <DatePicker
+                  selected={new Date(new Date(sponsorFormData.duration).getTime() + (24 * 60 * 60 * 1000))} // Subtract 1 day
+                  onChange={(date) => handleSponsorFormChange({ target: { name: "duration", value: date } })}
+                  dateFormat="yyyy-MM-dd"
+                  id="duration"
+                  name="duration"
+                  placeholderText="Select deadline"
+                  className="date-picker"
+                />
               </div>
               <div className="actions">
                 <button type="submit" className="save-btn">Submit</button>

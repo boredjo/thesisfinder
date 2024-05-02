@@ -16,6 +16,7 @@ import ideas from './data/ideasData.js';
 import { clearAuthenticatedUser, getAuthToken } from './utils/authService';
 import { getUser } from './utils/api.js';
 import { Button, Flex } from 'antd';
+import { HashRouter } from 'react-router-dom';
 
 const App = () => {
   const [authToken, setAuthToken] = useState(getAuthToken());
@@ -73,7 +74,7 @@ const App = () => {
 
   return (
     <div>
-      <Router>
+      <HashRouter>
         {authToken ? (
           <AuthenticatedHeader onLogout={handleLogout} authToken={authToken} />
         ) : (
@@ -91,7 +92,7 @@ const App = () => {
           <Route path="/submit" element={<Submit authToken={authToken} />} />
         </Routes>
         <Footer />
-      </Router>
+      </HashRouter>
     </div>
   );
 };

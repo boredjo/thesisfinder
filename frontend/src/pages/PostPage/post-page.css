@@ -42,6 +42,11 @@ main {
   overflow: hidden;
 }
 
+#duration {
+  margin-left: 9px;
+  padding: 5px 10px;
+}
+
 .article-nav {
   margin: 10px; 
   padding: 4px 15px;
