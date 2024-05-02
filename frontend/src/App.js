@@ -74,7 +74,7 @@ const App = () => {
 
   return (
     <div>
-      <HashRouter>
+      <Router>
         {authToken ? (
           <AuthenticatedHeader onLogout={handleLogout} authToken={authToken} />
         ) : (
@@ -92,7 +92,7 @@ const App = () => {
           <Route path="/submit" element={<Submit authToken={authToken} />} />
         </Routes>
         <Footer />
-      </HashRouter>
+      </Router>
     </div>
   );
 };

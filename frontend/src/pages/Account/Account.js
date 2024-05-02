@@ -148,8 +148,8 @@ const Account = ({ authToken }) => {
       {/* Toolbar */}
       <nav className="profile-nav">
         <ul>
-          <li><a href="#profile" className={activeTab === 'profile' ? 'active' : ''} onClick={() => handleTabChange('profile')}>Currently Researching</a></li>
-          <li><a href="#research-papers" className={activeTab === 'research-papers' ? 'active' : ''} onClick={() => handleTabChange('research-papers')}>Sponsorships</a></li>
+          <li><a href="##profile" className={activeTab === 'profile' ? 'active' : ''} onClick={() => handleTabChange('profile')}>Currently Researching</a></li>
+          <li><a href="##research-papers" className={activeTab === 'research-papers' ? 'active' : ''} onClick={() => handleTabChange('research-papers')}>Sponsorships</a></li>
         </ul>
       </nav>
   
@@ -227,7 +227,30 @@ const Account = ({ authToken }) => {
           <section className="modal-main">
             <h2>Edit Profile Details</h2>
             <form onSubmit={handleSaveProfile}>
-              {/* Your existing code for the modal form */}
+              <div className="input-group">
+                <label htmlFor="firstName">First Name</label>
+                <input type="text" id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+              </div>
+              <div className="input-group">
+                <label htmlFor="lastName">Last Name</label>
+                <input type="text" id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+              </div>
+              <div className="input-group">
+                <label htmlFor="username">Username</label>
+                <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+              </div>
+              <div className="input-group">
+                <label htmlFor="password">Password</label>
+                <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              </div>
+              <div className="input-group">
+                <label htmlFor="county">County</label>
+                <input type="text" id="county" value={county} onChange={(e) => setCounty(e.target.value)} />
+              </div>
+              <div className="actions">
+                <button type="submit" className="save-btn">Save</button>
+                <button type="button" className="cancel-btn" onClick={handleCloseModal}>Cancel</button>
+              </div>
             </form>
           </section>
         </div>
